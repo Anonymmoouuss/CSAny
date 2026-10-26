@@ -2,6 +2,15 @@
 
 A browser tactical FPS built with Three.js, TypeScript and a headless authoritative WebSocket server. Deployment offers Arena, Breeze, Dune, Rust, Zone 7, Freight Yard and Cargo District with textures and triangle-mesh collision. Sandstone, Training Grounds, Outpost, Dust II Classic, Industrial Quarter and the older procedural match arenas are excluded from deployment and random matchmaking. Training has its own purpose-built facility.
 
+## At A Glance
+
+- **Modes:** Deathmatch, four-round alternating Bomb Defusal, King of the Hill, five-minute free-for-all Gun Game, Ranked Competitive, solo elimination and private 1v1s.
+- **Models:** 23 individually downloaded knife models, additional animated firearm rigs and seven playable maps. See [MODEL-CREDITS.md](MODEL-CREDITS.md) for sources, licenses and attribution.
+- **Equipment:** armor-first Kevlar damage, weapon-specific scopes, distributed bot assignments and bomb sites separated from team starts.
+- **Cosmetics And Social:** 3D cases, two-stage rare reveals, separate charm cases, weapon attachment previews, profiles, friends, private messages and server-owned trades.
+
+**Vercel project:** [counterstrikebrowser.vercel.app](https://counterstrikebrowser.vercel.app). Repository changes require a separate deployment before appearing at this address. Online matches and social features also require a persistent WebSocket server.
+
 ## Run locally
 
 ```sh
@@ -165,7 +174,7 @@ The [reference inbox](reference-videos/README.md) contains the supplied clips pl
 The browser client is static and deploys to Vercel. The authoritative WebSocket server needs a persistent Node host such as Render or Railway; Vercel serverless functions do not support persistent WebSocket connections.
 
 1. Deploy this repository to Render using the included `render.yaml` blueprint, or create a Node web service with build command `npm ci` and start command `npm start`.
-2. Set `ALLOWED_ORIGINS` on the game server to the exact Vercel origin, for example `https://browserstrike.vercel.app`. Set the server's `PORT` through the host environment (Render supplies this automatically).
+2. Set `ALLOWED_ORIGINS` on the game server to the exact Vercel origin, for example `https://counterstrikebrowser.vercel.app`. Set the server's `PORT` through the host environment (Render supplies this automatically).
 3. Import the same repository into Vercel. The included `vercel.json` builds and serves `dist/`. Optionally set `VITE_SERVER_URL` in Vercel's project environment variables to your `wss://.../ws` endpoint and redeploy; otherwise enter the endpoint under **Server address** in the lobby.
 4. Use **Public** for automatic multiplayer or **Private** to share a room code. Profiles use the same host at `/social`.
 
@@ -196,6 +205,8 @@ Shotguns fire twelve spread pellets per shell. Weapon-specific recoil, range fal
 
 - [client/main.ts](client/main.ts): deployment, controls and HUD.
 - [client/assets.ts](client/assets.ts): imported models, animation and SAS rig handling.
+- [scripts/download-models.mjs](scripts/download-models.mjs): authenticated, resumable Sketchfab downloads without storing credentials or signed URLs.
+- [shared/knife-models.json](shared/knife-models.json): accepted individual knife models and their source references.
 - [server/game.ts](server/game.ts): authoritative rooms and 20 Hz state broadcasts.
 - [shared/game.ts](shared/game.ts): movement, weapons and hitboxes.
 - [shared/round.ts](shared/round.ts): rounds, purchases and bomb rules.
