@@ -1,0 +1,7 @@
+Kukri + Skins
+Creator: ELIZION
+Source: https://sketchfab.com/3d-models/kukri-skins-489e7231712a4c008bdc7a6cc4da06cc
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

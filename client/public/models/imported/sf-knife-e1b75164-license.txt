@@ -1,0 +1,7 @@
+Thief's Dagger
+Creator: Steven Janes
+Source: https://sketchfab.com/3d-models/thiefs-dagger-e1b75164b5084df8a32303c491d61f0b
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

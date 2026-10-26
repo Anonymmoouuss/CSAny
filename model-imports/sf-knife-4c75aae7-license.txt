@@ -1,0 +1,7 @@
+Kitchen Knife
+Creator: TheSpacePunk
+Source: https://sketchfab.com/3d-models/kitchen-knife-4c75aae7dfa74b919b61a321242de7f4
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

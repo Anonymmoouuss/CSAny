@@ -1,5 +1,5 @@
 import { DoubleSide, Ray, Vector3 } from 'three';
-import { direction, eyeHeight, wallHit, THROWABLES, type GameEvent, type Player, type Projectile, type Snapshot, type SmokeVolume, type ThrowableId, type Vec, type MapId } from './game.ts';
+import { direction, eyeHeight, takeDamage, wallHit, THROWABLES, type GameEvent, type Player, type Projectile, type Snapshot, type SmokeVolume, type ThrowableId, type Vec, type MapId } from './game.ts';
 import { mapGeometry } from './map-geometry.ts';
 import { dropBomb, dropWeapon } from './round.ts';
 
@@ -103,8 +103,7 @@ function detonate(state: EquipmentState, projectile: Projectile, players: Player
       continue;
     }
     if (player.team === projectile.team && player.id !== projectile.owner) continue;
-    const raw = 115 * (1 - distance / definition.radius); const absorbed = Math.min(player.armor, raw * 0.25);
-    const damage = Math.round(raw - absorbed); player.armor = Math.max(0, player.armor - absorbed); player.hp = Math.max(0, player.hp - damage);
+    const damage = takeDamage(player, 115 * (1 - distance / definition.radius));
     state.events.push({ type: 'hit', id: projectile.owner, target: player.id, damage, origin: point, equipment: projectile.kind });
     if (!player.hp) {
       player.deaths++; player.respawnAt = state.mode === 'deathmatch' ? now + 1100 : state.mode === 'training' ? now + 500 : 0;
@@ -125,7 +124,7 @@ export function advanceEquipment(state: EquipmentState, players: Player[], elaps
     fire.nextDamageAt = now + 100;
     for (const player of players) {
       if (player.hp <= 0 || player.team === fire.team && player.id !== fire.owner || !fire.cells.some(cell => Math.hypot(cell.x - player.x, cell.z - player.z) < 0.85 && Math.abs(cell.y - player.y) < 1.5)) continue;
-      player.hp = Math.max(0, player.hp - 4); state.events.push({ type: 'hit', id: fire.owner, target: player.id, damage: 4, origin: fire, equipment: 'molotov' });
+      const damage = takeDamage(player, 4); state.events.push({ type: 'hit', id: fire.owner, target: player.id, damage, origin: fire, equipment: 'molotov' });
       if (!player.hp) {
         player.deaths++; player.respawnAt = state.mode === 'deathmatch' ? now + 1100 : 0;
         const owner = players.find(owner => owner.id === fire.owner); if (owner && owner.id !== player.id) { owner.kills++; owner.money = Math.min(16000, owner.money + 300); }

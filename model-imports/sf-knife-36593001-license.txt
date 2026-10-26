@@ -1,0 +1,7 @@
+M9 Bayonet (Default)
+Creator: Firewarden3D
+Source: https://sketchfab.com/3d-models/m9-bayonet-default-36593001f0164a50a2039d9ef1e511ff
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

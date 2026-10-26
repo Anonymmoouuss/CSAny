@@ -20,6 +20,12 @@ function routesFor(state: RoundState) {
 export type BotBrain = { path: Vec[]; nextPlan: number; nextShot: number; goal: Vec | null; lastSeen: Vec | null; seenAt: number; patrol: number; targetId: string | null; reactAt: number; routeId: number; movedAt: number; position: Vec | null; nextUtility: number; seed: number; round: number; approachKey: string; approach: Vec | null; role: 'entry' | 'support' | 'anchor' };
 export const createBrain = (index = 0, random = Math.random): BotBrain => ({ path: [], nextPlan: 0, nextShot: 0, goal: null, lastSeen: null, seenAt: 0, patrol: index, targetId: null, reactAt: 0, routeId: index + 1, movedAt: 0, position: null, nextUtility: 0, seed: Math.floor(random() * 1000000) + index * 7919, round: -1, approachKey: '', approach: null, role: (['entry', 'support', 'anchor'] as const)[index % 3] });
 
+export function botAssignment(bot: Player, players: Player[], state: RoundState) {
+  const team = players.filter(player => player.team === bot.team).sort((first, second) => Number(second.id === state.bomb.carrier) - Number(first.id === state.bomb.carrier) || first.id.localeCompare(second.id));
+  const slot = Math.max(0, team.findIndex(player => player.id === bot.id));
+  return { slot, count: team.length, site: (state.round + slot % 2) % getSites(state.map).length, sector: slot * 2 + (bot.team === 'CT' ? 0 : 1) + state.round };
+}
+
 export function teammateSeparation(bot: Player, players: Player[], map: MapId) {
   let x = 0; let z = 0;
   for (const other of players) {
@@ -162,27 +168,35 @@ export function botInput(bot: Player, players: Player[], state: RoundState, brai
   }
   if (target) { brain.lastSeen = { x: target.x, y: target.y, z: target.z }; brain.seenAt = now; }
   const sites = getSites(state.map);
+  const assignment = botAssignment(bot, players, state);
   const navigation = mapGeometry(state.map)?.metadata.navigation;
   const patrols = navigation?.length ? Array.from({ length: 12 }, (_, index) => navigation[Math.floor(index / 12 * navigation.length)]) : DISTRICTS.map(district => ({ x: district.x - 8, y: 0, z: district.z + 10 }));
   let goal = brain.lastSeen && now - brain.seenAt < 3500 ? brain.lastSeen : patrols[brain.patrol % patrols.length];
   if (!isBombRound(state) && !target && enemies.length) {
-    const pursuit = enemies[brain.patrol % Math.min(3, enemies.length)]; goal = approachPoint(pursuit, brain, state, pursuit.id, 9, bot);
+    const pursuit = enemies[assignment.slot % Math.min(3, enemies.length)];
+    const searching = !brain.lastSeen || now - brain.seenAt >= 3500;
+    if (state.mode !== 'gungame' && assignment.count >= 3 && assignment.slot >= 2 && searching) {
+      const sector = (assignment.sector + Math.floor(brain.patrol / Math.max(1, assignment.count))) % patrols.length;
+      goal = approachPoint(patrols[sector], brain, state, `sector-${sector}`, 5, bot);
+    } else goal = approachPoint(pursuit, brain, state, pursuit.id, assignment.count >= 3 ? 12 + assignment.slot * 4 : 9, bot);
   }
   let interacting = false;
-  if (state.mode === 'hill' && state.hill) goal = approachPoint(state.hill.position, brain, state, 'control-hill', state.hill.radius * 0.55, bot);
+  if (state.mode === 'hill' && state.hill) goal = approachPoint(state.hill.position, brain, state, 'control-hill', assignment.slot < 3 ? state.hill.radius * 0.55 : state.hill.radius + 5 + assignment.slot % 2 * 4, bot);
   if (isBombRound(state)) {
     if (state.bomb.planted && state.bomb.position) {
       const position = state.bomb.position;
       const defenders = players.filter(player => player.hp > 0 && player.team === 'CT').sort((first, second) => Math.hypot(first.x - position.x, first.z - position.z) - Math.hypot(second.x - position.x, second.z - position.z));
       const defuser = defenders.find(player => player.id === state.bomb.actor) || defenders[0];
-      goal = bot.id === defuser?.id ? position : approachPoint(position, brain, state, 'planted-bomb', bot.team === 'CT' ? 7 : 10, bot);
+      goal = bot.id === defuser?.id ? position : approachPoint(position, brain, state, 'planted-bomb', 10 + assignment.slot * 3, bot);
       if (bot.id === defuser?.id && Math.hypot(bot.x - position.x, bot.z - position.z) < 2.3) interacting = true;
     } else if (bot.team === 'T') {
       const carrier = players.find(player => player.id === state.bomb.carrier);
-      const site = sites[(state.round + brain.patrol) % sites.length];
-      goal = state.bomb.position || (carrier?.id !== bot.id && carrier ? approachPoint(carrier, brain, state, carrier.id, 4 + brain.seed % 4, bot) : site);
+      const site = sites[assignment.site];
+      const dropped = state.bomb.position;
+      const recoverer = dropped ? players.filter(player => player.team === 'T' && player.hp > 0).sort((first, second) => Math.hypot(first.x - dropped.x, first.z - dropped.z) - Math.hypot(second.x - dropped.x, second.z - dropped.z))[0] : undefined;
+      goal = dropped && recoverer?.id === bot.id ? dropped : carrier?.id === bot.id ? site : approachPoint(site, brain, state, `attack-site-${assignment.site}`, 4 + assignment.slot * 2, bot);
       if (state.bomb.carrier === bot.id && sites.some(site => Math.hypot(bot.x - site.x, bot.z - site.z) < 3.7)) interacting = true;
-    } else goal = approachPoint(sites[brain.patrol % sites.length], brain, state, `site-${brain.patrol % sites.length}`, brain.role === 'anchor' ? 5 : 9, bot);
+    } else goal = approachPoint(sites[assignment.site], brain, state, `defend-site-${assignment.site}`, brain.role === 'anchor' ? 5 : 10 + assignment.slot * 2, bot);
   }
   if (Math.hypot(bot.x - goal.x, bot.z - goal.z) < 2 && !interacting) { brain.patrol++; if (state.mode === 'deathmatch') goal = patrols[brain.patrol % patrols.length]; }
   const goalChanged = !brain.goal || Math.hypot(goal.x - brain.goal.x, goal.z - brain.goal.z) > 4;

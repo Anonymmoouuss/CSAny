@@ -1,0 +1,7 @@
+Old Survival Knife
+Creator: Vishal_R
+Source: https://sketchfab.com/3d-models/old-survival-knife-42496f36f25841ecae7814713cfd4db6
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

@@ -1,0 +1,7 @@
+Energy Knife
+Creator: Frostoise
+Source: https://sketchfab.com/3d-models/energy-knife-db51ee0d20cb4c59b9d19e81ca6e28c9
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

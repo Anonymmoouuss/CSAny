@@ -4,7 +4,7 @@
 
 Choose **Online Multiplayer**, **Solo** or **Aim Trainer**. Online **Public** finds a match automatically; **Private** creates or joins a six-character room code. Select Deathmatch or Bomb Defusal. New rooms use random deployed maps, bots fill both five-player teams, and joining humans replace bots. Public matching never joins a private room.
 
-The playable match maps are Arena, Breeze, Dune, Rust, Zone 7 and Freight Yard. Sandstone, Training Grounds, Outpost and Dust II Classic are disabled. Operator selection offers the field operator or a downloaded CC0 robot with native animations.
+The playable match maps are Arena, Breeze, Dune, Rust, Zone 7, Freight Yard and Cargo District. Sandstone, Training Grounds, Outpost, Dust II Classic and the rejected Industrial Quarter candidate are disabled. Operator selection offers the field operator or a downloaded CC0 robot with native animations.
 
 For **Solo**, select an arena, bot difficulty and 5v5 Elimination or Bomb Defusal. You join CT with four teammates against five T opponents. Elimination has no mid-round respawns and ends at five round wins. The result screen shows the winning team's V lineup with its MVP in the centre; choose Play Again or Back to Lobby.
 
@@ -56,6 +56,8 @@ Buy HE for $300 (limit one), flash for $200 (limit two), smoke for $300 (limit o
 
 Casual defusal is exactly four rounds: bomb, elimination, bomb, elimination. A 2-2 result is a draw. Bots can plant and defuse through the same rules as humans, with separate reachable A/B sites.
 
+Sites are at least 24 metres from every spawn and 36 metres apart. Teams split between A and B instead of all following the carrier; only one T retrieves dropped C4 and only one CT approaches to defuse. Other bots hold separated positions or assigned sectors rather than one common destination.
+
 One living T player carries C4. Hold **E** while stationary and grounded at A or B for 3.5 seconds to plant it. Releasing the key, moving or dying interrupts progress. A dropped bomb can be recovered by a living T player.
 
 The planted fuse lasts 40 seconds. A CT near the bomb holds **E** for ten seconds to defuse, or five seconds with a kit. The bomb remains active after T elimination; CT must still defuse it. The round timer is 115 seconds after preparation, but a planted bomb uses its own countdown. A CT joining a live round waits until the next round, as does a joining T.
@@ -68,13 +70,15 @@ The planted fuse lasts 40 seconds. A CT near the bomb holds **E** for ten second
 
 **Ranked:** authenticated public bomb matches, first to five, eighteen classic ranks. Humans must have the same rank and fit strict server-owned rating/skill windows. Bots scale with rank. Results apply once; leaving an unfinished ranked match counts as a loss.
 
-Deathmatch respawns automatically; solo elimination and defusal do not. Headshots deal four times weapon damage, limb hits 75%, and armor absorbs part of the damage. Standing still improves accuracy. Sniper scope stays locked so a trackpad user can release right click and fire with left click or use **Q** instead.
+Deathmatch respawns automatically; solo elimination and defusal do not. Headshots deal four times weapon damage and limb hits 75%. Kevlar must run out before health decreases; excess damage carries through to health. This applies to firearms, knives, grenades, fire and C4. Standing still improves accuracy. Scope stays locked for trackpad users, with per-weapon reticles and magnification.
 
 Knife attacks are short-range sweeps with a separate slash animation and sound, not firearm shots. They do not consume ammunition or create gun tracers, shells, muzzle flashes or firearm recoil. HE grenades bounce and damage nearby enemies or the thrower when walls do not block the blast. Flashbangs affect anyone in range with line of sight; facing away reduces their strength.
 
 The locker has 718 generated finishes per firearm and at least 712 per knife type, with pattern seed, wear and optional StatTrak. Signature circuit/glyph/contour/fracture/spectral/aurora/ceramic artwork and stronger coverage make rare finishes visibly different. New profiles start with a plain field karambit. Inspect with **F** or the locker viewer. Authored clips are used where supplied; missing clips are approximated, not native CS2 animations.
 
 HC-45 uses the original first-person model and complete authored equip spin. Knives have a relaxed one-handed hold; karambit inspection spins about the finger ring, catches, reverses and returns to the same grip.
+
+**Knife Models** in the armory offers 23 individually downloaded, textured knives. Inspect an original finish, acquire/equip it, then use it in a match. Folding/inspect animations use the author's clips where available; static knives use the game's procedural actions. The downloaded sniper, SMG and pistol rigs and uploaded HK416 use native gameplay clips. Sniper directions are calibrated individually, with incompatible heavy-sniper source arms replaced by the stable rifle grip.
 
 Cases have a rotatable 3D preview before confirmation. High-tier rewards land on a gold question mark, then reveal the already-awarded item in a rare-vault reel. Skip only shortens animation: it never rerolls or charges again. Odds remain visible and all rewards have no cash value.
 

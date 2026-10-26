@@ -1,0 +1,7 @@
+Knife collection
+Creator: Helindu
+Source: https://sketchfab.com/3d-models/knife-collection-7f6df3818e5544c982e8cbbbbcb6305c
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

@@ -1,0 +1,11 @@
+Model Information:
+* title:	L1A1 SLR - Animated
+* source:	https://sketchfab.com/3d-models/l1a1-slr-animated-a7bf6558c54443e7ab9a75e07eb0a1cd
+* author:	user77 (https://sketchfab.com/user77)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "L1A1 SLR - Animated" (https://sketchfab.com/3d-models/l1a1-slr-animated-a7bf6558c54443e7ab9a75e07eb0a1cd) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

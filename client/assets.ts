@@ -15,19 +15,19 @@ export const WEAPON_ASSETS: Record<WeaponId, string> = {
   smg: 'mp5', vector: 'fennec', machinePistol: 'scorpion', shotgun: 'remington870', autoShotgun: 'field-shotgun', marksman: 'g3sg1', scout: 'cs5',
   heavySniper: 'precision-sniper', revolver: 'field-revolver', servicePistol: 'cz75', compactSmg: 'bizon', lmg: 'negev', handCannon: 'deagle', knife: 'karambit',
 };
-export const WEAPON_YAW: Record<string, number> = { 'field-shotgun': 0, 'field-revolver': 0, m16a2: 0, remington870: 0, 'precision-sniper': 0, g3sg1: 0 };
+export const WEAPON_YAW: Record<string, number> = { 'field-shotgun': 0, 'field-revolver': 0, m16a2: 0, remington870: 0, 'precision-sniper': Math.PI, g3sg1: Math.PI, 'sf-weapon-c15ae839': 0 };
 const patterns: Record<AnimationKind, RegExp> = {
-  idle: /^(firstperson_idle|idle|idle_rifle)$/i, draw: /^(firstperson_draw|equip|equip_start|take|draw|draw_first)$/i,
-  fire: /^(firstperson_shoot1|shots|shoot|fire|fire1|firewbullet|firewobullet)$/i, reload: /^(firstperson_reload|reload|reload1|reload_empty)$/i,
-  inspect: /^(firstperson_lookat01|inspect|inspec|lookat)$/i, melee: /^(firstperson_(slash[12]?|stab|attack)|slash[12]?|stab|attack|fire[12]|melee_hit_0[123])$/i,
+  idle: /^(firstperson_idle|idle|idle_rifle|dpose_idle)$/i, draw: /^(firstperson_draw|equip|equip_start|take|draw|draw_first)$/i,
+  fire: /^(firstperson_shoot1|shots|shot(?:_nosight|_sight)?|shoot|fire|fire1|firewbullet|firewobullet)$/i, reload: /^(firstperson_reload|reload|reload1|reload_empty|reloat_f)$/i,
+  inspect: /^(firstperson_lookat01|inspect|ispect|inspec|lookat)$/i, melee: /^(firstperson_(slash[12]?|stab|attack)|slash[12]?|stab(?: ?[12])?|attack|fire[12]|melee_hit_0[123])$/i,
   walk: /^(walk|walking|walk_rifle)$/i, run: /^(run|running|sprint)$/i, crouch: /^(crouch|crouch_walk)$/i, death: /^(death|die|dead)$/i,
 };
 
 export function chooseClip(clips: THREE.AnimationClip[], kind: AnimationKind) {
   const exact = clips.find(clip => patterns[kind].test(clip.name)) || clips.find(clip => patterns[kind].test(clip.name.split('|').at(-1)!.replace(/^MM_CS5_/i, '')));
   if (exact) return exact;
-  if (kind === 'reload') { const full = clips.find(clip => /(?:M4_ReloadFull_type1|FPS_Pistol_Reload_full)$/i.test(clip.name)); if (full) return full; }
-  return clips.find(clip => patterns[kind].test(clip.name.split('|').at(-1)!.replace(/^(?:FPS_Pistol_|M4_)/i, '')));
+  if (kind === 'reload') { const full = clips.find(clip => /(?:M4_ReloadFull_type1|FPS_Pistol_Reload_full|SRifle_Reload_Full|KDW_Reload_full)$/i.test(clip.name)); if (full) return full; }
+  return clips.find(clip => patterns[kind].test(clip.name.split('|').at(-1)!.replace(/^(?:FPS_Pistol_|M4_|SRifle_|KDW_)/i, '')));
 }
 
 export function classifyWeaponMesh(id: string, name: string, materials: string[]) {
@@ -354,7 +354,7 @@ export class ModelAssets {
     arms.userData.characterMotion = new CharacterMotion(asset, operator, true); arms.userData.assetId = 'sas-arms'; return arms;
   }
   weaponAsset(id: WeaponId, context: 'view' | 'world' | 'preview' = 'preview') {
-    const viewmodels: Partial<Record<WeaponId, string>> = { handCannon: 'handcannon-classic', carbine: 'm4a1s', autoShotgun: 'benelli', servicePistol: 'pistol-fps' };
+    const viewmodels: Partial<Record<WeaponId, string>> = { handCannon: 'handcannon-classic', carbine: 'hk416', bullpup: 'aug-animated', battleRifle: 'slr', autoShotgun: 'benelli', servicePistol: 'sf-weapon-0d7a343d', pistol: 'sf-weapon-1a4c9d15', smg: 'sf-weapon-ca37ea91', sniper: 'sf-weapon-c15ae839' };
     return context === 'view' ? viewmodels[id] || WEAPON_ASSETS[id] : WEAPON_ASSETS[id];
   }
   async prepareWeapon(id: WeaponId) {
@@ -388,13 +388,19 @@ export class ModelAssets {
       const classification = classifyWeaponMesh(id, object.name, names);
       object.userData.hands = classification.hands;
       if (role !== 'map' && classification.background) object.visible = false;
-      if (role === 'weapon' && context !== 'view' && classification.hands) object.visible = false;
+      if (role === 'weapon' && classification.hands && (context !== 'view' || id === 'precision-sniper')) object.visible = false;
       if (role === 'hands') {
         const names = `${object.name} ${materialNames}`;
         if (/knife|karam|stattrak|uid|m4a1|silencer/i.test(names) && !/glove|arms|sleeve|hand|glowe/i.test(names)) object.visible = false;
       }
     });
-    const animation = new ModelAnimation(scene, gltf.animations, MODEL_ACTION_RANGES[id]);
+    let ranges = MODEL_ACTION_RANGES[id];
+    if (!ranges && role === 'weapon' && gltf.animations.length === 1) {
+      const clip = gltf.animations[0];
+      if (/opening|foldin|boxcutter/i.test(clip.name)) ranges = { idle: [clip.duration, clip.duration], draw: [0, clip.duration], inspect: [0, clip.duration] };
+      else if (/^Scene$/i.test(clip.name)) ranges = { idle: [0, 0], inspect: [0, clip.duration] };
+    }
+    const animation = new ModelAnimation(scene, gltf.animations, ranges);
     if (role === 'weapon') animation.hold();
     const normalized = role === 'map' ? new THREE.Group().add(scene) : normalizeModel(scene, role, length);
     if (role === 'weapon') normalized.rotation.y = WEAPON_YAW[id] ?? Math.PI;

@@ -4,7 +4,7 @@ import { createPlayer, getSites, MAPS, MAP_SIZE, MAP_AREA_MULTIPLIER, spawn, spa
 import { beginRound, finishRound, interactBomb, isBombRound, recordModeKill, advanceRound, dropBomb, dropWeapon, pickupWeapon, emptyBomb, canPurchase, purchaseEquipment, matchLineup, BUY_WINDOW, type RoundState } from '../shared/round.ts';
 import { GUN_GAME_ORDER } from '../shared/modes.ts';
 import { advanceEquipment, createSmokeVolume, cutSmoke, flashExposure, flashPresentation, smokeBlocks, throwEquipment } from '../shared/equipment.ts';
-import { botInput, createBrain, navigate, teammateSeparation, visible } from '../shared/bots.ts';
+import { botAssignment, botInput, createBrain, navigate, teammateSeparation, visible } from '../shared/bots.ts';
 
 function setup() {
   const players = [createPlayer('t1', 'Alpha', 'T', 'defusal', 0), createPlayer('t2', 'Bravo', 'T', 'defusal', 1), createPlayer('ct', 'Charlie', 'CT', 'defusal', 2)];
@@ -188,6 +188,22 @@ test('bots separate locally, choose distinct approach goals and vary routes betw
   const previous = first.routeId; state.round++; botInput(players[0], players, state, first, 4000); assert.notEqual(first.routeId, previous);
 });
 
+test('bot squads split A and B assignments and keep stable map sectors', () => {
+  const players = Array.from({ length: 10 }, (_, index) => createPlayer(`bot-assignment-${index}`, 'Bot', index < 5 ? 'T' : 'CT', 'defusal', index));
+  const state: RoundState = { mode: 'defusal', map: 'dustline', phase: 'live', endsAt: 100000, score: { T: 0, CT: 0 }, bomb: emptyBomb(), round: 1, events: [] }; state.bomb.carrier = players[0].id;
+  for (const team of ['T', 'CT'] as const) {
+    const members = players.filter(player => player.team === team); const assignments = members.map(player => botAssignment(player, players, state));
+    assert.equal(new Set(assignments.map(assignment => assignment.site)).size, 2);
+    assert.ok(assignments.filter(assignment => assignment.site === 0).length >= 2); assert.ok(assignments.filter(assignment => assignment.site === 1).length >= 2);
+    assert.equal(new Set(assignments.map(assignment => assignment.sector)).size, 5);
+    for (const player of members) assert.deepEqual(botAssignment(player, players, state), botAssignment(player, [...players].reverse(), state));
+    const brains = members.map((_, index) => createBrain(index, () => 0.5));
+    members.forEach((player, index) => botInput(player, players, state, brains[index], 3000));
+    const goals = brains.map(brain => brain.goal!).filter(Boolean); assert.equal(goals.length, 5);
+    assert.ok(goals.some(first => goals.some(second => Math.hypot(first.x - second.x, first.z - second.z) > 40)), `${team} splits across the map`);
+  }
+});
+
 test('throwables respect purchase limits, inventory, fuses and wall occlusion', () => {
   const { state, players } = setup(); beginRound(state, players, 1000); const owner = players[0]; owner.money = 16000;
   assert.equal(purchaseEquipment(state, owner, 'grenade', 2000), null);
@@ -233,6 +249,15 @@ test('voxel smoke stays behind walls, blocks sight and temporarily opens along b
   assert.equal(smokeBlocks(state, from, to, 1100), true);
   cutSmoke(state, from, to, 1200); assert.equal(smokeBlocks(state, from, to, 1250), false);
   assert.equal(smokeBlocks(state, from, to, 1600), true); assert.equal(smokeBlocks(state, from, to, 20000), false);
+});
+
+test('grenades and incendiaries deplete Kevlar before health', () => {
+  const { state, players } = setup(); const owner = players[0]; const target = players[2];
+  Object.assign(owner, { x: 0, y: 0, z: 5 }); Object.assign(target, { x: 2, y: 0, z: 0, hp: 100, armor: 100 });
+  state.projectiles = [{ id: 'armor-grenade', owner: owner.id, team: owner.team, kind: 'grenade', x: 0, y: 1, z: 0, vx: 0, vy: 0, vz: 0, fuseAt: 2000 }];
+  advanceEquipment(state, players, 0, 2000); assert.equal(target.hp, 100); assert.ok(target.armor > 0 && target.armor < 100);
+  target.armor = 2; state.fires = [{ id: 'armor-fire', owner: owner.id, team: owner.team, x: target.x, y: 0, z: target.z, cells: [{ x: target.x, y: 0, z: target.z }], expiresAt: 10000, nextDamageAt: 2000 }];
+  advanceEquipment(state, players, 0, 2100); assert.equal(target.armor, 0); assert.equal(target.hp, 98);
 });
 
 test('incendiaries follow nearby floors and damage enemies without burning teammates', () => {

@@ -1,0 +1,7 @@
+Pocket Knife
+Creator: re1monsen
+Source: https://sketchfab.com/3d-models/pocket-knife-0c89d84c815942619d1a957f9fe996ae
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

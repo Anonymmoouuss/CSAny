@@ -1,0 +1,7 @@
+LOWPOLY | FPS | TDM | GAME | MAP by ResoForge
+Creator: ResoForge (old profile)
+Source: https://sketchfab.com/3d-models/lowpoly-fps-tdm-game-map-by-resoforge-d41a19f699ea421a9aa32b407cb7537b
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

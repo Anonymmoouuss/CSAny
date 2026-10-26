@@ -1,6 +1,6 @@
 import { DoubleSide, Ray, Vector3 } from 'three';
 import { mapGeometry } from './map-geometry.ts';
-import { getSites, hasRespawns, spawn, spawnPoints, loadoutSlot, wallHit, WEAPONS, THROWABLES, type GameEvent, type Player, type Snapshot, type Team, type EnvironmentState, type WeaponId, type ThrowableId } from './game.ts';
+import { getSites, hasRespawns, spawn, spawnPoints, loadoutSlot, takeDamage, wallHit, WEAPONS, THROWABLES, type GameEvent, type Player, type Snapshot, type Team, type EnvironmentState, type WeaponId, type ThrowableId } from './game.ts';
 import { advanceObjectiveMode, gunGameKill, initializeObjectiveMode } from './modes.ts';
 
 export type RoundState = Pick<Snapshot, 'phase' | 'mode' | 'map' | 'endsAt' | 'score' | 'winner' | 'bomb' | 'environment' | 'buyEndsAt' | 'matchWinner' | 'matchComplete' | 'matchDraw' | 'winnerId' | 'hill' | 'gunGame' | 'difficulty' | 'projectiles' | 'drops' | 'smokes' | 'fires'> & { round: number; events: GameEvent[]; killsAtStart?: Record<string, number>; lossStreak?: Record<Team, number> };
@@ -196,8 +196,7 @@ export function advanceRound(state: RoundState, players: Player[], now: number) 
     state.events.push({ type: 'bomb', text: 'Bomb exploded', point: bomb.position || undefined });
     for (const player of alive) {
       const distance = bomb.position ? Math.hypot(player.x - bomb.position.x, player.y - bomb.position.y, player.z - bomb.position.z) : 100;
-      const damage = Math.max(0, Math.round(450 * (1 - distance / 32))) * (player.armor ? 0.7 : 1);
-      player.hp = Math.max(0, player.hp - Math.round(damage));
+      takeDamage(player, Math.max(0, 450 * (1 - distance / 32)));
       if (!player.hp) { player.deaths++; state.events.push({ type: 'kill', target: player.id }); }
     }
     bomb.planted = false; finishRound(state, players, 'T', now);

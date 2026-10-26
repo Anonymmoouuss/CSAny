@@ -422,7 +422,7 @@ export function buildWeapon(id: WeaponId, appearance?: SkinAppearance, knifeStyl
       imported.add(pivot); pivot.add(motion); motion.position.z -= 0.1; pivot.userData.basePosition = pivot.position.clone(); imported.userData.motion = pivot;
     }
     if (fieldIssue) applyFieldFinish(imported, id);
-    if (appearance && definition && !fieldIssue) {
+    if (appearance && definition && !fieldIssue && !definition.sourceMaterials) {
       const pattern = patternCanvas(definition, appearance, 512);
       const painted = new Map<THREE.Material, THREE.Material>();
       imported.traverse(object => {

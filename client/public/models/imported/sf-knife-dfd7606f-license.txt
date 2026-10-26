@@ -1,0 +1,19 @@
+Model Information:
+* title:	Karambit
+* source:	https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8
+* author:	Diamonddogkz (https://sketchfab.com/Diamonddogkz)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Karambit" (https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8) by Diamonddogkz (https://sketchfab.com/Diamonddogkz) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Karambit
+Creator: Diamonddogkz
+Source: https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

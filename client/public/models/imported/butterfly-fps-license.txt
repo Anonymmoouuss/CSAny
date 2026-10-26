@@ -1,0 +1,11 @@
+Model Information:
+* title:	FPS butterfly knife
+* source:	https://sketchfab.com/3d-models/fps-butterfly-knife-fc1dcc17f9434540a7165255dfa7f66a
+* author:	BURNER (https://sketchfab.com/Alexander_Ovelar)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "FPS butterfly knife" (https://sketchfab.com/3d-models/fps-butterfly-knife-fc1dcc17f9434540a7165255dfa7f66a) by BURNER (https://sketchfab.com/Alexander_Ovelar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

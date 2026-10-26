@@ -705,5 +705,486 @@
     ],
     "license": "/models/imported/robot-license.txt",
     "attribution": "RobotExpressive\nCreator: Tomas Laulhe (Quaternius); modifications by Don McCurdy.\nLicense: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/1.0/\nSource: https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf/RobotExpressive\nLicense attribution verified in the official example:\nhttps://threejs.org/examples/webgl_animation_skinning_morph.html\nDownloaded 2026-10-26. Native idle, walking, running and death clips are retained."
+  },
+  "hk416": {
+    "url": "/models/imported/hk416.glb",
+    "kind": "viewmodel",
+    "source": "hk_416_a7_fps_animation.zip",
+    "bytes": 3605848,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/hk416-license.txt",
+    "attribution": "Model Information:\n* title:\tHK 416 A7 FPS ANIMATION\n* source:\thttps://sketchfab.com/3d-models/hk-416-a7-fps-animation-9c05037d7d114ff28a82d8a83003b2bd\n* author:\tBURNER (https://sketchfab.com/Alexander_Ovelar)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"HK 416 A7 FPS ANIMATION\" (https://sketchfab.com/3d-models/hk-416-a7-fps-animation-9c05037d7d114ff28a82d8a83003b2bd) by BURNER (https://sketchfab.com/Alexander_Ovelar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "butterfly-fps": {
+    "url": "/models/imported/butterfly-fps.glb",
+    "kind": "viewmodel",
+    "source": "fps_butterfly_knife.zip",
+    "bytes": 1695248,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/butterfly-fps-license.txt",
+    "attribution": "Model Information:\n* title:\tFPS butterfly knife\n* source:\thttps://sketchfab.com/3d-models/fps-butterfly-knife-fc1dcc17f9434540a7165255dfa7f66a\n* author:\tBURNER (https://sketchfab.com/Alexander_Ovelar)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"FPS butterfly knife\" (https://sketchfab.com/3d-models/fps-butterfly-knife-fc1dcc17f9434540a7165255dfa7f66a) by BURNER (https://sketchfab.com/Alexander_Ovelar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "aug-animated": {
+    "url": "/models/imported/aug-animated.glb",
+    "kind": "weapon",
+    "source": "steyr_aug_a1_assault_rifle_-_animated.zip",
+    "bytes": 18446052,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/aug-animated-license.txt",
+    "attribution": "Model Information:\n* title:\tSteyr Aug A1 Assault Rifle - Animated\n* source:\thttps://sketchfab.com/3d-models/steyr-aug-a1-assault-rifle-animated-1fe58051b9a24d18881623c60876e550\n* author:\tuser77 (https://sketchfab.com/user77)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Steyr Aug A1 Assault Rifle - Animated\" (https://sketchfab.com/3d-models/steyr-aug-a1-assault-rifle-animated-1fe58051b9a24d18881623c60876e550) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "slr": {
+    "url": "/models/imported/slr.glb",
+    "kind": "weapon",
+    "source": "l1a1_slr_-_animated.zip",
+    "bytes": 3558624,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/slr-license.txt",
+    "attribution": "Model Information:\n* title:\tL1A1 SLR - Animated\n* source:\thttps://sketchfab.com/3d-models/l1a1-slr-animated-a7bf6558c54443e7ab9a75e07eb0a1cd\n* author:\tuser77 (https://sketchfab.com/user77)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"L1A1 SLR - Animated\" (https://sketchfab.com/3d-models/l1a1-slr-animated-a7bf6558c54443e7ab9a75e07eb0a1cd) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "sf-knife-f5236789": {
+    "url": "/models/imported/sf-knife-f5236789.glb",
+    "kind": "weapon",
+    "source": "sketchfab-f5236789a5094b8fa1d800ffdb29dfa6.zip",
+    "bytes": 662732,
+    "clips": [],
+    "license": "/models/imported/sf-knife-f5236789-license.txt",
+    "attribution": "Model Information:\n* title:\t\"Kama\" Dagger\n* source:\thttps://sketchfab.com/3d-models/kama-dagger-f5236789a5094b8fa1d800ffdb29dfa6\n* author:\tArms Museum (https://sketchfab.com/ArmsMuseum)\n\nModel License:\n* license type:\tCC0-1.0 (http://creativecommons.org/publicdomain/zero/1.0/)\n* requirements:\tCredit is not mandatory. Commercial use is allowed.\n\n\n\"Kama\" Dagger\nCreator: Arms Museum\nSource: https://sketchfab.com/3d-models/kama-dagger-f5236789a5094b8fa1d800ffdb29dfa6\nLicense: CC0 Public Domain\nhttp://creativecommons.org/publicdomain/zero/1.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "\"Kama\" Dagger",
+    "modelUid": "f5236789a5094b8fa1d800ffdb29dfa6",
+    "sourceUrl": "https://sketchfab.com/3d-models/kama-dagger-f5236789a5094b8fa1d800ffdb29dfa6"
+  },
+  "sf-knife-b56f1242": {
+    "url": "/models/imported/sf-knife-b56f1242.glb",
+    "kind": "weapon",
+    "source": "sketchfab-b56f12426f9d42b6bbbd35726ddd69a3.zip",
+    "bytes": 339740,
+    "clips": [],
+    "license": "/models/imported/sf-knife-b56f1242-license.txt",
+    "attribution": "Model Information:\n* title:\tUtility Knife\n* source:\thttps://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3\n* author:\tVeerle Zandstra (https://sketchfab.com/veerle_zandstra)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Utility Knife\" (https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3) by Veerle Zandstra (https://sketchfab.com/veerle_zandstra) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nUtility Knife\nCreator: Veerle Zandstra\nSource: https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Utility Knife",
+    "modelUid": "b56f12426f9d42b6bbbd35726ddd69a3",
+    "sourceUrl": "https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3"
+  },
+  "sf-knife-f3140db9": {
+    "url": "/models/imported/sf-knife-f3140db9.glb",
+    "kind": "weapon",
+    "source": "sketchfab-f3140db917cc43389c14b5b2536c1dc8.zip",
+    "bytes": 1357996,
+    "clips": [
+      "anims"
+    ],
+    "license": "/models/imported/sf-knife-f3140db9-license.txt",
+    "attribution": "Model Information:\n* title:\tknife Animated\n* source:\thttps://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8\n* author:\tDJMaesen (https://sketchfab.com/bumstrum)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"knife Animated\" (https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8) by DJMaesen (https://sketchfab.com/bumstrum) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nknife Animated\nCreator: DJMaesen\nSource: https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "knife Animated",
+    "modelUid": "f3140db917cc43389c14b5b2536c1dc8",
+    "sourceUrl": "https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8"
+  },
+  "sf-knife-eb61a59f": {
+    "url": "/models/imported/sf-knife-eb61a59f.glb",
+    "kind": "weapon",
+    "source": "sketchfab-eb61a59f65e449d2a2eabbaef76a4a43.zip",
+    "bytes": 443688,
+    "clips": [],
+    "license": "/models/imported/sf-knife-eb61a59f-license.txt",
+    "attribution": "Model Information:\n* title:\tM9 Bayonet knife\n* source:\thttps://sketchfab.com/3d-models/m9-bayonet-knife-eb61a59f65e449d2a2eabbaef76a4a43\n* author:\tMichael Karel (https://sketchfab.com/michaelkarel)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"M9 Bayonet knife\" (https://sketchfab.com/3d-models/m9-bayonet-knife-eb61a59f65e449d2a2eabbaef76a4a43) by Michael Karel (https://sketchfab.com/michaelkarel) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nM9 Bayonet knife\nCreator: Michael Karel\nSource: https://sketchfab.com/3d-models/m9-bayonet-knife-eb61a59f65e449d2a2eabbaef76a4a43\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "M9 Bayonet knife",
+    "modelUid": "eb61a59f65e449d2a2eabbaef76a4a43",
+    "sourceUrl": "https://sketchfab.com/3d-models/m9-bayonet-knife-eb61a59f65e449d2a2eabbaef76a4a43"
+  },
+  "sf-knife-a3f1fa2a": {
+    "url": "/models/imported/sf-knife-a3f1fa2a.glb",
+    "kind": "weapon",
+    "source": "sketchfab-a3f1fa2a50134e549532914adba2cf0a.zip",
+    "bytes": 3787512,
+    "clips": [
+      "Animation",
+      "Closed",
+      "Stab",
+      "Stab 2",
+      "Explode"
+    ],
+    "license": "/models/imported/sf-knife-a3f1fa2a-license.txt",
+    "attribution": "Model Information:\n* title:\tVictorinox multitool knife\n* source:\thttps://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a\n* author:\tHalil Kantarci (https://sketchfab.com/halilkantarci)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Victorinox multitool knife\" (https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a) by Halil Kantarci (https://sketchfab.com/halilkantarci) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nVictorinox multitool knife\nCreator: Halil Kantarci\nSource: https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Victorinox multitool knife",
+    "modelUid": "a3f1fa2a50134e549532914adba2cf0a",
+    "sourceUrl": "https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a"
+  },
+  "sf-knife-36593001": {
+    "url": "/models/imported/sf-knife-36593001.glb",
+    "kind": "weapon",
+    "source": "sketchfab-36593001f0164a50a2039d9ef1e511ff.zip",
+    "bytes": 525040,
+    "clips": [],
+    "license": "/models/imported/sf-knife-36593001-license.txt",
+    "attribution": "Model Information:\n* title:\tM9 Bayonet (Default)\n* source:\thttps://sketchfab.com/3d-models/m9-bayonet-default-36593001f0164a50a2039d9ef1e511ff\n* author:\tFirewarden (https://sketchfab.com/Firewarden)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"M9 Bayonet (Default)\" (https://sketchfab.com/3d-models/m9-bayonet-default-36593001f0164a50a2039d9ef1e511ff) by Firewarden (https://sketchfab.com/Firewarden) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nM9 Bayonet (Default)\nCreator: Firewarden3D\nSource: https://sketchfab.com/3d-models/m9-bayonet-default-36593001f0164a50a2039d9ef1e511ff\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "M9 Bayonet (Default)",
+    "modelUid": "36593001f0164a50a2039d9ef1e511ff",
+    "sourceUrl": "https://sketchfab.com/3d-models/m9-bayonet-default-36593001f0164a50a2039d9ef1e511ff"
+  },
+  "sf-knife-e2b7ed11": {
+    "url": "/models/imported/sf-knife-e2b7ed11.glb",
+    "kind": "weapon",
+    "source": "sketchfab-e2b7ed11b1b443c69bb6b3d7ce9aeed8.zip",
+    "bytes": 701964,
+    "clips": [],
+    "license": "/models/imported/sf-knife-e2b7ed11-license.txt",
+    "attribution": "Model Information:\n* title:\tButterfly Knife NOX Balisong | НОКС Балисонг\n* source:\thttps://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8\n* author:\tFrobin_G (https://sketchfab.com/frobin)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Butterfly Knife NOX Balisong | НОКС Балисонг\" (https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8) by Frobin_G (https://sketchfab.com/frobin) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nButterfly Knife NOX Balisong | НОКС Балисонг\nCreator: Frobin_G\nSource: https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Butterfly Knife NOX Balisong | НОКС Балисонг",
+    "modelUid": "e2b7ed11b1b443c69bb6b3d7ce9aeed8",
+    "sourceUrl": "https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8"
+  },
+  "sf-knife-5fb33383": {
+    "url": "/models/imported/sf-knife-5fb33383.glb",
+    "kind": "weapon",
+    "source": "sketchfab-5fb333837f1343caa6a0e80a46b68ac1.zip",
+    "bytes": 480560,
+    "clips": [],
+    "license": "/models/imported/sf-knife-5fb33383-license.txt",
+    "attribution": "Model Information:\n* title:\tTactical Knife\n* source:\thttps://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1\n* author:\tlunea (https://sketchfab.com/lunea)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Tactical Knife\" (https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1) by lunea (https://sketchfab.com/lunea) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nTactical Knife\nCreator: lunea\nSource: https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Tactical Knife",
+    "modelUid": "5fb333837f1343caa6a0e80a46b68ac1",
+    "sourceUrl": "https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1"
+  },
+  "sf-knife-ee27b8ed": {
+    "url": "/models/imported/sf-knife-ee27b8ed.glb",
+    "kind": "weapon",
+    "source": "sketchfab-ee27b8edc8e84470ad81eeca8facb762.zip",
+    "bytes": 4236300,
+    "clips": [],
+    "license": "/models/imported/sf-knife-ee27b8ed-license.txt",
+    "attribution": "Model Information:\n* title:\tEmerald Ceremonial dagger\n* source:\thttps://sketchfab.com/3d-models/emerald-ceremonial-dagger-ee27b8edc8e84470ad81eeca8facb762\n* author:\tChao Kurosaki (https://sketchfab.com/chaokurosaki)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Emerald Ceremonial dagger\" (https://sketchfab.com/3d-models/emerald-ceremonial-dagger-ee27b8edc8e84470ad81eeca8facb762) by Chao Kurosaki (https://sketchfab.com/chaokurosaki) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nEmerald Ceremonial dagger\nCreator: Chao Kurosaki\nSource: https://sketchfab.com/3d-models/emerald-ceremonial-dagger-ee27b8edc8e84470ad81eeca8facb762\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Emerald Ceremonial dagger",
+    "modelUid": "ee27b8edc8e84470ad81eeca8facb762",
+    "sourceUrl": "https://sketchfab.com/3d-models/emerald-ceremonial-dagger-ee27b8edc8e84470ad81eeca8facb762"
+  },
+  "sf-knife-489e7231": {
+    "url": "/models/imported/sf-knife-489e7231.glb",
+    "kind": "weapon",
+    "source": "sketchfab-489e7231712a4c008bdc7a6cc4da06cc.zip",
+    "bytes": 368472,
+    "clips": [],
+    "license": "/models/imported/sf-knife-489e7231-license.txt",
+    "attribution": "Model Information:\n* title:\tKukri + Skins\n* source:\thttps://sketchfab.com/3d-models/kukri-skins-489e7231712a4c008bdc7a6cc4da06cc\n* author:\tELIZION (https://sketchfab.com/ELIZION)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Kukri + Skins\" (https://sketchfab.com/3d-models/kukri-skins-489e7231712a4c008bdc7a6cc4da06cc) by ELIZION (https://sketchfab.com/ELIZION) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nKukri + Skins\nCreator: ELIZION\nSource: https://sketchfab.com/3d-models/kukri-skins-489e7231712a4c008bdc7a6cc4da06cc\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Kukri + Skins",
+    "modelUid": "489e7231712a4c008bdc7a6cc4da06cc",
+    "sourceUrl": "https://sketchfab.com/3d-models/kukri-skins-489e7231712a4c008bdc7a6cc4da06cc"
+  },
+  "sf-knife-5c3a1319": {
+    "url": "/models/imported/sf-knife-5c3a1319.glb",
+    "kind": "weapon",
+    "source": "sketchfab-5c3a1319fde54e49af613e22c16ad858.zip",
+    "bytes": 254704,
+    "clips": [],
+    "license": "/models/imported/sf-knife-5c3a1319-license.txt",
+    "attribution": "Model Information:\n* title:\tLow Poly Scifi Knife\n* source:\thttps://sketchfab.com/3d-models/low-poly-scifi-knife-5c3a1319fde54e49af613e22c16ad858\n* author:\tTooManyDemons (https://sketchfab.com/toomanydemons)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Low Poly Scifi Knife\" (https://sketchfab.com/3d-models/low-poly-scifi-knife-5c3a1319fde54e49af613e22c16ad858) by TooManyDemons (https://sketchfab.com/toomanydemons) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nLow Poly Scifi Knife\nCreator: TooManyDemons\nSource: https://sketchfab.com/3d-models/low-poly-scifi-knife-5c3a1319fde54e49af613e22c16ad858\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Low Poly Scifi Knife",
+    "modelUid": "5c3a1319fde54e49af613e22c16ad858",
+    "sourceUrl": "https://sketchfab.com/3d-models/low-poly-scifi-knife-5c3a1319fde54e49af613e22c16ad858"
+  },
+  "sf-knife-dfd7606f": {
+    "url": "/models/imported/sf-knife-dfd7606f.glb",
+    "kind": "weapon",
+    "source": "sketchfab-dfd7606f189a413681305a39b8841ce8.zip",
+    "bytes": 577820,
+    "clips": [],
+    "license": "/models/imported/sf-knife-dfd7606f-license.txt",
+    "attribution": "Model Information:\n* title:\tKarambit\n* source:\thttps://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8\n* author:\tDiamonddogkz (https://sketchfab.com/Diamonddogkz)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Karambit\" (https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8) by Diamonddogkz (https://sketchfab.com/Diamonddogkz) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nKarambit\nCreator: Diamonddogkz\nSource: https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Karambit",
+    "modelUid": "dfd7606f189a413681305a39b8841ce8",
+    "sourceUrl": "https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8"
+  },
+  "sf-knife-4c75aae7": {
+    "url": "/models/imported/sf-knife-4c75aae7.glb",
+    "kind": "weapon",
+    "source": "sketchfab-4c75aae7dfa74b919b61a321242de7f4.zip",
+    "bytes": 7344064,
+    "clips": [],
+    "license": "/models/imported/sf-knife-4c75aae7-license.txt",
+    "attribution": "Model Information:\n* title:\tKitchen Knife\n* source:\thttps://sketchfab.com/3d-models/kitchen-knife-4c75aae7dfa74b919b61a321242de7f4\n* author:\tTheSpacePunk (https://sketchfab.com/TheSpacePunk)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Kitchen Knife\" (https://sketchfab.com/3d-models/kitchen-knife-4c75aae7dfa74b919b61a321242de7f4) by TheSpacePunk (https://sketchfab.com/TheSpacePunk) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nKitchen Knife\nCreator: TheSpacePunk\nSource: https://sketchfab.com/3d-models/kitchen-knife-4c75aae7dfa74b919b61a321242de7f4\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Kitchen Knife",
+    "modelUid": "4c75aae7dfa74b919b61a321242de7f4",
+    "sourceUrl": "https://sketchfab.com/3d-models/kitchen-knife-4c75aae7dfa74b919b61a321242de7f4"
+  },
+  "sf-knife-a8677d9c": {
+    "url": "/models/imported/sf-knife-a8677d9c.glb",
+    "kind": "weapon",
+    "source": "sketchfab-a8677d9c7a5b43fe966ac48d2798dad2.zip",
+    "bytes": 254740,
+    "clips": [],
+    "license": "/models/imported/sf-knife-a8677d9c-license.txt",
+    "attribution": "Model Information:\n* title:\tButcher Knife\n* source:\thttps://sketchfab.com/3d-models/butcher-knife-a8677d9c7a5b43fe966ac48d2798dad2\n* author:\tbeyondmatter (https://sketchfab.com/beyondmatter)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Butcher Knife\" (https://sketchfab.com/3d-models/butcher-knife-a8677d9c7a5b43fe966ac48d2798dad2) by beyondmatter (https://sketchfab.com/beyondmatter) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nButcher Knife\nCreator: beyondmatter\nSource: https://sketchfab.com/3d-models/butcher-knife-a8677d9c7a5b43fe966ac48d2798dad2\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Butcher Knife",
+    "modelUid": "a8677d9c7a5b43fe966ac48d2798dad2",
+    "sourceUrl": "https://sketchfab.com/3d-models/butcher-knife-a8677d9c7a5b43fe966ac48d2798dad2"
+  },
+  "sf-knife-e1b75164": {
+    "url": "/models/imported/sf-knife-e1b75164.glb",
+    "kind": "weapon",
+    "source": "sketchfab-e1b75164b5084df8a32303c491d61f0b.zip",
+    "bytes": 779556,
+    "clips": [],
+    "license": "/models/imported/sf-knife-e1b75164-license.txt",
+    "attribution": "Thief's Dagger\nCreator: Steven Janes\nSource: https://sketchfab.com/3d-models/thiefs-dagger-e1b75164b5084df8a32303c491d61f0b\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Thief's Dagger",
+    "modelUid": "e1b75164b5084df8a32303c491d61f0b",
+    "sourceUrl": "https://sketchfab.com/3d-models/thiefs-dagger-e1b75164b5084df8a32303c491d61f0b"
+  },
+  "sf-knife-dbad940f": {
+    "url": "/models/imported/sf-knife-dbad940f.glb",
+    "kind": "weapon",
+    "source": "sketchfab-dbad940f2f284db18065cee66d3bcb12.zip",
+    "bytes": 698172,
+    "clips": [],
+    "license": "/models/imported/sf-knife-dbad940f-license.txt",
+    "attribution": "Tactical knife\nCreator: TristanGybels\nSource: https://sketchfab.com/3d-models/tactical-knife-dbad940f2f284db18065cee66d3bcb12\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Tactical knife",
+    "modelUid": "dbad940f2f284db18065cee66d3bcb12",
+    "sourceUrl": "https://sketchfab.com/3d-models/tactical-knife-dbad940f2f284db18065cee66d3bcb12"
+  },
+  "sf-knife-60c865c4": {
+    "url": "/models/imported/sf-knife-60c865c4.glb",
+    "kind": "weapon",
+    "source": "sketchfab-60c865c439b44e859ff02c8dc702fbe4.zip",
+    "bytes": 456004,
+    "clips": [],
+    "license": "/models/imported/sf-knife-60c865c4-license.txt",
+    "attribution": "Spider and Eagle Knife Textured\nCreator: Celena Ransil\nSource: https://sketchfab.com/3d-models/spider-and-eagle-knife-textured-60c865c439b44e859ff02c8dc702fbe4\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Spider and Eagle Knife Textured",
+    "modelUid": "60c865c439b44e859ff02c8dc702fbe4",
+    "sourceUrl": "https://sketchfab.com/3d-models/spider-and-eagle-knife-textured-60c865c439b44e859ff02c8dc702fbe4"
+  },
+  "sf-knife-db51ee0d": {
+    "url": "/models/imported/sf-knife-db51ee0d.glb",
+    "kind": "weapon",
+    "source": "sketchfab-db51ee0d20cb4c59b9d19e81ca6e28c9.zip",
+    "bytes": 1188012,
+    "clips": [],
+    "license": "/models/imported/sf-knife-db51ee0d-license.txt",
+    "attribution": "Energy Knife\nCreator: Frostoise\nSource: https://sketchfab.com/3d-models/energy-knife-db51ee0d20cb4c59b9d19e81ca6e28c9\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Energy Knife",
+    "modelUid": "db51ee0d20cb4c59b9d19e81ca6e28c9",
+    "sourceUrl": "https://sketchfab.com/3d-models/energy-knife-db51ee0d20cb4c59b9d19e81ca6e28c9"
+  },
+  "sf-knife-42496f36": {
+    "url": "/models/imported/sf-knife-42496f36.glb",
+    "kind": "weapon",
+    "source": "sketchfab-42496f36f25841ecae7814713cfd4db6.zip",
+    "bytes": 400180,
+    "clips": [],
+    "license": "/models/imported/sf-knife-42496f36-license.txt",
+    "attribution": "Model Information:\n* title:\tOld Survival Knife\n* source:\thttps://sketchfab.com/3d-models/old-survival-knife-42496f36f25841ecae7814713cfd4db6\n* author:\tVishal_R (https://sketchfab.com/Vishal_R)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Old Survival Knife\" (https://sketchfab.com/3d-models/old-survival-knife-42496f36f25841ecae7814713cfd4db6) by Vishal_R (https://sketchfab.com/Vishal_R) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n\nOld Survival Knife\nCreator: Vishal_R\nSource: https://sketchfab.com/3d-models/old-survival-knife-42496f36f25841ecae7814713cfd4db6\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Old Survival Knife",
+    "modelUid": "42496f36f25841ecae7814713cfd4db6",
+    "sourceUrl": "https://sketchfab.com/3d-models/old-survival-knife-42496f36f25841ecae7814713cfd4db6"
+  },
+  "sf-weapon-0d7a343d": {
+    "url": "/models/imported/sf-weapon-0d7a343d.glb",
+    "kind": "viewmodel",
+    "source": "sketchfab-0d7a343dcb6f401197a73c91aee93f6d.zip",
+    "bytes": 3448088,
+    "clips": [
+      "Armature|FPS_Pistol_Idle",
+      "Armature|FPS_Pistol_Walk",
+      "Armature|FPS_Pistol_Fire",
+      "Armature|FPS_Pistol_Reload_easy",
+      "Armature|FPS_Pistol_Reload_full"
+    ],
+    "license": "/models/imported/sf-weapon-0d7a343d-license.txt",
+    "attribution": "FPS pistol animations\nCreator: Cransh\nSource: https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "weapons",
+    "displayName": "FPS pistol animations",
+    "modelUid": "0d7a343dcb6f401197a73c91aee93f6d",
+    "sourceUrl": "https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d"
+  },
+  "sf-weapon-c15ae839": {
+    "url": "/models/imported/sf-weapon-c15ae839.glb",
+    "kind": "viewmodel",
+    "source": "sketchfab-c15ae8393d824f5b929e3f69691cdd31.zip",
+    "bytes": 3657612,
+    "clips": [
+      "Rig|SRifle_Shot_nosight",
+      "Rig|SRifle_Shot_sight",
+      "Rig|SRifle_Walk",
+      "Rig|SRifle_Idle",
+      "Rig|SRifle_Reload",
+      "Rig|SRifle_Reload_Full"
+    ],
+    "license": "/models/imported/sf-weapon-c15ae839-license.txt",
+    "attribution": "FPS animations sniper rifle\nCreator: Cransh\nSource: https://sketchfab.com/3d-models/fps-animations-sniper-rifle-c15ae8393d824f5b929e3f69691cdd31\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "weapons",
+    "displayName": "FPS animations sniper rifle",
+    "modelUid": "c15ae8393d824f5b929e3f69691cdd31",
+    "sourceUrl": "https://sketchfab.com/3d-models/fps-animations-sniper-rifle-c15ae8393d824f5b929e3f69691cdd31"
+  },
+  "sf-weapon-ca37ea91": {
+    "url": "/models/imported/sf-weapon-ca37ea91.glb",
+    "kind": "viewmodel",
+    "source": "sketchfab-ca37ea9148dc4fcc9cc632175d311b23.zip",
+    "bytes": 4477364,
+    "clips": [
+      "Rig|KDW_DPose_Idle",
+      "Rig|KDW_Draw",
+      "Rig|KDW_Ispect",
+      "Rig|KDW_Reload_fast",
+      "Rig|KDW_Reload_full",
+      "Rig|KDW_Run",
+      "Rig|KDW_Shot",
+      "Rig|KDW_Walk"
+    ],
+    "license": "/models/imported/sf-weapon-ca37ea91-license.txt",
+    "attribution": "SMG FPS Animations\nCreator: Cransh\nSource: https://sketchfab.com/3d-models/smg-fps-animations-ca37ea9148dc4fcc9cc632175d311b23\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "weapons",
+    "displayName": "SMG FPS Animations",
+    "modelUid": "ca37ea9148dc4fcc9cc632175d311b23",
+    "sourceUrl": "https://sketchfab.com/3d-models/smg-fps-animations-ca37ea9148dc4fcc9cc632175d311b23"
+  },
+  "sf-weapon-1a4c9d15": {
+    "url": "/models/imported/sf-weapon-1a4c9d15.glb",
+    "kind": "viewmodel",
+    "source": "sketchfab-1a4c9d15818a4522aedbeb70919a17da.zip",
+    "bytes": 1535644,
+    "clips": [
+      "Hands|Inspect",
+      "Hands|Reloat_t",
+      "Hands|Shot",
+      "Hands|Reloat_f",
+      "Hands|Run",
+      "Hands|Walk"
+    ],
+    "license": "/models/imported/sf-weapon-1a4c9d15-license.txt",
+    "attribution": "Pistol 43 Tactical | FPS Animations\nCreator: Vlasov Daniil\nSource: https://sketchfab.com/3d-models/pistol-43-tactical-fps-animations-1a4c9d15818a4522aedbeb70919a17da\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "weapons",
+    "displayName": "Pistol 43 Tactical | FPS Animations",
+    "modelUid": "1a4c9d15818a4522aedbeb70919a17da",
+    "sourceUrl": "https://sketchfab.com/3d-models/pistol-43-tactical-fps-animations-1a4c9d15818a4522aedbeb70919a17da"
+  },
+  "sf-knife-fea3f464": {
+    "url": "/models/imported/sf-knife-fea3f464.glb",
+    "kind": "weapon",
+    "source": "sketchfab-fea3f464a6264f4ca9f653044a1ee99b.zip",
+    "bytes": 3064256,
+    "clips": [
+      "ArmatureAction"
+    ],
+    "license": "/models/imported/sf-knife-fea3f464-license.txt",
+    "attribution": "SCI-FI Millitary Knife\nCreator: mochamadyuda\nSource: https://sketchfab.com/3d-models/sci-fi-millitary-knife-fea3f464a6264f4ca9f653044a1ee99b\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "SCI-FI Millitary Knife",
+    "modelUid": "fea3f464a6264f4ca9f653044a1ee99b",
+    "sourceUrl": "https://sketchfab.com/3d-models/sci-fi-millitary-knife-fea3f464a6264f4ca9f653044a1ee99b"
+  },
+  "sf-map-d41a19f6": {
+    "url": "/models/imported/sf-map-d41a19f6.glb",
+    "kind": "map",
+    "source": "sketchfab-d41a19f699ea421a9aa32b407cb7537b.zip",
+    "bytes": 484324,
+    "clips": [],
+    "license": "/models/imported/sf-map-d41a19f6-license.txt",
+    "attribution": "LOWPOLY | FPS | TDM | GAME | MAP by ResoForge\nCreator: ResoForge (old profile)\nSource: https://sketchfab.com/3d-models/lowpoly-fps-tdm-game-map-by-resoforge-d41a19f699ea421a9aa32b407cb7537b\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "maps",
+    "displayName": "LOWPOLY | FPS | TDM | GAME | MAP by ResoForge",
+    "modelUid": "d41a19f699ea421a9aa32b407cb7537b",
+    "sourceUrl": "https://sketchfab.com/3d-models/lowpoly-fps-tdm-game-map-by-resoforge-d41a19f699ea421a9aa32b407cb7537b"
+  },
+  "sf-map-263bf792": {
+    "url": "/models/imported/sf-map-263bf792.glb",
+    "kind": "map",
+    "source": "sketchfab-263bf792108b49aaab9973a1196600b7.zip",
+    "bytes": 1267672,
+    "clips": [],
+    "license": "/models/imported/sf-map-263bf792-license.txt",
+    "attribution": "LOWPOLY | LOCATION | MAP | TDM\nCreator: ResoForge\nSource: https://sketchfab.com/3d-models/lowpoly-location-map-tdm-263bf792108b49aaab9973a1196600b7\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "maps",
+    "displayName": "LOWPOLY | LOCATION | MAP | TDM",
+    "modelUid": "263bf792108b49aaab9973a1196600b7",
+    "sourceUrl": "https://sketchfab.com/3d-models/lowpoly-location-map-tdm-263bf792108b49aaab9973a1196600b7"
+  },
+  "sf-knife-9614510a": {
+    "url": "/models/imported/sf-knife-9614510a.glb",
+    "kind": "weapon",
+    "source": "sketchfab-9614510a2fdf4a89946e720616004985.zip",
+    "bytes": 594772,
+    "clips": [
+      "Knife RIG|Opening"
+    ],
+    "license": "/models/imported/sf-knife-9614510a-license.txt",
+    "attribution": "[GameReady] Knife [Rigged]\nCreator: BAMEN\nSource: https://sketchfab.com/3d-models/gameready-knife-rigged-9614510a2fdf4a89946e720616004985\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "[GameReady] Knife [Rigged]",
+    "modelUid": "9614510a2fdf4a89946e720616004985",
+    "sourceUrl": "https://sketchfab.com/3d-models/gameready-knife-rigged-9614510a2fdf4a89946e720616004985"
+  },
+  "sf-knife-e5db6b73": {
+    "url": "/models/imported/sf-knife-e5db6b73.glb",
+    "kind": "weapon",
+    "source": "sketchfab-e5db6b73878f4123baa48cea6d9af84c.zip",
+    "bytes": 1154032,
+    "clips": [
+      "allanims"
+    ],
+    "license": "/models/imported/sf-knife-e5db6b73-license.txt",
+    "attribution": "knife animated\nCreator: DJMaesen\nSource: https://sketchfab.com/3d-models/knife-animated-e5db6b73878f4123baa48cea6d9af84c\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "knife animated",
+    "modelUid": "e5db6b73878f4123baa48cea6d9af84c",
+    "sourceUrl": "https://sketchfab.com/3d-models/knife-animated-e5db6b73878f4123baa48cea6d9af84c"
+  },
+  "sf-knife-cd4d902e": {
+    "url": "/models/imported/sf-knife-cd4d902e.glb",
+    "kind": "weapon",
+    "source": "sketchfab-cd4d902eec314a419adde15d9e985877.zip",
+    "bytes": 267612,
+    "clips": [
+      "BoxCutter_action"
+    ],
+    "license": "/models/imported/sf-knife-cd4d902e-license.txt",
+    "attribution": "Box cutter/Utility knife Gameready\nCreator: wolkoed\nSource: https://sketchfab.com/3d-models/box-cutterutility-knife-gameready-cd4d902eec314a419adde15d9e985877\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Box cutter/Utility knife Gameready",
+    "modelUid": "cd4d902eec314a419adde15d9e985877",
+    "sourceUrl": "https://sketchfab.com/3d-models/box-cutterutility-knife-gameready-cd4d902eec314a419adde15d9e985877"
+  },
+  "sf-knife-0c89d84c": {
+    "url": "/models/imported/sf-knife-0c89d84c.glb",
+    "kind": "weapon",
+    "source": "sketchfab-0c89d84c815942619d1a957f9fe996ae.zip",
+    "bytes": 910580,
+    "clips": [
+      "Foldin"
+    ],
+    "license": "/models/imported/sf-knife-0c89d84c-license.txt",
+    "attribution": "Pocket Knife\nCreator: re1monsen\nSource: https://sketchfab.com/3d-models/pocket-knife-0c89d84c815942619d1a957f9fe996ae\nLicense: Creative Commons Attribution\nhttp://creativecommons.org/licenses/by/4.0/\nDownloaded using the official authenticated Sketchfab API.\nRuntime version may be optimized, normalized and assigned gameplay animations.\n",
+    "category": "knives",
+    "displayName": "Pocket Knife",
+    "modelUid": "0c89d84c815942619d1a957f9fe996ae",
+    "sourceUrl": "https://sketchfab.com/3d-models/pocket-knife-0c89d84c815942619d1a957f9fe996ae"
   }
 }

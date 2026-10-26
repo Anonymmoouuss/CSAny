@@ -1,0 +1,7 @@
+Spider and Eagle Knife Textured
+Creator: Celena Ransil
+Source: https://sketchfab.com/3d-models/spider-and-eagle-knife-textured-60c865c439b44e859ff02c8dc702fbe4
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

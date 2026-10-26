@@ -14,6 +14,7 @@ import { MeshBVH } from 'three-mesh-bvh';
 import { botInput, createBrain, navigate, planBotRoute, visible } from '../shared/bots.ts';
 import { emptyBomb, type RoundState } from '../shared/round.ts';
 import { animateWeapon } from '../client/weapons.ts';
+import { IMPORTED_KNIFE_MODELS } from '../shared/economy.ts';
 import { createMuzzleFlash, supplyCaseModel } from '../client/world.ts';
 
 test('3D supply cases have finite body, lid, handle and latch geometry', () => {
@@ -36,7 +37,7 @@ test('inventory previews do not preload unused first-person rigs or hands', () =
   const library = new ModelAssets(); const loaded: string[] = []; library.load = async id => { loaded.push(id); return true; };
   assert.equal(library.weapon('autoShotgun', 'preview'), null); assert.deepEqual(loaded, ['field-shotgun']);
   loaded.length = 0; assert.equal(library.weapon('servicePistol', 'world'), null); assert.deepEqual(loaded, ['cz75']);
-  loaded.length = 0; assert.equal(library.weapon('servicePistol', 'view'), null); assert.ok(loaded.includes('pistol-fps')); assert.ok(loaded.includes('deagle-view'));
+  loaded.length = 0; assert.equal(library.weapon('servicePistol', 'view'), null); assert.ok(loaded.includes('sf-weapon-0d7a343d')); assert.ok(loaded.includes('deagle-view'));
 });
 
 test('animation selection prefers exact gameplay actions over unrelated weapon banks', () => {
@@ -77,13 +78,13 @@ test('through-wall team outlines are subtle, ally-only and removable on team cha
   assert.equal(pass.edgeGlow, 0); assert.equal(pass.usePatternTexture, false); assert.equal(pass.edgeThickness, 1); pass.dispose();
 });
 
-test('ally outlines require an opaque blocking wall and the DMR uses its native forward axis', () => {
+test('ally outlines require an opaque blocking wall and snipers use calibrated forward axes', () => {
   const viewer = createPlayer('viewer', 'Viewer', 'CT', 'elimination', 0); const ally = createPlayer('ally', 'Ally', 'CT', 'elimination', 1);
   Object.assign(viewer, { x: 0, y: 0, z: 0 }); Object.assign(ally, { x: 3, y: 0, z: 0 });
   assert.equal(allyBehindCover(viewer, ally, 'dustline'), false);
   Object.assign(ally, { x: -20, z: 0 }); assert.equal(allyBehindCover(viewer, ally, 'dustline'), true);
   ally.team = 'T'; assert.equal(allyBehindCover(viewer, ally, 'dustline'), false);
-  assert.equal(WEAPON_YAW.g3sg1, 0);
+  assert.equal(WEAPON_YAW.g3sg1, Math.PI); assert.equal(WEAPON_YAW['precision-sniper'], Math.PI); assert.equal(WEAPON_YAW['sf-weapon-c15ae839'], 0);
 });
 
 test('weapon normalization handles incompatible native scales and excludes hidden backdrops', () => {
@@ -187,6 +188,39 @@ test('supplied GLBs retain textures, useful clips and independently animated SAS
   delete (globalThis as { self?: unknown }).self;
 });
 
+test('all downloaded knife models build finite first-person and arm-free preview geometry', async () => {
+  Object.defineProperty(globalThis, 'self', { configurable: true, value: globalThis });
+  Object.defineProperty(globalThis, 'createImageBitmap', { configurable: true, value: async () => ({ width: 1, height: 1, close() {} }) });
+  try {
+    assert.ok(IMPORTED_KNIFE_MODELS.length >= 20);
+    for (const entry of IMPORTED_KNIFE_MODELS) {
+      const bytes = await readFile(new URL(`../client/public/models/imported/${entry.id}.glb`, import.meta.url));
+      const gltf = await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
+      let triangles = 0; gltf.scene.traverse(object => { if (object instanceof THREE.Mesh) triangles += (object.geometry.index?.count || object.geometry.getAttribute('position').count) / 3; }); assert.ok(triangles < 100000, `${entry.id}: browser geometry budget`);
+      const library = { models: new Map([[entry.id, gltf]]) } as unknown as ModelAssets;
+      for (const context of ['view', 'preview'] as const) {
+        const model = ModelAssets.prototype.instantiate.call(library, entry.id, 'weapon', 0.34, context)!;
+        const size = modelBounds(model, true).getSize(new THREE.Vector3()); assert.ok([...size].every(Number.isFinite), entry.id); assert.ok(Math.max(...size) > 0.2 && Math.max(...size) < 0.5, `${entry.id}: knife-sized geometry`);
+        if (context === 'preview') model.traverse(object => { if (object.userData.hands) assert.equal(object.visible, false, entry.id); });
+        let meshes = 0; model.traverse(object => { if (object instanceof THREE.Mesh && object.visible && !object.userData.hands) meshes++; }); assert.ok(meshes > 0, entry.id);
+        (model.userData.animation as ModelAnimation).dispose();
+      }
+    }
+  } finally { delete (globalThis as { createImageBitmap?: unknown }).createImageBitmap; delete (globalThis as { self?: unknown }).self; }
+});
+
+test('downloaded FPS rigs retain named reload, shot and inspection actions', async () => {
+  Object.defineProperty(globalThis, 'self', { configurable: true, value: globalThis });
+  Object.defineProperty(globalThis, 'createImageBitmap', { configurable: true, value: async () => ({ width: 1, height: 1, close() {} }) });
+  try {
+    for (const id of ['sf-weapon-0d7a343d', 'sf-weapon-c15ae839', 'sf-weapon-ca37ea91', 'sf-weapon-1a4c9d15']) {
+      const bytes = await readFile(new URL(`../client/public/models/imported/${id}.glb`, import.meta.url)); const gltf = await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
+      assert.ok(chooseClip(gltf.animations, 'reload'), `${id}: reload`); assert.ok(chooseClip(gltf.animations, 'fire'), `${id}: fire`);
+      if (id === 'sf-weapon-ca37ea91' || id === 'sf-weapon-1a4c9d15') assert.ok(chooseClip(gltf.animations, 'inspect'), `${id}: inspect`);
+    }
+  } finally { delete (globalThis as { createImageBitmap?: unknown }).createImageBitmap; delete (globalThis as { self?: unknown }).self; }
+});
+
 test('downloaded CC0 robot retains native locomotion and a correctly sized animated skeleton', async () => {
   const bytes = await readFile(new URL('../client/public/models/imported/robot.glb', import.meta.url));
   const gltf = await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
@@ -215,9 +249,11 @@ test('additional supplied firearms have distinct assets, finite bounds and usabl
         else assert.ok(size.z > 0.3 && size.x < 1 && size.y < 1, 'knife blade remains finite and weapon-sized');
         weapon.traverse(object => { if (object.userData.hands) assert.equal(object.visible, false, `${id}: world model has no attached arms`); });
         const view = ModelAssets.prototype.instantiate.call(library, id, 'weapon', 0.92, 'view')!;
+        if (id === 'precision-sniper') { assert.equal(view.userData.hasHands, false, 'reversed source arms use the stable rifle grip'); view.traverse(object => { if (object.userData.hands) assert.equal(object.visible, false); }); }
         if (id === 'benelli' || id === 'pistol-fps') { assert.equal(view.userData.hasHands, true, `${id}: retains authored hands`); assert.ok(!gltf.parser.json.extensionsUsed?.includes('KHR_materials_pbrSpecularGlossiness'), `${id}: supported textured materials`); for (const action of ['idle', 'fire', 'reload'] as const) assert.ok(chooseClip(gltf.animations, action), `${id}: ${action} clip`); }
         view.traverse(object => { if (object instanceof THREE.Mesh && object.userData.hands && object.visible) { const bounds = modelBounds(object); const size = bounds.getSize(new THREE.Vector3()); assert.ok(Math.max(size.x, size.y, size.z) < 3, `${id}: visible hands stay human-sized`); } });
-        if (['m16a2', 'remington870', 'precision-sniper'].includes(id)) assert.equal(weapon.userData.motion.rotation.y, 0, `${id}: native forward orientation`);
+        if (['m16a2', 'remington870'].includes(id)) assert.equal(weapon.userData.motion.rotation.y, 0, `${id}: native forward orientation`);
+        if (id === 'precision-sniper') assert.equal(weapon.userData.motion.rotation.y, Math.PI, `${id}: corrected barrel-forward orientation`);
       }
       const animation = new ModelAnimation(gltf.scene, gltf.animations); animation.sample('idle', 0);
       const model = normalizeModel(gltf.scene, id === 'sas-red' ? 'character' : 'weapon', id === 'sas-red' ? 1.78 : 0.92);
@@ -377,6 +413,9 @@ test('every supplied level has exact floor collision, height-correct spawns and 
     for (const waypoint of route) { assert.ok(walkLink(geometry.bvh, previous, waypoint), `${map.id} physically traversable route`); previous = waypoint; }
     const sites = getSites(map.id);
     assert.ok(Math.hypot(sites[0].x - sites[1].x, sites[0].z - sites[1].z) >= 36, `${map.id} bomb sites are distinct areas`);
+    if (SUPPLIED_MAP_IDS.includes(map.id)) for (const site of sites) for (const start of [...spawnPoints('CT', map.id), ...spawnPoints('T', map.id)]) {
+      assert.ok(Math.hypot(site.x - start.x, site.z - start.z) >= 24, `${map.id} site ${site.name} is too close to a spawn`);
+    }
     for (const site of getSites(map.id)) assert.ok(navigate(map.id, from, site).length > 0, `${map.id} reachable site ${site.name}`);
   }
 });

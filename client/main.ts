@@ -118,7 +118,7 @@ function syncLoadout() {
   network.send({ type: 'cosmetics', cosmetics: armory.cosmetics() });
 }
 armory.onEquip = syncLoadout; armory.onSound = reveal => reveal ? audio.round(true) : audio.click();
-world.onAssetsChanged = () => { if (armory.isOpen) armory.render(); if (buyOpen) renderBuyMenu(); };
+world.onAssetsChanged = () => { if (armory.isOpen) armory.refreshPreviews(); if (buyOpen) renderBuyMenu(); };
 syncLoadout(); refreshIcons();
 
 function updateMapLabels() {

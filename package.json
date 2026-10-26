@@ -12,6 +12,7 @@
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "playwright test tests/browser.spec.ts --workers=1",
     "models:import": "node scripts/import-models.mjs",
+    "models:download": "node scripts/download-models.mjs",
     "models:collision": "tsx scripts/build-map-collision.ts",
     "preview": "vite preview --host 0.0.0.0"
   },

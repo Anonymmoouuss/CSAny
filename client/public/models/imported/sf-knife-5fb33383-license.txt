@@ -1,0 +1,19 @@
+Model Information:
+* title:	Tactical Knife
+* source:	https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1
+* author:	lunea (https://sketchfab.com/lunea)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tactical Knife" (https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1) by lunea (https://sketchfab.com/lunea) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Tactical Knife
+Creator: lunea
+Source: https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

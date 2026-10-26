@@ -53,6 +53,43 @@ async function finishReel(page: Page) {
   await expect(page.locator('#reel-inspect')).toBeVisible();
 }
 
+for (const width of [1000, 390]) test(`downloaded knife models load, inspect and equip at ${width}`, async ({ page }, info) => {
+  await page.setViewportSize({ width, height: 800 }); const errors = await boot(page); await page.locator('#locker-open').click(); await page.locator('[data-tab="knives"]').click();
+  const seen = new Set<string>(); const count = Number((await page.locator('.section-heading > span').innerText()).split(' ')[0]); expect(count).toBeGreaterThanOrEqual(20);
+  for (let index = 0; index < Math.ceil(count / 9); index++) {
+    const ids = await page.locator('[data-inspect$="-original"]').evaluateAll(buttons => buttons.map(button => (button as HTMLElement).dataset.inspect!.replace(/-original$/, ''))); ids.forEach(id => seen.add(id));
+    for (const id of ids) { const image = page.locator(`[data-inspect="${id}-original"] img`); await image.scrollIntoViewIfNeeded(); await page.waitForFunction(id => document.getElementById('game-canvas')?.dataset.loadedAssets?.split(' ').includes(id), id); await expect.poll(() => image.evaluate(image => (image as HTMLImageElement).naturalWidth)).toBe(256); }
+    await page.locator('.section-heading').scrollIntoViewIfNeeded();
+    await capture(page, info.outputPath(`knife-models-${index + 1}.png`));
+    await page.locator('[data-inspect$="-original"]').first().click(); await expect(page.locator('#game-canvas')).toHaveAttribute('data-weapon-asset', ids[0]);
+    const image = await canvasSample(page); expect(image.colors).toBeGreaterThan(20); expect(image.lit).toBeGreaterThan(100);
+    await capture(page, info.outputPath(`knife-inspect-${index + 1}.png`));
+    if (!index) { await page.locator('[data-buy-inspected]').click(); await expect(page.locator('[data-equip-inspected]')).toContainText('EQUIPPED'); }
+    await page.locator('#inspect-close').click(); if (index + 1 < Math.ceil(count / 9)) await page.locator('#page-next').click();
+  }
+  expect(seen.size).toBe(count); await noHorizontalOverflow(page); expect(errors).toEqual([]);
+});
+
+test('downloaded Cargo District map renders and deploys with distant bomb sites', async ({ page }, info) => {
+  await page.setViewportSize({ width: 900, height: 650 }); const errors = await boot(page);
+  await page.locator('#practice-button').click(); await page.locator('#map-select').selectOption('sf-map-d41a19f6');
+  await page.waitForFunction(() => document.getElementById('game-canvas')?.dataset.map === 'sf-map-d41a19f6' && document.getElementById('game-canvas')?.dataset.mapReady === 'true');
+  const preview = await canvasSample(page); expect(preview.colors).toBeGreaterThan(30); expect(preview.lit).toBeGreaterThan(500); await capture(page, info.outputPath('cargo-district.png'));
+  await page.locator('#solo-mode').selectOption('defusal'); await page.locator('#deploy-button').click(); await expect(page.locator('#buy-menu')).toBeVisible(); await page.keyboard.press('Escape');
+  await expect(page.locator('#game-canvas')).toHaveAttribute('data-view-mode', 'match'); await expect(page.locator('#mini-count')).toHaveText('10 / 10');
+  const match = await canvasSample(page); expect(match.colors).toBeGreaterThan(30); await capture(page, info.outputPath('cargo-defusal.png')); await noHorizontalOverflow(page); expect(errors).toEqual([]);
+});
+
+test('downloaded animated guns render in the recoil range', async ({ page }, info) => {
+  await page.setViewportSize({ width: 800, height: 600 }); const errors = await boot(page);
+  await page.locator('#training-button').click(); await page.locator('#training-kind').selectOption('range'); await page.locator('#training-weapon').selectOption('sniper'); await page.locator('#deploy-button').click(); await expect(page.locator('#training-panel')).toBeVisible();
+  for (const [weapon, asset] of [['sniper', 'sf-weapon-c15ae839'], ['smg', 'sf-weapon-ca37ea91'], ['pistol', 'sf-weapon-1a4c9d15'], ['carbine', 'hk416'], ['heavySniper', 'precision-sniper'], ['scout', 'cs5'], ['marksman', 'g3sg1']]) {
+    await page.keyboard.press('Escape'); await page.locator('#range-weapon').selectOption(weapon); await expect(page.locator('#game-canvas')).toHaveAttribute('data-weapon-asset', asset);
+    await page.keyboard.press('Escape'); const frame = await canvasSample(page); expect(frame.colors).toBeGreaterThan(20); await capture(page, info.outputPath(`view-${weapon}.png`));
+  }
+  expect(errors).toEqual([]);
+});
+
 test('deployment separates online, solo game modes and aim training', async ({ page }) => {
   await page.goto(url);
   await expect(page.locator('#online-options')).toBeVisible();
@@ -275,8 +312,8 @@ for (const width of [900, 390]) test(`3D cases, gold vaults and charm weapon pre
 test('supplied maps render and solo supports five-player teams, purchases and locked scoping', async ({ page }, info) => {
   const errors = await boot(page);
   await page.locator('#practice-button').click();
-  expect(await page.locator('#map-select option').count()).toBe(6);
-  for (const map of ['arena', 'breeze', 'dune', 'rust', 'zona7', 'resoforge']) {
+  expect(await page.locator('#map-select option').count()).toBe(7);
+  for (const map of ['arena', 'breeze', 'dune', 'rust', 'zona7', 'resoforge', 'sf-map-d41a19f6']) {
     await page.locator('#map-select').selectOption(map);
     await page.waitForFunction(id => { const canvas = document.getElementById('game-canvas'); return canvas?.dataset.map === id && canvas.dataset.mapReady === 'true'; }, map);
     const sample = await canvasSample(page); expect(sample.colors, map).toBeGreaterThan(30);

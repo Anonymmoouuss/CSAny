@@ -1,5 +1,5 @@
 import { DoubleSide, Ray, Vector3 } from 'three';
-import { damageAtRange, eyeHeight, getColliders, hitMelee, hitPlayer, MAPS, opposingPlayers, shotDirection, wallHit, WEAPONS, type GameEvent, type Input, type MapId, type Mode, type Player, type Snapshot, type WeaponId } from './game.ts';
+import { damageAtRange, eyeHeight, getColliders, hitMelee, hitPlayer, MAPS, opposingPlayers, shotDirection, takeDamage, wallHit, WEAPONS, type GameEvent, type Input, type MapId, type Mode, type Player, type Snapshot, type WeaponId } from './game.ts';
 import { mapGeometry, type SurfaceMaterial } from './map-geometry.ts';
 import { cutSmoke } from './equipment.ts';
 
@@ -74,8 +74,7 @@ export function fireHitscan(shooter: Player, targets: Player[], input: Input, no
   const events: GameEvent[] = [{ type: shooter.weapon === 'knife' ? 'melee' : 'shot', id: shooter.id, weapon: shooter.weapon, origin, point: points[0], points: definition.pellets > 1 ? points : undefined }];
   const killed: Player[] = [];
   if (options.damageEnabled !== false) for (const [victim, hit] of hits) {
-    const absorbed = Math.min(victim.armor, hit.damage * 0.25); const damage = Math.max(1, Math.round(hit.damage - absorbed));
-    victim.armor = Math.max(0, victim.armor - absorbed); victim.hp = Math.max(0, victim.hp - damage);
+    const damage = takeDamage(victim, hit.damage);
     events.push({ type: 'hit', id: shooter.id, target: victim.id, head: hit.head, damage, origin });
     if (victim.hp === 0) {
       shooter.kills++; victim.deaths++; shooter.money = Math.min(16000, shooter.money + definition.killReward); killed.push(victim);

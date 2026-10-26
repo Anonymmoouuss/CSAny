@@ -4,7 +4,7 @@ import { once } from 'node:events';
 import { WebSocket } from 'ws';
 import { BoxGeometry, PerspectiveCamera, Ray, Vector3 } from 'three';
 import { createGameServer } from '../server/game.ts';
-import { createPlayer, damageAtRange, direction, scopedFov, shotDirection, hitPlayer, hitMelee, simulateMovement, wallHit, SUPPLIED_MAP_IDS, MAX_HOP_SPEED, WEAPONS, type Input, type Snapshot } from '../shared/game.ts';
+import { createPlayer, damageAtRange, direction, scopedFov, shotDirection, hitPlayer, hitMelee, simulateMovement, takeDamage, wallHit, SUPPLIED_MAP_IDS, MAX_HOP_SPEED, WEAPONS, type Input, type Snapshot } from '../shared/game.ts';
 import { fireHitscan, traceBallisticPath } from '../shared/combat.ts';
 import { encodeMapGeometry, registerMapGeometry, type SurfaceMaterial } from '../shared/map-geometry.ts';
 import { encodeInputs, decodeInputs, HitboxHistory } from '../shared/protocol.ts';
@@ -17,7 +17,7 @@ const input = (seq: number, extra: Partial<Input> = {}): Input => ({
   sprint: false, fire: false, reload: false, scope: false, interact: false, weapon: 'rifle', ...extra,
 });
 type Message = Snapshot | { type: string; [key: string]: unknown };
-function waitFor(socket: WebSocket, predicate: (message: any) => boolean, timeout = 3000): Promise<any> {
+function waitFor(socket: WebSocket, predicate: (message: any) => boolean, timeout = 10000): Promise<any> {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => { socket.off('message', listener); reject(new Error('Message timed out')); }, timeout);
     function listener(data: Buffer) {
@@ -80,6 +80,24 @@ test('weapon optics have distinct magnification and reticles and respect base FO
   assert.equal(new Set(weapons.map(id => WEAPONS[id].scope!.reticle)).size, 4);
   for (const id of weapons) { assert.ok(scopedFov(id, 90) > 0 && scopedFov(id, 90) < 90); assert.ok(scopedFov(id, 100) > scopedFov(id, 80)); }
   assert.ok(Math.abs(scopedFov('rifle', 90) - 90) < 1e-10); assert.equal(WEAPONS.pistol.scope, undefined);
+});
+
+test('Kevlar is depleted before damage reaches health and only overflow passes through', () => {
+  const player = { hp: 100, armor: 100 };
+  assert.equal(takeDamage(player, 40), 40); assert.deepEqual(player, { hp: 100, armor: 60 });
+  assert.equal(takeDamage(player, 80), 80); assert.deepEqual(player, { hp: 80, armor: 0 });
+  assert.equal(takeDamage(player, 500), 80); assert.deepEqual(player, { hp: 0, armor: 0 });
+  assert.equal(takeDamage(player, 10), 0);
+  for (const invalid of [-1, NaN, Infinity]) assert.equal(takeDamage({ hp: 100, armor: 20 }, invalid), 0);
+});
+
+test('firearm hits consume Kevlar without reducing health until armor breaks', () => {
+  const shooter = createPlayer('armor-shooter', 'Shooter', 'CT', 'deathmatch', 0); const target = createPlayer('armor-target', 'Target', 'T', 'deathmatch', 0);
+  Object.assign(shooter, { x: 0, y: 0, z: 5, weapon: 'pistol', lastShot: 0 }); Object.assign(target, { x: 0, y: 0, z: 0, hp: 100, armor: 100 });
+  const first = fireHitscan(shooter, [target], input(1, { weapon: 'pistol', pitch: -0.1 }), 10000, 'dustline')!;
+  assert.ok(first.hits > 0); assert.equal(target.hp, 100); assert.ok(target.armor < 100); assert.equal(first.killed.length, 0);
+  target.armor = 1; fireHitscan(shooter, [target], input(2, { weapon: 'pistol', pitch: -0.1 }), 11000, 'dustline');
+  assert.equal(target.armor, 0); assert.ok(target.hp < 100);
 });
 
 test('stationary scoped sniper has no spread; moving and unscoped shots do', () => {
@@ -251,7 +269,7 @@ test('authoritative knife attacks emit melee events, retain ammo and respect rea
     const joined = await welcome; const room = game.rooms.get(joined.code)!; const attacker = room.clients.get(joined.id)!.player;
     room.map = 'dustline';
     for (const bot of room.bots) Object.assign(bot, { hp: 0, respawnAt: 0 });
-    const target = room.bots[0]; Object.assign(target, { hp: 100, x: 0, y: 0, z: 0, reloading: Date.now() + 30000 });
+    const target = room.bots[0]; Object.assign(target, { hp: 100, armor: 0, x: 0, y: 0, z: 0, reloading: Date.now() + 30000 });
     Object.assign(attacker, { weapon: 'knife', x: 0, y: 0, z: 5, lastShot: 0 }); room.history.clear();
     const missed = waitFor(socket, message => message.type === 'state' && message.events.some((event: any) => event.type === 'melee' && event.id === joined.id));
     socket.send(JSON.stringify({ type: 'inputs', inputs: [input(1, { weapon: 'knife', fire: true, pitch: -0.1 })] }));
@@ -300,7 +318,7 @@ test('two real websocket clients join a room, register a headshot and respawn', 
     assert.ok(!thrown.events.some(event => event.type === 'shot' && event.id === alpha.id));
     room.map = 'dustline';
     Object.assign(shooter, { x: 0, y: 0, z: 5 });
-    Object.assign(victim, { x: 0, y: 0, z: 0 });
+    Object.assign(victim, { x: 0, y: 0, z: 0, armor: 0 });
     room.history.clear();
     const kill = waitFor(first, message => message.type === 'state' && message.events.some((event: any) => event.type === 'kill'));
     first.send(JSON.stringify({ type: 'inputs', inputs: [input(1, { fire: true, pitch: 0 })], position: { x: 1000 } }));

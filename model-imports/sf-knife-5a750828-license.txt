@@ -1,0 +1,7 @@
+Ps1 Michael Myers knife
+Creator: swordmanck
+Source: https://sketchfab.com/3d-models/ps1-michael-myers-knife-5a750828796943c59bf7ee1102863295
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

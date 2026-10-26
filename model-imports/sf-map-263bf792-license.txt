@@ -1,0 +1,7 @@
+LOWPOLY | LOCATION | MAP | TDM
+Creator: ResoForge
+Source: https://sketchfab.com/3d-models/lowpoly-location-map-tdm-263bf792108b49aaab9973a1196600b7
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

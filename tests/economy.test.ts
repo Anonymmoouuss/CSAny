@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CASES, KEY_PRICE, SKIN_CATALOG, SKIN_BY_ID, DEFAULT_KNIFE_ID, KNIFE_KINDS, creditReward, createProfile, seededRandom, wearName, itemValue, rollCase, openCase, caseOdds, caseOpeningCost, validAppearance } from '../shared/economy.ts';
+import { CASES, KEY_PRICE, SKIN_CATALOG, SKIN_BY_ID, DEFAULT_KNIFE_ID, KNIFE_KINDS, IMPORTED_KNIFE_MODELS, creditReward, createProfile, seededRandom, wearName, itemValue, rollCase, openCase, caseOdds, caseOpeningCost, validAppearance } from '../shared/economy.ts';
 import { WEAPONS } from '../shared/game.ts';
 import { buildWeapon, charmPendant, animateWeapon, applyFieldFinish, disposeWeapon, inspectPose, knifeHoldPose, meleePose, wearMarks } from '../client/weapons.ts';
 import { attachCharm, CHARMS, CHARM_BY_ID, CHARM_CASES, openCharmCase, charmCaseOdds, rareReveal, rollCharmCase } from '../shared/economy.ts';
@@ -23,6 +23,15 @@ test('every weapon and each knife kind has more than 500 stable, distinct finish
   assert.equal(itemValue(profile.items.find(item => item.skinId === DEFAULT_KNIFE_ID)!), 0);
   assert.ok(!profile.items.some(item => item.skinId === 'knife-archive'));
   for (const weapon of Object.keys(WEAPONS)) for (const pattern of ['circuit', 'glyph', 'topographic', 'shards', 'chromatic', 'aurora', 'ceramic']) assert.ok(SKIN_CATALOG.some(skin => skin.weapon === weapon && skin.pattern === pattern), `${weapon}: ${pattern}`);
+});
+
+test('downloaded knife catalog exposes over twenty distinct source models with preserved original finishes', () => {
+  assert.ok(IMPORTED_KNIFE_MODELS.length >= 20); assert.equal(new Set(IMPORTED_KNIFE_MODELS.map(model => model.uid)).size, IMPORTED_KNIFE_MODELS.length);
+  for (const model of IMPORTED_KNIFE_MODELS) {
+    const original = SKIN_BY_ID.get(`${model.id}-original`)!; assert.equal(original.asset, model.id); assert.equal(original.sourceMaterials, true); assert.equal(original.weapon, 'knife');
+    assert.ok(SKIN_CATALOG.some(skin => skin.asset === model.id && skin.rarity === 6 && !skin.sourceMaterials));
+  }
+  for (let seed = 0; seed < 100; seed++) assert.notEqual(SKIN_BY_ID.get(rollCase('blade', seededRandom(seed)).skinId)!.sourceMaterials, true, 'original model choices do not alter case rarity pools');
 });
 
 test('seeded drops are reproducible and wear/value reflect float and StatTrak', () => {

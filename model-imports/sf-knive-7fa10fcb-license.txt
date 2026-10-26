@@ -1,0 +1,7 @@
+Set of daggers
+Creator: Peter Nox
+Source: https://sketchfab.com/3d-models/set-of-daggers-7fa10fcbb1f8401c97b3727e2af7406d
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

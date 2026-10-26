@@ -1,0 +1,19 @@
+Model Information:
+* title:	Utility Knife
+* source:	https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3
+* author:	Veerle Zandstra (https://sketchfab.com/veerle_zandstra)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Utility Knife" (https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3) by Veerle Zandstra (https://sketchfab.com/veerle_zandstra) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Utility Knife
+Creator: Veerle Zandstra
+Source: https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

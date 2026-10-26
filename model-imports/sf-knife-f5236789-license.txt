@@ -1,0 +1,7 @@
+"Kama" Dagger
+Creator: Arms Museum
+Source: https://sketchfab.com/3d-models/kama-dagger-f5236789a5094b8fa1d800ffdb29dfa6
+License: CC0 Public Domain
+http://creativecommons.org/publicdomain/zero/1.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

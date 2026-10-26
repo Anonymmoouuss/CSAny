@@ -1,0 +1,19 @@
+Model Information:
+* title:	Victorinox multitool knife
+* source:	https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a
+* author:	Halil Kantarci (https://sketchfab.com/halilkantarci)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Victorinox multitool knife" (https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a) by Halil Kantarci (https://sketchfab.com/halilkantarci) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Victorinox multitool knife
+Creator: Halil Kantarci
+Source: https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

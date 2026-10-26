@@ -9,7 +9,7 @@ const directory = new URL('../client/public/models/imported/', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('manifest.json', directory), 'utf8'));
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS);
 const levels: Record<string, ImportedMapMetadata> = {};
-const names: Record<string, string> = { arena: 'Arena', breeze: 'Breeze', dune: 'Dune', dust2: 'Dust II Classic', rust: 'Rust', sandstone: 'Sandstone', zona7: 'Zone 7', collection: 'Training Grounds', outpost: 'Outpost', resoforge: 'Freight Yard' };
+const names: Record<string, string> = { arena: 'Arena', breeze: 'Breeze', dune: 'Dune', dust2: 'Dust II Classic', rust: 'Rust', sandstone: 'Sandstone', zona7: 'Zone 7', collection: 'Training Grounds', outpost: 'Outpost', resoforge: 'Freight Yard', 'sf-map-d41a19f6': 'Cargo District', 'sf-map-263bf792': 'Industrial Quarter' };
 const only = process.argv.find(argument => argument.startsWith('--only='))?.slice(7).split(',');
 if (only) Object.assign(levels, JSON.parse(await readFile(new URL('../shared/imported-maps.json', import.meta.url), 'utf8').catch(() => '{}')));
 
@@ -109,10 +109,10 @@ for (const [id, entry] of Object.entries(manifest) as [string, { kind: string; u
   const separated = sheltered.filter(point => CT.every(other => Math.hypot(point.x - other.x, point.z - other.z) > (id === 'breeze' ? 75 : 40)));
   const spawns = { CT, T: spawnGroup(bvh, separated, secondEnd) };
   if (spawns.CT.length < 5 || spawns.T.length < 5) throw new Error(`${id}: insufficient compact team starts (${connected.length} cells, ${sheltered.length} sheltered, CT ${spawns.CT.length}, T ${spawns.T.length}, ${separated.length} separated candidates)`);
-  const candidates = safe.filter(point => [...spawns.CT, ...spawns.T].every(start => Math.hypot(point.x - start.x, point.z - start.z) >= 10));
+  const candidates = safe.filter(point => [...spawns.CT, ...spawns.T].every(start => Math.hypot(point.x - start.x, point.z - start.z) >= 24));
   const firstSite = [...candidates].sort((first, second) => Math.abs((firstDistances.get(first) || 0) - firstDistances.get(secondEnd)! * 0.35) - Math.abs((firstDistances.get(second) || 0) - firstDistances.get(secondEnd)! * 0.35))[0];
-  const secondSite = firstSite && [...candidates].filter(point => Math.hypot(point.x - firstSite.x, point.z - firstSite.z) >= 36).sort((first, second) => (firstDistances.get(first) || 0) - (firstDistances.get(second) || 0))[0];
-  if (!firstSite || !secondSite) throw new Error(`${id}: no two accessible bomb sites with 36 metres of separation`);
+  const secondSite = firstSite && [...candidates].filter(point => Math.hypot(point.x - firstSite.x, point.z - firstSite.z) >= 36).sort((first, second) => Math.abs((firstDistances.get(first) || 0) - firstDistances.get(secondEnd)! * 0.65) - Math.abs((firstDistances.get(second) || 0) - firstDistances.get(secondEnd)! * 0.65))[0];
+  if (!firstSite || !secondSite) throw new Error(`${id}: no two reachable bomb sites 24 metres from starts and 36 metres apart`);
   const sites = [{ ...firstSite, name: 'A' }, { ...secondSite, name: 'B' }];
   const metadata: ImportedMapMetadata = { name: names[id] || id, assetId: id, transform: transform.toArray(), bounds: [...bounds.min.toArray(), ...bounds.max.toArray()], cell, navigation: connected.map(point => ({ x: point.x, y: Number(point.y.toFixed(4)), z: point.z })), spawns, sites, triangles: indices.length / 3, surfaces: collisionSurfaces, triangleSurfaces };
   await writeFile(new URL(`${id}.collision.bin`, directory), encodeMapGeometry(vertices, triangles, metadata)); levels[id] = { ...metadata, navigation: [], triangleSurfaces: undefined };

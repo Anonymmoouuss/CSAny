@@ -1,0 +1,603 @@
+{
+  "version": 1,
+  "models": [
+    {
+      "uid": "f5236789a5094b8fa1d800ffdb29dfa6",
+      "id": "sf-knife-f5236789",
+      "name": "\"Kama\" Dagger",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/kama-dagger-f5236789a5094b8fa1d800ffdb29dfa6",
+      "author": "Arms Museum",
+      "license": {
+        "name": "CC0 Public Domain",
+        "url": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "slug": "cc0"
+      },
+      "animations": 0,
+      "archive": "sketchfab-f5236789a5094b8fa1d800ffdb29dfa6.zip",
+      "downloaded": true,
+      "bytes": 63003087
+    },
+    {
+      "uid": "b56f12426f9d42b6bbbd35726ddd69a3",
+      "id": "sf-knife-b56f1242",
+      "name": "Utility Knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3",
+      "author": "Veerle Zandstra",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-b56f12426f9d42b6bbbd35726ddd69a3.zip",
+      "downloaded": true,
+      "bytes": 16262064
+    },
+    {
+      "uid": "7f6df3818e5544c982e8cbbbbcb6305c",
+      "id": "sf-knive-7f6df381",
+      "name": "Knife collection",
+      "enabled": false,
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/knife-collection-7f6df3818e5544c982e8cbbbbcb6305c",
+      "author": "Helindu",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-7f6df3818e5544c982e8cbbbbcb6305c.zip",
+      "downloaded": true,
+      "bytes": 23264483
+    },
+    {
+      "uid": "f3140db917cc43389c14b5b2536c1dc8",
+      "id": "sf-knife-f3140db9",
+      "name": "knife Animated",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8",
+      "author": "DJMaesen",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 1,
+      "archive": "sketchfab-f3140db917cc43389c14b5b2536c1dc8.zip",
+      "downloaded": true,
+      "bytes": 17379316
+    },
+    {
+      "uid": "eb61a59f65e449d2a2eabbaef76a4a43",
+      "id": "sf-knife-eb61a59f",
+      "name": "M9 Bayonet knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/m9-bayonet-knife-eb61a59f65e449d2a2eabbaef76a4a43",
+      "author": "Michael Karel",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-eb61a59f65e449d2a2eabbaef76a4a43.zip",
+      "downloaded": true,
+      "bytes": 12677235
+    },
+    {
+      "uid": "7fa10fcbb1f8401c97b3727e2af7406d",
+      "id": "sf-knive-7fa10fcb",
+      "name": "Set of daggers",
+      "enabled": false,
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/set-of-daggers-7fa10fcbb1f8401c97b3727e2af7406d",
+      "author": "Peter Nox",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-7fa10fcbb1f8401c97b3727e2af7406d.zip",
+      "downloaded": true,
+      "bytes": 84677042
+    },
+    {
+      "uid": "a3f1fa2a50134e549532914adba2cf0a",
+      "id": "sf-knife-a3f1fa2a",
+      "name": "Victorinox multitool knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/victorinox-multitool-knife-a3f1fa2a50134e549532914adba2cf0a",
+      "author": "Halil Kantarci",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 5,
+      "archive": "sketchfab-a3f1fa2a50134e549532914adba2cf0a.zip",
+      "downloaded": true,
+      "bytes": 31739968
+    },
+    {
+      "uid": "36593001f0164a50a2039d9ef1e511ff",
+      "id": "sf-knife-36593001",
+      "name": "M9 Bayonet (Default)",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/m9-bayonet-default-36593001f0164a50a2039d9ef1e511ff",
+      "author": "Firewarden3D",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-36593001f0164a50a2039d9ef1e511ff.zip",
+      "downloaded": true,
+      "bytes": 10425999
+    },
+    {
+      "uid": "e2b7ed11b1b443c69bb6b3d7ce9aeed8",
+      "id": "sf-knife-e2b7ed11",
+      "name": "Butterfly Knife NOX Balisong | НОКС Балисонг",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8",
+      "author": "Frobin_G",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-e2b7ed11b1b443c69bb6b3d7ce9aeed8.zip",
+      "downloaded": true,
+      "bytes": 11717616
+    },
+    {
+      "uid": "5fb333837f1343caa6a0e80a46b68ac1",
+      "id": "sf-knife-5fb33383",
+      "name": "Tactical Knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/tactical-knife-5fb333837f1343caa6a0e80a46b68ac1",
+      "author": "lunea",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-5fb333837f1343caa6a0e80a46b68ac1.zip",
+      "downloaded": true,
+      "bytes": 20264359
+    },
+    {
+      "uid": "ee27b8edc8e84470ad81eeca8facb762",
+      "id": "sf-knife-ee27b8ed",
+      "name": "Emerald Ceremonial dagger",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/emerald-ceremonial-dagger-ee27b8edc8e84470ad81eeca8facb762",
+      "author": "Chao Kurosaki",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-ee27b8edc8e84470ad81eeca8facb762.zip",
+      "downloaded": true,
+      "bytes": 33713828
+    },
+    {
+      "uid": "489e7231712a4c008bdc7a6cc4da06cc",
+      "id": "sf-knife-489e7231",
+      "name": "Kukri + Skins",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/kukri-skins-489e7231712a4c008bdc7a6cc4da06cc",
+      "author": "ELIZION",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-489e7231712a4c008bdc7a6cc4da06cc.zip",
+      "downloaded": true,
+      "bytes": 42359534
+    },
+    {
+      "uid": "5c3a1319fde54e49af613e22c16ad858",
+      "id": "sf-knife-5c3a1319",
+      "name": "Low Poly Scifi Knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/low-poly-scifi-knife-5c3a1319fde54e49af613e22c16ad858",
+      "author": "TooManyDemons",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-5c3a1319fde54e49af613e22c16ad858.zip",
+      "downloaded": true,
+      "bytes": 6714075
+    },
+    {
+      "uid": "5a750828796943c59bf7ee1102863295",
+      "id": "sf-knife-5a750828",
+      "name": "Ps1 Michael Myers knife",
+      "enabled": false,
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/ps1-michael-myers-knife-5a750828796943c59bf7ee1102863295",
+      "author": "swordmanck",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-5a750828796943c59bf7ee1102863295.zip",
+      "downloaded": true,
+      "bytes": 13281
+    },
+    {
+      "uid": "dfd7606f189a413681305a39b8841ce8",
+      "id": "sf-knife-dfd7606f",
+      "name": "Karambit",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8",
+      "author": "Diamonddogkz",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-dfd7606f189a413681305a39b8841ce8.zip",
+      "downloaded": true,
+      "bytes": 9835172
+    },
+    {
+      "uid": "4c75aae7dfa74b919b61a321242de7f4",
+      "id": "sf-knife-4c75aae7",
+      "name": "Kitchen Knife",
+      "enabled": false,
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/kitchen-knife-4c75aae7dfa74b919b61a321242de7f4",
+      "author": "TheSpacePunk",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-4c75aae7dfa74b919b61a321242de7f4.zip",
+      "downloaded": true,
+      "bytes": 2473973
+    },
+    {
+      "uid": "a8677d9c7a5b43fe966ac48d2798dad2",
+      "id": "sf-knife-a8677d9c",
+      "name": "Butcher Knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/butcher-knife-a8677d9c7a5b43fe966ac48d2798dad2",
+      "author": "beyondmatter",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-a8677d9c7a5b43fe966ac48d2798dad2.zip",
+      "downloaded": true,
+      "bytes": 9009894
+    },
+    {
+      "uid": "e1b75164b5084df8a32303c491d61f0b",
+      "id": "sf-knife-e1b75164",
+      "name": "Thief's Dagger",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/thiefs-dagger-e1b75164b5084df8a32303c491d61f0b",
+      "author": "Steven Janes",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-e1b75164b5084df8a32303c491d61f0b.zip",
+      "downloaded": true,
+      "bytes": 3163845
+    },
+    {
+      "uid": "dbad940f2f284db18065cee66d3bcb12",
+      "id": "sf-knife-dbad940f",
+      "name": "Tactical knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/tactical-knife-dbad940f2f284db18065cee66d3bcb12",
+      "author": "TristanGybels",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-dbad940f2f284db18065cee66d3bcb12.zip",
+      "downloaded": true,
+      "bytes": 3728182
+    },
+    {
+      "uid": "60c865c439b44e859ff02c8dc702fbe4",
+      "id": "sf-knife-60c865c4",
+      "name": "Spider and Eagle Knife Textured",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/spider-and-eagle-knife-textured-60c865c439b44e859ff02c8dc702fbe4",
+      "author": "Celena Ransil",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-60c865c439b44e859ff02c8dc702fbe4.zip",
+      "downloaded": true,
+      "bytes": 2090478
+    },
+    {
+      "uid": "db51ee0d20cb4c59b9d19e81ca6e28c9",
+      "id": "sf-knife-db51ee0d",
+      "name": "Energy Knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/energy-knife-db51ee0d20cb4c59b9d19e81ca6e28c9",
+      "author": "Frostoise",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-db51ee0d20cb4c59b9d19e81ca6e28c9.zip",
+      "downloaded": true,
+      "bytes": 7577215
+    },
+    {
+      "uid": "42496f36f25841ecae7814713cfd4db6",
+      "id": "sf-knife-42496f36",
+      "name": "Old Survival Knife",
+      "category": "knives",
+      "kind": "weapon",
+      "source": "https://sketchfab.com/3d-models/old-survival-knife-42496f36f25841ecae7814713cfd4db6",
+      "author": "Vishal_R",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "archive": "sketchfab-42496f36f25841ecae7814713cfd4db6.zip",
+      "downloaded": true,
+      "bytes": 9201956
+    },
+    {
+      "uid": "0d7a343dcb6f401197a73c91aee93f6d",
+      "id": "sf-weapon-0d7a343d",
+      "name": "FPS pistol animations",
+      "category": "weapons",
+      "kind": "viewmodel",
+      "source": "https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d",
+      "author": "Cransh",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 5,
+      "archive": "sketchfab-0d7a343dcb6f401197a73c91aee93f6d.zip",
+      "downloaded": true,
+      "bytes": 8780794
+    },
+    {
+      "uid": "c15ae8393d824f5b929e3f69691cdd31",
+      "id": "sf-weapon-c15ae839",
+      "name": "FPS animations sniper rifle",
+      "category": "weapons",
+      "kind": "viewmodel",
+      "source": "https://sketchfab.com/3d-models/fps-animations-sniper-rifle-c15ae8393d824f5b929e3f69691cdd31",
+      "author": "Cransh",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 6,
+      "archive": "sketchfab-c15ae8393d824f5b929e3f69691cdd31.zip",
+      "downloaded": true,
+      "bytes": 10103693
+    },
+    {
+      "uid": "ca37ea9148dc4fcc9cc632175d311b23",
+      "id": "sf-weapon-ca37ea91",
+      "name": "SMG FPS Animations",
+      "category": "weapons",
+      "kind": "viewmodel",
+      "source": "https://sketchfab.com/3d-models/smg-fps-animations-ca37ea9148dc4fcc9cc632175d311b23",
+      "author": "Cransh",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 8,
+      "archive": "sketchfab-ca37ea9148dc4fcc9cc632175d311b23.zip",
+      "downloaded": true,
+      "bytes": 11848468
+    },
+    {
+      "uid": "1a4c9d15818a4522aedbeb70919a17da",
+      "id": "sf-weapon-1a4c9d15",
+      "name": "Pistol 43 Tactical | FPS Animations",
+      "category": "weapons",
+      "kind": "viewmodel",
+      "source": "https://sketchfab.com/3d-models/pistol-43-tactical-fps-animations-1a4c9d15818a4522aedbeb70919a17da",
+      "author": "Vlasov Daniil",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 6,
+      "archive": "sketchfab-1a4c9d15818a4522aedbeb70919a17da.zip",
+      "downloaded": true,
+      "bytes": 5641739
+    },
+    {
+      "uid": "fea3f464a6264f4ca9f653044a1ee99b",
+      "id": "sf-knife-fea3f464",
+      "category": "knives",
+      "kind": "weapon",
+      "archive": "sketchfab-fea3f464a6264f4ca9f653044a1ee99b.zip",
+      "downloaded": true,
+      "name": "SCI-FI Millitary Knife",
+      "source": "https://sketchfab.com/3d-models/sci-fi-millitary-knife-fea3f464a6264f4ca9f653044a1ee99b",
+      "author": "mochamadyuda",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 1,
+      "bytes": 13204702
+    },
+    {
+      "uid": "d41a19f699ea421a9aa32b407cb7537b",
+      "id": "sf-map-d41a19f6",
+      "category": "maps",
+      "kind": "map",
+      "archive": "sketchfab-d41a19f699ea421a9aa32b407cb7537b.zip",
+      "downloaded": true,
+      "name": "LOWPOLY | FPS | TDM | GAME | MAP by ResoForge",
+      "source": "https://sketchfab.com/3d-models/lowpoly-fps-tdm-game-map-by-resoforge-d41a19f699ea421a9aa32b407cb7537b",
+      "author": "ResoForge (old profile)",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "bytes": 270248
+    },
+    {
+      "uid": "263bf792108b49aaab9973a1196600b7",
+      "id": "sf-map-263bf792",
+      "category": "maps",
+      "kind": "map",
+      "archive": "sketchfab-263bf792108b49aaab9973a1196600b7.zip",
+      "downloaded": true,
+      "name": "LOWPOLY | LOCATION | MAP | TDM",
+      "source": "https://sketchfab.com/3d-models/lowpoly-location-map-tdm-263bf792108b49aaab9973a1196600b7",
+      "author": "ResoForge",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 0,
+      "bytes": 2195603
+    },
+    {
+      "uid": "9614510a2fdf4a89946e720616004985",
+      "id": "sf-knife-9614510a",
+      "category": "knives",
+      "kind": "weapon",
+      "archive": "sketchfab-9614510a2fdf4a89946e720616004985.zip",
+      "downloaded": true,
+      "name": "[GameReady] Knife [Rigged]",
+      "source": "https://sketchfab.com/3d-models/gameready-knife-rigged-9614510a2fdf4a89946e720616004985",
+      "author": "BAMEN",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 1,
+      "bytes": 2600774
+    },
+    {
+      "uid": "e5db6b73878f4123baa48cea6d9af84c",
+      "id": "sf-knife-e5db6b73",
+      "category": "knives",
+      "kind": "weapon",
+      "archive": "sketchfab-e5db6b73878f4123baa48cea6d9af84c.zip",
+      "downloaded": true,
+      "name": "knife animated",
+      "source": "https://sketchfab.com/3d-models/knife-animated-e5db6b73878f4123baa48cea6d9af84c",
+      "author": "DJMaesen",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 1,
+      "bytes": 5245555
+    },
+    {
+      "uid": "cd4d902eec314a419adde15d9e985877",
+      "id": "sf-knife-cd4d902e",
+      "category": "knives",
+      "kind": "weapon",
+      "archive": "sketchfab-cd4d902eec314a419adde15d9e985877.zip",
+      "downloaded": true,
+      "name": "Box cutter/Utility knife Gameready",
+      "source": "https://sketchfab.com/3d-models/box-cutterutility-knife-gameready-cd4d902eec314a419adde15d9e985877",
+      "author": "wolkoed",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 1,
+      "bytes": 2818153
+    },
+    {
+      "uid": "0c89d84c815942619d1a957f9fe996ae",
+      "id": "sf-knife-0c89d84c",
+      "category": "knives",
+      "kind": "weapon",
+      "archive": "sketchfab-0c89d84c815942619d1a957f9fe996ae.zip",
+      "downloaded": true,
+      "name": "Pocket Knife",
+      "source": "https://sketchfab.com/3d-models/pocket-knife-0c89d84c815942619d1a957f9fe996ae",
+      "author": "re1monsen",
+      "license": {
+        "name": "Creative Commons Attribution",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "animations": 1,
+      "bytes": 942889
+    }
+  ]
+}

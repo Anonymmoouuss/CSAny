@@ -1,0 +1,19 @@
+Model Information:
+* title:	Butterfly Knife NOX Balisong | НОКС Балисонг
+* source:	https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8
+* author:	Frobin_G (https://sketchfab.com/frobin)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Butterfly Knife NOX Balisong | НОКС Балисонг" (https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8) by Frobin_G (https://sketchfab.com/frobin) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Butterfly Knife NOX Balisong | НОКС Балисонг
+Creator: Frobin_G
+Source: https://sketchfab.com/3d-models/butterfly-knife-nox-balisong-e2b7ed11b1b443c69bb6b3d7ce9aeed8
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

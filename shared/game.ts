@@ -334,6 +334,13 @@ export function createPlayer(id: string, name: string, team: Team, mode: Mode, i
   return player;
 }
 
+export function takeDamage(player: Pick<Player, 'hp' | 'armor'>, incoming: number) {
+  if (player.hp <= 0 || !Number.isFinite(incoming) || incoming <= 0) return 0;
+  const damage = Math.min(player.hp + player.armor, Math.max(0, Math.round(incoming)));
+  const absorbed = Math.min(player.armor, damage);
+  player.armor -= absorbed; player.hp = Math.max(0, player.hp - (damage - absorbed)); return damage;
+}
+
 export function walkable(x: number, z: number, map: MapId, radius = PLAYER_RADIUS + 0.15) {
   if (MAPS[map].imported) {
     const geometry = mapGeometry(map); const point = mapCell(map, x, z);

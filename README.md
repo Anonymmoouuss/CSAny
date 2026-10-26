@@ -1,6 +1,6 @@
 # BROWSERSTRIKE
 
-A browser tactical FPS built with Three.js, TypeScript and a headless authoritative WebSocket server. Deployment offers Arena, Breeze, Dune, Rust, Zone 7 and Freight Yard with textures and triangle-mesh collision. Sandstone, Training Grounds, Outpost, Dust II Classic and the older procedural match arenas are excluded from deployment and random matchmaking. Training has its own purpose-built facility.
+A browser tactical FPS built with Three.js, TypeScript and a headless authoritative WebSocket server. Deployment offers Arena, Breeze, Dune, Rust, Zone 7, Freight Yard and Cargo District with textures and triangle-mesh collision. Sandstone, Training Grounds, Outpost, Dust II Classic, Industrial Quarter and the older procedural match arenas are excluded from deployment and random matchmaking. Training has its own purpose-built facility.
 
 ## Run locally
 
@@ -73,12 +73,14 @@ Match money buys equipment; persistent credits buy cosmetics. A cosmetic does no
 - **Flashbang:** $200, carry limit two. Press **V** to throw. Flashes affect teammates too; looking away reduces their effect.
 - **Smoke grenade:** $300, carry limit one. Press **C**. Voxel smoke respects walls, blocks bot sight and temporarily opens along bullet/explosion paths.
 - **Incendiary:** $400, carry limit one. Press **Z**. Fire follows nearby floors, applies ticking damage and is avoided by bots.
-- **Armor:** $650. Absorbs part of incoming damage.
+- **Armor:** $650. Damage drains Kevlar before health, including bullets, knives, grenades, fire and C4. Only damage exceeding remaining armor reaches health; a hit smaller than the armor reserve cannot reduce health.
 - **CT defuse kit:** $400, available only to CT in Bomb Defusal. Reduces defusal from ten seconds to five. C4 is assigned to one T at round start; it is not an extra purchasable bomb kit.
 
 ## Bomb Defusal
 
 Casual defusal lasts exactly four rounds: bomb, elimination, bomb, elimination. A 2-2 result is a draw; there is no automatic fifth round. Bots use the same plant/defuse inputs as humans and cover the designated defuser. A/B sites are separate, reachable locations.
+
+Every enabled map's A/B sites are at least 24 metres from every team start and at least 36 metres apart. Bot squads receive stable split A/B assignments instead of following the carrier as one group. Only the nearest T recovers dropped C4; after a plant one CT defuses while the rest hold spread approach positions. Elimination patrols use distinct map sectors, and Hill squads divide between capture and perimeter cover. Local spacing and route reservations remain active; teammates can still share narrow passages or regroup for combat.
 
 As the T bomb carrier, stand still and grounded at A or B and hold **E** for 3.5 seconds to plant. A living T can recover dropped C4. As CT, approach the planted bomb and hold **E** for ten seconds, or five with a defuse kit. Releasing the key, moving or dying interrupts progress.
 
@@ -135,7 +137,26 @@ SAS bodies supply player/bot meshes. Matching authored first-person rigs are use
 
 Additional supplied CC-BY Benelli M4 and pistol rigs retain native hands and named idle/fire/full-reload clips; legacy specular/gloss materials are converted during import. The newly downloaded CC0 RobotExpressive is selectable under Operator and appears among bots, with native idle/walk/run/death actions. Freight Yard uses the supplied ResoForge map with verified CC-BY attribution and generated collision/navigation; it passed physical traversal and a live gameplay-frame check. See the generated credits for authors and modifications.
 
-The requested [Gun Muzzle Flash Effect](https://sketchfab.com/3d-models/gun-muzzle-flash-effect-6f76376918f8448db750b92958386d5a) is marked non-downloadable under a Standard license. Its protected viewer files were not extracted. The game instead uses an original textured hot-core/starburst effect, crossed flame planes, per-weapon sizing and muzzle sockets. A licensed GLB upload can be integrated through the existing asset workflow. Other Sketchfab downloads also require authorized access; supplied licensed archives were reused rather than bypassing that requirement.
+### Downloaded Asset Expansion
+
+The armory's **Knife Models** view contains **23 individual Sketchfab models**, with source textures, original finishes and inspect/equip support. Multi-knife display collections, a low-detail candidate and an oversized scan were excluded from that count. Each accepted model stays below 100,000 triangles; the ceremonial dagger was simplified. Authored fold/open/inspect clips are used where supplied, with procedural attack/inspection fallback for static models. They are distinct meshes, not twenty recolors of one knife.
+
+Four additional animated firearms were downloaded through Sketchfab's official API, retaining 5/6/8/6 source clips. Uploaded HK416, AUG, SLR and butterfly assets were also imported; first-person mappings use suitable named actions. DMR, heavy-sniper and Longbow directions are calibrated per asset. The heavy sniper uses the stable rifle-hand rig instead of reversed source arms that obstructed the camera.
+
+**Cargo District** passed collision, compact opposing spawns, physical traversal, distant-site and live rendering/deployment checks. The downloaded **Industrial Quarter** did not have two sufficiently separated protected spawn regions and remains outside rotation. Downloading a model is not enough to enable it.
+
+Set `SKETCHFAB_ACCESS_TOKEN` only in the ignored local environment file, then use:
+
+```sh
+npm run models:download
+npm run models:download -- --only=asset-id
+npm run models:download -- --add=MODEL_UID:knives
+npm run models:import -- --only=asset-id
+```
+
+The downloader accepts official downloadable CC0/CC-BY glTF/GLB assets, limits archive size, resumes cached downloads, stops on rate limiting and preserves attribution. Tokens and temporary signed download URLs are never stored in the catalog or browser bundle. Source ZIPs remain ignored. Review new sources before enabling gameplay mappings or maps.
+
+The requested [Gun Muzzle Flash Effect](https://sketchfab.com/3d-models/gun-muzzle-flash-effect-6f76376918f8448db750b92958386d5a) is marked non-downloadable under a Standard license; its official authenticated download endpoint returned HTTP 403. Its protected viewer files were not extracted. The game instead uses an original textured hot-core/starburst effect, crossed flame planes, per-weapon sizing and muzzle sockets. A licensed GLB upload can be integrated through the existing asset workflow.
 
 The [reference inbox](reference-videos/README.md) contains the supplied clips plus an author animation preview and short official CS2 technical excerpts. [External source notes](reference-videos/EXTERNAL-SOURCES.md) record creators, sources and what was actually sampled. Videos are ignored by Git and not bundled as game assets. Extracted frames were used for draw/hold framing and presentation, not to claim full-video review or frame-accurate reproduction.
 
@@ -198,4 +219,4 @@ Start `npm run dev` before the browser suite. Install Playwright Chromium and it
 
 Use `BROWSERSTRIKE_CHROMIUM_EXECUTABLE` to select a full Chromium executable when the default headless shell is unreliable.
 
-**Verification status:** 107 automated simulation/asset/economy/social/real-socket tests and the production build passed. Targeted Chromium checks passed for desktop/mobile 3D case interaction, two-stage rare transactions, charm-to-weapon preview/application, distinct live scope controls, Freight Yard gameplay frames and Hill/Gun Game HUDs. The covered-ally pixel regression and earlier focused rendering checks remain in the suite. Heavy HC-45 inventory and two-browser inventory/map-transition stress still crash this container's software GPU; the complete browser suite is not claimed green. Geometry tests cover all enabled map floors, grouped starts, separated sites and actual bot traversal. Hardware/browser testing remains necessary before a production release.
+**Verification status:** 114 automated simulation/asset/economy/social/real-socket tests and the production build passed. New focused Chromium checks passed for all 23 native knives on desktop/mobile, inspection/equipping, downloaded firearm/sniper rendering and Cargo District deployment. Existing focused checks cover 3D loot, charm previews, optics and objective HUDs. All enabled maps pass the stronger 24-metre site clearance and 36-metre A/B separation checks. Heavy HC-45 inventory and two-browser map-transition stress previously crashed this container's software GPU; the complete browser suite is not claimed green. Hardware/browser testing remains necessary before a production release.

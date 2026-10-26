@@ -1,0 +1,7 @@
+Low Poly Scifi Knife
+Creator: TooManyDemons
+Source: https://sketchfab.com/3d-models/low-poly-scifi-knife-5c3a1319fde54e49af613e22c16ad858
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

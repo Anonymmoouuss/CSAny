@@ -1,0 +1,7 @@
+knife animated
+Creator: DJMaesen
+Source: https://sketchfab.com/3d-models/knife-animated-e5db6b73878f4123baa48cea6d9af84c
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

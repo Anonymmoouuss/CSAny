@@ -1,0 +1,7 @@
+Butcher Knife
+Creator: beyondmatter
+Source: https://sketchfab.com/3d-models/butcher-knife-a8677d9c7a5b43fe966ac48d2798dad2
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

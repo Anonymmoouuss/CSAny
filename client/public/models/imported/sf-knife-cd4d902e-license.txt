@@ -1,0 +1,7 @@
+Box cutter/Utility knife Gameready
+Creator: wolkoed
+Source: https://sketchfab.com/3d-models/box-cutterutility-knife-gameready-cd4d902eec314a419adde15d9e985877
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

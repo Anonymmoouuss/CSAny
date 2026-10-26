@@ -1,0 +1,19 @@
+Model Information:
+* title:	knife Animated
+* source:	https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8
+* author:	DJMaesen (https://sketchfab.com/bumstrum)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "knife Animated" (https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8) by DJMaesen (https://sketchfab.com/bumstrum) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+knife Animated
+Creator: DJMaesen
+Source: https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

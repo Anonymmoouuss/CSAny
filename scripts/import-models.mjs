@@ -5,8 +5,8 @@ import { unzipSync } from 'fflate';
 import { createExtractorFromData } from 'node-unrar-js';
 import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
-import { dedup, meshopt, metalRough, prune, resample, textureCompress } from '@gltf-transform/functions';
-import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
+import { dedup, meshopt, metalRough, prune, resample, simplify, textureCompress, weld } from '@gltf-transform/functions';
+import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer';
 import sharp from 'sharp';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -75,6 +75,8 @@ const sources = [
   ['collection', 'maps.zip', 'map'],
   ['resoforge', 'lowpoly-map-asset-by-resoforge.zip', 'map'],
 ];
+const downloads = JSON.parse(await readFile(resolve(input, 'sketchfab-downloads.json'), 'utf8').catch(() => '{"models":[]}')).models || [];
+for (const model of downloads) if (model.downloaded && model.enabled !== false && /^[a-z0-9-]+$/.test(model.id) && basename(model.archive) === model.archive) sources.push([model.id, model.archive, model.kind]);
 
 function safePath(name) {
   const normalized = name.replaceAll('\\', '/');
@@ -109,7 +111,7 @@ function jsonFrom(data, extension) {
 await MeshoptEncoder.ready;
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.encoder': MeshoptEncoder, 'meshopt.decoder': MeshoptDecoder });
 const manifest = inspect ? {} : JSON.parse(await readFile(resolve(output, 'manifest.json'), 'utf8').catch(() => '{}'));
-for (const [id, archive, kind] of sources.filter(([id]) => !selected || selected.includes(id))) {
+for (const [id, archive, kind] of sources.filter(([id]) => (!selected || selected.includes(id)) && (!process.argv.includes('--downloaded') || id.startsWith('sf-')))) {
   const source = resolve(input, archive);
   try {
     const destination = resolve(scratch, id); await mkdir(destination, { recursive: true });
@@ -123,7 +125,13 @@ for (const [id, archive, kind] of sources.filter(([id]) => !selected || selected
     const summary = { id, kind, meshes: json.meshes?.length || 0, materials: json.materials?.length || 0, skins: json.skins?.length || 0, clipCount: json.animations?.length || 0, clips: json.animations?.slice(0, 12).map(clip => clip.name || 'unnamed') || [], nodes: json.nodes?.slice(0, 12).map(node => node.name) || [], license: licenses.length > 0, megabytes: Number(((await stat(model)).size / 1048576).toFixed(2)) };
     if (inspect) { console.log(JSON.stringify(summary)); continue; }
     const document = await io.read(model);
-    if (['handcannon-classic', 'benelli', 'pistol-fps'].includes(id)) await document.transform(metalRough());
+    if (['handcannon-classic', 'benelli', 'pistol-fps'].includes(id) || id.startsWith('sf-')) await document.transform(metalRough());
+    for (const node of document.getRoot().listNodes()) {
+      if (id === 'sf-knife-489e7231' && /^Kukri_(?!Original)/i.test(node.getName()) || id === 'sf-knife-5fb33383' && /scabbard/i.test(node.getName()) || id === 'sf-knife-0c89d84c' && /PocketKnife_Info/i.test(node.getName())) node.dispose();
+    }
+    const downloaded = downloads.find(model => model.id === id);
+    const triangles = document.getRoot().listMeshes().reduce((total, mesh) => total + mesh.listPrimitives().reduce((count, primitive) => count + (primitive.getIndices()?.getCount() || primitive.getAttribute('POSITION')?.getCount() || 0) / 3, 0), 0);
+    if (downloaded?.category === 'knives' && triangles > 100000) { await MeshoptSimplifier.ready; await document.transform(weld(), simplify({ simplifier: MeshoptSimplifier, ratio: 80000 / triangles, error: 0.005 })); }
     const animations = document.getRoot().listAnimations();
     if (kind === 'character') {
       const useful = animations.filter(animation => /idle|walk|run|crouch|death|reload|shoot|strafe|jump/i.test(animation.getName()));
@@ -141,12 +149,15 @@ for (const [id, archive, kind] of sources.filter(([id]) => !selected || selected
     const credits = [...await Promise.all(licenses.map(file => readFile(file, 'utf8'))), sidecar].filter(Boolean).join('\n\n');
     if (credits) await writeFile(resolve(output, `${id}-license.txt`), credits);
     manifest[id] = { url: `/models/imported/${id}.glb`, kind, source: archive, bytes: (await stat(target)).size, clips: document.getRoot().listAnimations().map(animation => animation.getName()), license: credits ? `/models/imported/${id}-license.txt` : null, attribution: credits || 'User-supplied archive. No license text was included; verify redistribution rights before public deployment.' };
+    if (downloaded) Object.assign(manifest[id], { category: downloaded.category, displayName: downloaded.name, modelUid: downloaded.uid, sourceUrl: downloaded.source });
     console.log(JSON.stringify({ ...summary, outputMB: Number((manifest[id].bytes / 1048576).toFixed(2)) }));
     await writeFile(resolve(output, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   } catch (error) { console.error(`${id}: ${error.message}`); process.exitCode = 1; }
 }
 if (!inspect) {
+  const knives = downloads.filter(model => model.category === 'knives' && model.enabled !== false && manifest[model.id]).map(model => ({ id: model.id, name: model.name, uid: model.uid, source: model.source, animations: manifest[model.id].clips.length, kind: /butterfly|balisong/i.test(model.name) ? 'butterfly' : /karambit/i.test(model.name) ? 'karambit' : /bayonet/i.test(model.name) ? 'bayonet' : /utility|pocket|multitool/i.test(model.name) ? 'flip' : 'huntsman' }));
+  await writeFile(resolve(root, 'shared/knife-models.json'), `${JSON.stringify(knives, null, 2)}\n`);
   const credits = ['# Imported Model Credits', '', 'These are user-supplied downloads, not original BROWSERSTRIKE assets. Included license text is preserved below. Missing license text is not permission to redistribute.', ''];
   for (const [id, asset] of Object.entries(manifest)) credits.push(`## ${id}`, '', `Archive: ${asset.source}`, '', asset.attribution, '');
-  await writeFile(resolve(root, 'MODEL-CREDITS.md'), credits.join('\n'));
+  await writeFile(resolve(root, 'MODEL-CREDITS.md'), `${credits.join('\n').trimEnd()}\n`);
 }

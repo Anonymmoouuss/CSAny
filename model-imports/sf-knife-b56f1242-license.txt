@@ -1,0 +1,7 @@
+Utility Knife
+Creator: Veerle Zandstra
+Source: https://sketchfab.com/3d-models/utility-knife-b56f12426f9d42b6bbbd35726ddd69a3
+License: Creative Commons Attribution
+http://creativecommons.org/licenses/by/4.0/
+Downloaded using the official authenticated Sketchfab API.
+Runtime version may be optimized, normalized and assigned gameplay animations.

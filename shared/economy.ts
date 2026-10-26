@@ -1,4 +1,5 @@
 import { WEAPONS, type GameEvent, type Mode, type Team, type WeaponId } from './game.ts';
+import importedKnifeModels from './knife-models.json';
 
 export function creditReward(mode: Mode, offline: boolean, event: GameEvent, team?: Team) {
   if (mode === 'training') return event.type === 'kill' ? 5 : 0;
@@ -11,7 +12,8 @@ export function creditReward(mode: Mode, offline: boolean, event: GameEvent, tea
 
 export type Pattern = 'solid' | 'fade' | 'camo' | 'hydro' | 'hardened' | 'tiger' | 'doppler' | 'marble' | 'slaughter' | 'circuit' | 'glyph' | 'topographic' | 'shards' | 'chromatic' | 'aurora' | 'ceramic';
 export type KnifeKind = 'karambit' | 'butterfly' | 'bayonet' | 'huntsman' | 'flip';
-export type SkinDefinition = { id: string; name: string; weapon: WeaponId; knife?: KnifeKind; asset?: string; pattern: Pattern; colors: string[]; seed: number; rarity: number; wrap: boolean };
+export const IMPORTED_KNIFE_MODELS = importedKnifeModels.map(model => ({ ...model, kind: model.kind as KnifeKind }));
+export type SkinDefinition = { id: string; name: string; weapon: WeaponId; knife?: KnifeKind; asset?: string; sourceMaterials?: boolean; pattern: Pattern; colors: string[]; seed: number; rarity: number; wrap: boolean };
 export type CharmId = 'field-tag' | 'lucky-die' | 'cartridge' | 'signal-gem' | 'mini-blade' | `collectible-${number}-${number}`;
 export type CharmShape = 'tag' | 'die' | 'cartridge' | 'gem' | 'blade' | 'star' | 'shield' | 'ring' | 'bolt' | 'pyramid' | 'capsule' | 'beacon' | 'skull' | 'wing' | 'hex' | 'crown' | 'rocket' | 'key' | 'crescent' | 'diamond';
 export type CharmDefinition = { id: CharmId; name: string; color: string; accent: string; shape: CharmShape; rarity: number; seed: number };
@@ -114,6 +116,10 @@ export const SKIN_CATALOG: SkinDefinition[] = [
     return { id: `${knife ? `knife-${knife}` : kind}-signature-${pattern}-${colorIndex}`, name: `${name} / ${titles[patternIndex]}`, weapon: knife ? 'knife' as const : kind as WeaponId, knife, pattern,
       colors: [...palette], seed: 230009 + kindIndex * 10103 + colorIndex * 977 + patternIndex * 131, rarity: knife ? 6 : patternIndex % 3 + 3, wrap: true };
   }))),
+  ...IMPORTED_KNIFE_MODELS.flatMap((model, index) => [
+    { id: `${model.id}-original`, name: `${model.name} / Original`, weapon: 'knife' as const, knife: model.kind, asset: model.id, sourceMaterials: true, pattern: 'solid' as const, colors: ['#aeb5b5', '#2b3636', '#ddbf80'], seed: 410003 + index * 379, rarity: 0, wrap: false },
+    ...finishes.slice(12, 15).map((finish, variant) => ({ id: `${model.id}-finish-${variant}`, name: `${model.name} / ${finish.name}`, weapon: 'knife' as const, knife: model.kind, asset: model.id, pattern: finish.pattern, colors: finish.colors, seed: 510007 + index * 379 + variant * 103, rarity: 6, wrap: !!finish.wrap })),
+  ]),
   { id: DEFAULT_KNIFE_ID, name: 'Field Karambit', weapon: 'knife', knife: 'karambit', pattern: 'solid', colors: ['#b9c0c4', '#222c30', '#687781'], seed: 1, rarity: 0, wrap: false },
   { id: 'knife-archive', name: 'Archive Blade', weapon: 'knife', knife: 'huntsman', asset: 'knife', pattern: 'hardened', colors: ['#8a99ad', '#474e60', '#cfad71'], seed: 54017, rarity: 6, wrap: false },
   { id: 'knife-tactical-motion', name: 'Kinetic Edge', weapon: 'knife', knife: 'bayonet', asset: 'knife-animated', pattern: 'hydro', colors: ['#254b4c', '#76d8cc', '#f0c66a'], seed: 68521, rarity: 6, wrap: true },
@@ -210,7 +216,7 @@ export function rollCase(caseId: string, random = Math.random) {
     roll -= odds[index];
     if (roll < 0) { rarity = index; break; }
   }
-  const pool = SKIN_CATALOG.filter(skin => skin.id !== DEFAULT_KNIFE_ID && skin.rarity === rarity && (skin.knife ? crate.knives.includes(skin.knife) : !crate.weapons.length || crate.weapons.includes(skin.weapon)));
+  const pool = SKIN_CATALOG.filter(skin => skin.id !== DEFAULT_KNIFE_ID && !skin.sourceMaterials && skin.rarity === rarity && (skin.knife ? crate.knives.includes(skin.knife) : !crate.weapons.length || crate.weapons.includes(skin.weapon)));
   return makeItem(pool[Math.min(pool.length - 1, Math.floor(random() * pool.length))].id, random);
 }
 

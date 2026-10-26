@@ -1,6 +1,6 @@
 import { createIcons, X, ArrowLeft, ArrowRight, Boxes, Package, KeyRound, Search, Check, Eye, Coins, Plus, Minus, Pause, ShoppingCart, Settings, Volume2, VolumeX, LogOut, Copy, Crosshair, Play, Users, ChevronLeft, ChevronRight, Trophy, RotateCcw, Bomb, Sun, Globe, Lock, MessageSquare, Cloud, Flame, UserRound, UserPlus, UserMinus, ArrowLeftRight, ImagePlus, Send, RefreshCw } from 'lucide';
 import { WEAPONS, type WeaponId, type Snapshot } from '../shared/game.ts';
-import { CHARMS, CHARM_BY_ID, CHARM_CASES, attachCharm, openCharmCase, charmCaseOdds, rareReveal, CASES, KEY_PRICE, PROFILE_KEY, SKIN_CATALOG, SKIN_BY_ID, RARITIES, caseOpeningCost, creditReward, createProfile, equippedAppearance, validAppearance, itemValue, wearName, makeItem, openCase, rollCase, type CharmId, type Profile, type InventoryItem, type SkinAppearance } from '../shared/economy.ts';
+import { CHARMS, CHARM_BY_ID, CHARM_CASES, IMPORTED_KNIFE_MODELS, attachCharm, openCharmCase, charmCaseOdds, rareReveal, CASES, KEY_PRICE, PROFILE_KEY, SKIN_CATALOG, SKIN_BY_ID, RARITIES, caseOpeningCost, creditReward, createProfile, equippedAppearance, validAppearance, itemValue, wearName, makeItem, openCase, rollCase, type CharmId, type Profile, type InventoryItem, type SkinAppearance } from '../shared/economy.ts';
 import type { GameWorld } from './world.ts';
 
 export const escapeHtml = (text: string) => text.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]!);
@@ -61,6 +61,9 @@ export class Armory {
   private charmPicker: HTMLElement;
   private pendingCase: { id: string; charm: boolean } | null = null;
   private selectedCharm: CharmId | null = null;
+  private thumbnailObserver: IntersectionObserver;
+  private thumbnailQueue: HTMLImageElement[] = [];
+  private thumbnailFrame = 0;
   private storage: Storage;
 
   constructor(private world: GameWorld, storage: Storage = localStorage) {
@@ -74,10 +77,14 @@ export class Armory {
       <section class="inspect-screen hidden" id="inspect-screen" role="dialog" aria-modal="true" aria-label="Inspect skin"><button class="back-button" id="inspect-close">${icon('arrow-left')} ARMORY</button><span class="inspect-serial" id="inspect-serial"></span><div class="inspect-details" id="inspect-details"></div></section>
       <section class="reel-overlay hidden" id="reel-overlay" role="dialog" aria-modal="true" aria-label="Case opening"><div class="reel-header"><span class="eyebrow">SUPPLY / UNSEALING</span><h2 id="reel-title"></h2></div><div class="reel-window"><div class="reel-track" id="reel-track"></div><i class="reel-marker"></i></div><div class="reel-result" id="reel-result" role="status"></div></section>`);
     this.root = document.getElementById('armory-screen')!;
+    this.thumbnailObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) if (entry.isIntersecting) { this.thumbnailQueue.push(entry.target as HTMLImageElement); this.thumbnailObserver.unobserve(entry.target); }
+      this.scheduleThumbnail();
+    }, { root: document.getElementById('armory-body'), rootMargin: '20px' });
     this.inspector = document.getElementById('inspect-screen')!;
     this.inspector.insertAdjacentHTML('beforeend', `<div class="inspect-stage" id="inspect-stage" role="img" aria-label="Interactive weapon preview" tabindex="0"></div><div class="inspect-controls"><button class="icon-button" data-studio-action="rotate" title="Pause auto-rotation" aria-label="Pause auto-rotation" aria-pressed="true">${icon('pause')}</button><button class="icon-button" data-studio-action="animate" title="Play inspect animation" aria-label="Play inspect animation">${icon('play')}</button><button class="icon-button" data-studio-action="out" title="Zoom out" aria-label="Zoom out">${icon('minus')}</button><button class="icon-button" data-studio-action="in" title="Zoom in" aria-label="Zoom in">${icon('plus')}</button><button class="icon-button" data-studio-action="reset" title="Reset preview" aria-label="Reset preview">${icon('rotate-ccw')}</button></div>`);
     this.reel = document.getElementById('reel-overlay')!;
-    this.root.querySelector('.armory-nav')!.insertAdjacentHTML('beforeend', `<button data-tab="charms">${icon('key-round')}CHARMS</button>`);
+    this.root.querySelector('.armory-nav')!.insertAdjacentHTML('beforeend', `<button data-tab="charms">${icon('key-round')}CHARMS</button><button data-tab="knives">${icon('crosshair')}KNIFE MODELS</button>`);
     document.querySelector('main')!.insertAdjacentHTML('beforeend', `<section id="case-preview-screen" class="case-preview-screen hidden" role="dialog" aria-modal="true" aria-label="3D case preview"><header><span class="eyebrow">SEALED SUPPLY</span><h2 id="case-preview-name"></h2><button class="icon-button" id="case-preview-close" title="Close case preview" aria-label="Close case preview">${icon('x')}</button></header><div id="case-preview-stage" role="img" aria-label="Rotatable 3D loot case" tabindex="0"></div><footer><span id="case-preview-cost"></span><button class="primary-action" id="case-open-confirm">${icon('key-round')}OPEN CASE</button></footer></section><section id="charm-picker" class="charm-picker hidden" role="dialog" aria-modal="true" aria-label="Apply charm"><div><header><h2 id="charm-picker-title"></h2><button class="icon-button" id="charm-picker-close" title="Close charm picker" aria-label="Close charm picker">${icon('x')}</button></header><label class="field-label">WEAPON<select id="charm-weapon"></select></label><img id="charm-weapon-preview" width="512" height="256" alt="Charm preview on selected weapon"><button class="primary-action" id="charm-apply">${icon('check')}APPLY CHARM</button></div></section>`);
     this.casePreview = document.getElementById('case-preview-screen')!; this.charmPicker = document.getElementById('charm-picker')!;
     document.getElementById('case-preview-close')!.onclick = () => this.closeCasePreview();
@@ -135,6 +142,19 @@ export class Armory {
   get needsScene() { return !this.inspector.classList.contains('hidden') || !this.casePreview.classList.contains('hidden'); }
   appearance(weapon: WeaponId): SkinAppearance | undefined { return equippedAppearance(this.profile, weapon); }
   preview(item: SkinAppearance) { return this.world.thumbnail(SKIN_BY_ID.get(item.skinId)!.weapon, item); }
+  refreshPreviews() {
+    this.thumbnailObserver.disconnect(); this.thumbnailQueue = []; if (this.thumbnailFrame) cancelAnimationFrame(this.thumbnailFrame); this.thumbnailFrame = 0;
+    if (this.root.classList.contains('hidden') || !this.inspector.classList.contains('hidden')) return;
+    this.root.querySelectorAll<HTMLImageElement>('[data-thumbnail]').forEach(image => this.thumbnailObserver.observe(image));
+  }
+  private scheduleThumbnail() {
+    if (this.thumbnailFrame || !this.thumbnailQueue.length) return;
+    this.thumbnailFrame = requestAnimationFrame(() => {
+      this.thumbnailFrame = 0; const image = this.thumbnailQueue.shift();
+      if (image?.isConnected && this.isOpen) { const item = JSON.parse(image.dataset.thumbnail!) as SkinAppearance; image.src = this.preview(item); }
+      this.scheduleThumbnail();
+    });
+  }
   cosmetics() { return Object.fromEntries((Object.keys(WEAPONS) as WeaponId[]).map(weapon => [weapon, this.appearance(weapon)])); }
   equipOwned(uid: string) { const item = this.profile.items.find(item => item.uid === uid); if (item) this.equip(item); }
   mergeCloudItems(items: InventoryItem[], account: string, charms: CharmId[] = []) {
@@ -174,7 +194,7 @@ export class Armory {
     this.closeCasePreview(); this.charmPicker.classList.add('hidden');
     this.root.classList.add('hidden'); this.reel.classList.add('hidden'); this.closeInspect(); this.onEquip();
   }
-  closeInspect() { this.inspector.classList.add('hidden'); this.root.classList.remove('inspecting'); document.querySelector('main')!.classList.remove('studio-active'); this.inspected = null; this.world.setStudio(null); this.onEquip(); }
+  closeInspect() { this.inspector.classList.add('hidden'); this.root.classList.remove('inspecting'); document.querySelector('main')!.classList.remove('studio-active'); this.inspected = null; this.world.setStudio(null); this.onEquip(); this.refreshPreviews(); }
 
   private equip(item: InventoryItem) {
     const definition = SKIN_BY_ID.get(item.skinId)!;
@@ -243,7 +263,7 @@ export class Armory {
   private itemCard(item: InventoryItem, catalog = false) {
     const skin = SKIN_BY_ID.get(item.skinId)!;
     const equipped = this.profile.equipped[skin.weapon] === item.uid;
-    return `<button class="inventory-item ${equipped ? 'equipped' : ''}" data-inspect="${catalog ? skin.id : item.uid}" style="--rarity:${RARITIES[skin.rarity].color}"><span class="item-meta"><small>${item.statTrak ? 'STATTRAK' : RARITIES[skin.rarity].name.toUpperCase()}</small>${equipped ? icon('check') : icon('eye')}</span><img src="${this.world.thumbnail(skin.weapon, item)}" alt="${escapeHtml(WEAPONS[skin.weapon].name)} ${escapeHtml(skin.name)}" width="256" height="128"><span class="item-weapon">${skin.knife ? skin.knife.toUpperCase() : WEAPONS[skin.weapon].name}</span><b>${skin.name}</b><span class="item-bottom"><small>${catalog ? skin.pattern.toUpperCase() : wearName(item.float)}</small><strong>${credits(catalog ? Math.round(itemValue(item) * 1.4) : itemValue(item))}</strong></span></button>`;
+    return `<button class="inventory-item ${equipped ? 'equipped' : ''}" data-inspect="${catalog ? skin.id : item.uid}" style="--rarity:${RARITIES[skin.rarity].color}"><span class="item-meta"><small>${item.statTrak ? 'STATTRAK' : RARITIES[skin.rarity].name.toUpperCase()}</small>${equipped ? icon('check') : icon('eye')}</span><img data-thumbnail="${escapeHtml(JSON.stringify(item))}" alt="${escapeHtml(WEAPONS[skin.weapon].name)} ${escapeHtml(skin.name)}" width="256" height="128"><span class="item-weapon">${skin.knife ? skin.knife.toUpperCase() : WEAPONS[skin.weapon].name}</span><b>${escapeHtml(skin.name)}</b><span class="item-bottom"><small>${catalog ? skin.pattern.toUpperCase() : wearName(item.float)}</small><strong>${credits(catalog ? Math.round(itemValue(item) * 1.4) : itemValue(item))}</strong></span></button>`;
   }
 
   private caseCard(crate: typeof CASES[number]) {
@@ -270,6 +290,10 @@ export class Armory {
       });
       pages = Math.max(1, Math.ceil(filtered.length / 18)); this.page = Math.min(this.page, pages - 1);
       body.innerHTML = `<div class="section-heading"><h3>${catalog ? 'FINISH COLLECTION' : 'YOUR LOCKER'}</h3><span>${filtered.length} ITEMS</span></div><div class="inventory-grid">${filtered.slice(this.page * 18, this.page * 18 + 18).map(item => this.itemCard(item, catalog)).join('')}</div>${!filtered.length ? '<p class="empty-state">NO MATCHING ITEMS</p>' : ''}`;
+    } else if (this.tab === 'knives') {
+      pages = Math.max(1, Math.ceil(IMPORTED_KNIFE_MODELS.length / 9)); this.page = Math.min(this.page, pages - 1);
+      const models = IMPORTED_KNIFE_MODELS.slice(this.page * 9, this.page * 9 + 9);
+      body.innerHTML = `<div class="section-heading"><h3>KNIFE MODELS</h3><span>${IMPORTED_KNIFE_MODELS.length} DISTINCT MODELS</span></div><div class="inventory-grid knife-model-grid">${models.map(model => { const skin = SKIN_BY_ID.get(`${model.id}-original`)!; const item: InventoryItem = { uid: skin.id, skinId: skin.id, seed: skin.seed, float: 0.06, statTrak: false, kills: 0, acquiredAt: 0 }; return this.itemCard(item, true); }).join('')}</div>`;
     } else if (this.tab === 'charms') {
       const charms = CHARMS.filter(charm => this.profile.unlockedCharms?.includes(charm.id)); pages = Math.max(1, Math.ceil(charms.length / 18)); this.page = Math.min(this.page, pages - 1);
       body.innerHTML = `<div class="section-heading"><h3>CHARM INVENTORY</h3><span>${charms.length} / ${CHARMS.length}</span></div><div class="inventory-grid charm-inventory">${charms.slice(this.page * 18, this.page * 18 + 18).map(charm => `<button class="inventory-item" data-select-charm="${charm.id}" style="--rarity:${RARITIES[charm.rarity].color}"><img src="${this.world.charmThumbnail(charm.id)}" width="256" height="128" alt="${escapeHtml(charm.name)}"><b>${escapeHtml(charm.name)}</b><span class="item-bottom"><small>${RARITIES[charm.rarity].name}</small>${icon('plus')}</span></button>`).join('')}</div>${charms.length ? '' : '<p class="empty-state">NO CHARMS OWNED</p>'}`;
@@ -287,6 +311,7 @@ export class Armory {
     document.getElementById('page-count')!.textContent = `${this.page + 1} / ${pages}`;
     (document.getElementById('page-back') as HTMLButtonElement).disabled = this.page === 0;
     (document.getElementById('page-next') as HTMLButtonElement).disabled = this.page >= pages - 1;
+    this.refreshPreviews();
     refreshIcons();
   }
 
