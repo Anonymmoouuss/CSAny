@@ -1,0 +1,11 @@
+Model Information:
+* title:	M16 A2 Assault Rifle - Animated
+* source:	https://sketchfab.com/3d-models/m16-a2-assault-rifle-animated-bd4ff595b593447f9a7f1d95f501fb6c
+* author:	user77 (https://sketchfab.com/user77)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "M16 A2 Assault Rifle - Animated" (https://sketchfab.com/3d-models/m16-a2-assault-rifle-animated-bd4ff595b593447f9a7f1d95f501fb6c) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

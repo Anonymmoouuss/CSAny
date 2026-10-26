@@ -1,0 +1,11 @@
+Model Information:
+* title:	Ak-47 with arms and shoot animation
+* source:	https://sketchfab.com/3d-models/ak-47-with-arms-and-shoot-animation-a2ed635335ed497f9a011f8d56017a8d
+* author:	:+ (https://sketchfab.com/Pattoka47)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Ak-47 with arms and shoot animation" (https://sketchfab.com/3d-models/ak-47-with-arms-and-shoot-animation-a2ed635335ed497f9a011f8d56017a8d) by :+ (https://sketchfab.com/Pattoka47) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

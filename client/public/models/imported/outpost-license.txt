@@ -1,0 +1,11 @@
+Model Information:
+* title:	Counter Strike Map
+* source:	https://sketchfab.com/3d-models/counter-strike-map-b0b7e8e91275464491f5ba2ee3e2d776
+* author:	CHANO (https://sketchfab.com/pedroribeiro.1104)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Counter Strike Map" (https://sketchfab.com/3d-models/counter-strike-map-b0b7e8e91275464491f5ba2ee3e2d776) by CHANO (https://sketchfab.com/pedroribeiro.1104) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

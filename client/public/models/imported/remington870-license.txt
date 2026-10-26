@@ -1,0 +1,11 @@
+Model Information:
+* title:	Remington 870 Shotgun - Animated
+* source:	https://sketchfab.com/3d-models/remington-870-shotgun-animated-1b6c11ef58904fab992c6cdffaada309
+* author:	user77 (https://sketchfab.com/user77)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Remington 870 Shotgun - Animated" (https://sketchfab.com/3d-models/remington-870-shotgun-animated-1b6c11ef58904fab992c6cdffaada309) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,7 @@
+RobotExpressive
+Creator: Tomas Laulhe (Quaternius); modifications by Don McCurdy.
+License: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/1.0/
+Source: https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf/RobotExpressive
+License attribution verified in the official example:
+https://threejs.org/examples/webgl_animation_skinning_morph.html
+Downloaded 2026-10-26. Native idle, walking, running and death clips are retained.

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: browserstrike-server
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 24
+      - key: ALLOWED_ORIGINS
+        sync: false

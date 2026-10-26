@@ -1,0 +1,8 @@
+LOWPOLY | MAP | ASSET | by ResoForge
+Creator: ResoForge
+Source: https://sketchfab.com/3d-models/lowpoly-map-asset-by-resoforge-e766d489a6c349c8a8ec9a994b1f87b1
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+License verified through the public Sketchfab model metadata on 2026-10-26.
+This version is optimized and renamed Freight Yard, with generated collision,
+team starts, navigation and objective locations for BROWSERSTRIKE.

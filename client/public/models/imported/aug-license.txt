@@ -1,0 +1,11 @@
+Model Information:
+* title:	AUG Counter Strike 2
+* source:	https://sketchfab.com/3d-models/aug-counter-strike-2-3262a5530bbc40e984f796b0e152fc1f
+* author:	blazitt (https://sketchfab.com/blazitt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "AUG Counter Strike 2" (https://sketchfab.com/3d-models/aug-counter-strike-2-3262a5530bbc40e984f796b0e152fc1f) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	CS:GO Case
+* source:	https://sketchfab.com/3d-models/csgo-case-1d0b7a108aa64a3394ae21c88b8ae23f
+* author:	artfreex (https://sketchfab.com/artfreex)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "CS:GO Case" (https://sketchfab.com/3d-models/csgo-case-1d0b7a108aa64a3394ae21c88b8ae23f) by artfreex (https://sketchfab.com/artfreex) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bizon Counter Strike 2
+* source:	https://sketchfab.com/3d-models/bizon-counter-strike-2-0b4fd7235b754b819e6d32c14367d7e1
+* author:	blazitt (https://sketchfab.com/blazitt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bizon Counter Strike 2" (https://sketchfab.com/3d-models/bizon-counter-strike-2-0b4fd7235b754b819e6d32c14367d7e1) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Flashbang
+* source:	https://sketchfab.com/3d-models/flashbang-f4a48db9bd54420696ed282af9574dd9
+* author:	Chpndl (https://sketchfab.com/Chpndl)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Flashbang" (https://sketchfab.com/3d-models/flashbang-f4a48db9bd54420696ed282af9574dd9) by Chpndl (https://sketchfab.com/Chpndl) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	SNIPER FPS ANIMATION
+* source:	https://sketchfab.com/3d-models/sniper-fps-animation-f5174e499bff4d96b528c891b08c2015
+* author:	BURNER (https://sketchfab.com/Alexander_Ovelar)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "SNIPER FPS ANIMATION" (https://sketchfab.com/3d-models/sniper-fps-animation-f5174e499bff4d96b528c891b08c2015) by BURNER (https://sketchfab.com/Alexander_Ovelar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

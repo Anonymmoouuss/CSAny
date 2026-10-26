@@ -1,0 +1,11 @@
+Model Information:
+* title:	knife cs 1_6 fbx port
+* source:	https://sketchfab.com/3d-models/knife-cs-1-6-fbx-port-77dcd54dcd74410891bddd9b85d47cf7
+* author:	Izann2842_o (https://sketchfab.com/Izann2842_o)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "knife cs 1_6 fbx port" (https://sketchfab.com/3d-models/knife-cs-1-6-fbx-port-77dcd54dcd74410891bddd9b85d47cf7) by Izann2842_o (https://sketchfab.com/Izann2842_o) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

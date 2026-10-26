@@ -1,0 +1,11 @@
+Model Information:
+* title:	[MW: 2019] Fennec (Viper's GMod MW Base)
+* source:	https://sketchfab.com/3d-models/mw-2019-fennec-vipers-gmod-mw-base-d34cd93090b0409382790b3c63818bba
+* author:	VuckyZ (https://sketchfab.com/VuckyZ123)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "[MW: 2019] Fennec (Viper's GMod MW Base)" (https://sketchfab.com/3d-models/mw-2019-fennec-vipers-gmod-mw-base-d34cd93090b0409382790b3c63818bba) by VuckyZ (https://sketchfab.com/VuckyZ123) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

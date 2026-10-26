@@ -1,0 +1,11 @@
+Model Information:
+* title:	MP7 Counter Strike 2
+* source:	https://sketchfab.com/3d-models/mp7-counter-strike-2-a4daa40f66124b29b8c0c5118ff8abc7
+* author:	blazitt (https://sketchfab.com/blazitt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "MP7 Counter Strike 2" (https://sketchfab.com/3d-models/mp7-counter-strike-2-a4daa40f66124b29b8c0c5118ff8abc7) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

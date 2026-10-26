@@ -1,0 +1,709 @@
+{
+  "ak47": {
+    "url": "/models/imported/ak47.glb",
+    "kind": "weapon",
+    "source": "rifle-ak-47-weapon-model-cs2.zip",
+    "bytes": 1724944,
+    "clips": [
+      "firstperson_draw",
+      "firstperson_idle",
+      "firstperson_lookat01",
+      "firstperson_reload",
+      "firstperson_shoot1"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "m4a4": {
+    "url": "/models/imported/m4a4.glb",
+    "kind": "weapon",
+    "source": "rifle-m4a4-weapon-model-cs2.zip",
+    "bytes": 2741692,
+    "clips": [
+      "firstperson_draw",
+      "firstperson_idle",
+      "firstperson_lookat01",
+      "firstperson_reload",
+      "firstperson_shoot1"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "m4a1s": {
+    "url": "/models/imported/m4a1s.glb",
+    "kind": "viewmodel",
+    "source": "m4a1-s-cs2-first-person-animations.zip",
+    "bytes": 5198844,
+    "clips": [
+      "Equip",
+      "Inspect",
+      "ref_pose",
+      "Reload",
+      "Shots",
+      "Unequip"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "awp": {
+    "url": "/models/imported/awp.glb",
+    "kind": "weapon",
+    "source": "rifle-awp-black-version-weapon-model-cs2.zip",
+    "bytes": 2461436,
+    "clips": [
+      "firstperson_draw",
+      "firstperson_idle",
+      "firstperson_lookat01",
+      "firstperson_reload",
+      "firstperson_shoot1"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "usp": {
+    "url": "/models/imported/usp.glb",
+    "kind": "weapon",
+    "source": "pistol-usp-s-weapon-model-cs2.zip",
+    "bytes": 1316128,
+    "clips": [
+      "firstperson_draw",
+      "firstperson_idle",
+      "firstperson_lookat01",
+      "firstperson_reload"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "deagle": {
+    "url": "/models/imported/deagle.glb",
+    "kind": "weapon",
+    "source": "pistol-desert-eagle-weapon-model-cs2.zip",
+    "bytes": 1310356,
+    "clips": [
+      "firstperson_draw",
+      "firstperson_idle",
+      "firstperson_lookat01",
+      "firstperson_reload",
+      "firstperson_shoot1"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "aug": {
+    "url": "/models/imported/aug.glb",
+    "kind": "weapon",
+    "source": "aug_counter_strike_2.zip",
+    "bytes": 2320852,
+    "clips": [],
+    "license": "/models/imported/aug-license.txt",
+    "attribution": "Model Information:\n* title:\tAUG Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/aug-counter-strike-2-3262a5530bbc40e984f796b0e152fc1f\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"AUG Counter Strike 2\" (https://sketchfab.com/3d-models/aug-counter-strike-2-3262a5530bbc40e984f796b0e152fc1f) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "bizon": {
+    "url": "/models/imported/bizon.glb",
+    "kind": "weapon",
+    "source": "bizon_counter_strike_2.zip",
+    "bytes": 1814860,
+    "clips": [],
+    "license": "/models/imported/bizon-license.txt",
+    "attribution": "Model Information:\n* title:\tBizon Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/bizon-counter-strike-2-0b4fd7235b754b819e6d32c14367d7e1\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Bizon Counter Strike 2\" (https://sketchfab.com/3d-models/bizon-counter-strike-2-0b4fd7235b754b819e6d32c14367d7e1) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "cz75": {
+    "url": "/models/imported/cz75.glb",
+    "kind": "weapon",
+    "source": "cz75a_counter_strike_2.zip",
+    "bytes": 1396752,
+    "clips": [],
+    "license": "/models/imported/cz75-license.txt",
+    "attribution": "Model Information:\n* title:\tCZ75A Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/cz75a-counter-strike-2-0337714caffe434098f8a95a603a802e\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"CZ75A Counter Strike 2\" (https://sketchfab.com/3d-models/cz75a-counter-strike-2-0337714caffe434098f8a95a603a802e) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "g3sg1": {
+    "url": "/models/imported/g3sg1.glb",
+    "kind": "weapon",
+    "source": "g3sg1_counter_strike_2.zip",
+    "bytes": 2898156,
+    "clips": [],
+    "license": "/models/imported/g3sg1-license.txt",
+    "attribution": "Model Information:\n* title:\tG3SG1 Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/g3sg1-counter-strike-2-34d9ae2a4aa54860b488641da8da256a\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"G3SG1 Counter Strike 2\" (https://sketchfab.com/3d-models/g3sg1-counter-strike-2-34d9ae2a4aa54860b488641da8da256a) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "mp5": {
+    "url": "/models/imported/mp5.glb",
+    "kind": "weapon",
+    "source": "mp5sd_counter_strike_2.zip",
+    "bytes": 2478312,
+    "clips": [],
+    "license": "/models/imported/mp5-license.txt",
+    "attribution": "Model Information:\n* title:\tMP5SD Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/mp5sd-counter-strike-2-eb1d7ac4e3304b8aa0176dfd8914031e\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"MP5SD Counter Strike 2\" (https://sketchfab.com/3d-models/mp5sd-counter-strike-2-eb1d7ac4e3304b8aa0176dfd8914031e) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "mp7": {
+    "url": "/models/imported/mp7.glb",
+    "kind": "weapon",
+    "source": "mp7_counter_strike_2.zip",
+    "bytes": 2104548,
+    "clips": [],
+    "license": "/models/imported/mp7-license.txt",
+    "attribution": "Model Information:\n* title:\tMP7 Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/mp7-counter-strike-2-a4daa40f66124b29b8c0c5118ff8abc7\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"MP7 Counter Strike 2\" (https://sketchfab.com/3d-models/mp7-counter-strike-2-a4daa40f66124b29b8c0c5118ff8abc7) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "negev": {
+    "url": "/models/imported/negev.glb",
+    "kind": "weapon",
+    "source": "negev_counter_strike_2.zip",
+    "bytes": 3696600,
+    "clips": [],
+    "license": "/models/imported/negev-license.txt",
+    "attribution": "Model Information:\n* title:\tNegev Counter Strike 2\n* source:\thttps://sketchfab.com/3d-models/negev-counter-strike-2-18dac0143e294f26aa83642c24a76da7\n* author:\tblazitt (https://sketchfab.com/blazitt)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Negev Counter Strike 2\" (https://sketchfab.com/3d-models/negev-counter-strike-2-18dac0143e294f26aa83642c24a76da7) by blazitt (https://sketchfab.com/blazitt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "karambit": {
+    "url": "/models/imported/karambit.glb",
+    "kind": "weapon",
+    "source": "cs2_kerambit.glb",
+    "bytes": 450880,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "gloves": {
+    "url": "/models/imported/gloves.glb",
+    "kind": "viewmodel",
+    "source": "cs_go_karambit_with_sport_gloves.zip",
+    "bytes": 1553004,
+    "clips": [],
+    "license": "/models/imported/gloves-license.txt",
+    "attribution": "Model Information:\n* title:\tCS_GO KARAMBIT WITH SPORT GLOVES\n* source:\thttps://sketchfab.com/3d-models/cs-go-karambit-with-sport-gloves-22a24c2446c843709ffd48bd589fddd3\n* author:\tBOOST7 (https://sketchfab.com/bogdanvelia64)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"CS_GO KARAMBIT WITH SPORT GLOVES\" (https://sketchfab.com/3d-models/cs-go-karambit-with-sport-gloves-22a24c2446c843709ffd48bd589fddd3) by BOOST7 (https://sketchfab.com/bogdanvelia64) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "knife": {
+    "url": "/models/imported/knife.glb",
+    "kind": "weapon",
+    "source": "knife_cs_1_6_fbx_port.zip",
+    "bytes": 298792,
+    "clips": [
+      "Noesis Frames"
+    ],
+    "license": "/models/imported/knife-license.txt",
+    "attribution": "Model Information:\n* title:\tknife cs 1_6 fbx port\n* source:\thttps://sketchfab.com/3d-models/knife-cs-1-6-fbx-port-77dcd54dcd74410891bddd9b85d47cf7\n* author:\tIzann2842_o (https://sketchfab.com/Izann2842_o)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"knife cs 1_6 fbx port\" (https://sketchfab.com/3d-models/knife-cs-1-6-fbx-port-77dcd54dcd74410891bddd9b85d47cf7) by Izann2842_o (https://sketchfab.com/Izann2842_o) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "kunai": {
+    "url": "/models/imported/kunai.glb",
+    "kind": "weapon",
+    "source": "kunai_luxury_standoff_2.zip",
+    "bytes": 317896,
+    "clips": [],
+    "license": "/models/imported/kunai-license.txt",
+    "attribution": "Model Information:\n* title:\tKunai \"Luxury\" Standoff 2\n* source:\thttps://sketchfab.com/3d-models/kunai-luxury-standoff-2-e735392b4cf54e0ca57da242d4d13447\n* author:\tlevkost777 (https://sketchfab.com/levkost777)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Kunai \"Luxury\" Standoff 2\" (https://sketchfab.com/3d-models/kunai-luxury-standoff-2-e735392b4cf54e0ca57da242d4d13447) by levkost777 (https://sketchfab.com/levkost777) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "ak-tag": {
+    "url": "/models/imported/ak-tag.glb",
+    "kind": "weapon",
+    "source": "akr_tag_king__standoff_2.zip",
+    "bytes": 537624,
+    "clips": [],
+    "license": "/models/imported/ak-tag-license.txt",
+    "attribution": "Model Information:\n* title:\tAKR Tag KING | Standoff 2\n* source:\thttps://sketchfab.com/3d-models/akr-tag-king-standoff-2-3e143f04f3564a4aa08ab0e77443af14\n* author:\tDrxgon (https://sketchfab.com/Daxgon)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"AKR Tag KING | Standoff 2\" (https://sketchfab.com/3d-models/akr-tag-king-standoff-2-3e143f04f3564a4aa08ab0e77443af14) by Drxgon (https://sketchfab.com/Daxgon) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "sas": {
+    "url": "/models/imported/sas.glb",
+    "kind": "character",
+    "source": "sas-cs2-agent-model-blue.zip",
+    "bytes": 12391816,
+    "clips": [
+      "eye_test_sas blue"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "c4": {
+    "url": "/models/imported/c4.glb",
+    "kind": "prop",
+    "source": "bomb-c4-explosive-model-cs2.zip",
+    "bytes": 1148024,
+    "clips": [
+      "does_not_use",
+      "dropped",
+      "dropped_weapons/models/glock18/weapon_pist_glock18.vmdl_c",
+      "dropped_weapons/models/usp_silencer/weapon_pist_usp_silencer.vm",
+      "firstperson_attach_weapons/models/usp_silencer/weapon_pist_usp_",
+      "firstperson_detach_weapons/models/usp_silencer/weapon_pist_usp_",
+      "firstperson_draw",
+      "firstperson_draw_weapons/models/glock18/weapon_pist_glock18.vmd",
+      "firstperson_draw_weapons/models/usp_silencer/weapon_pist_usp_si",
+      "firstperson_idle",
+      "firstperson_idle_weapons/models/glock18/weapon_pist_glock18.vmd",
+      "firstperson_idle_weapons/models/usp_silencer/weapon_pist_usp_si",
+      "firstperson_lookat01_end",
+      "firstperson_lookat01_end_weapons/models/glock18/weapon_pist_glo",
+      "firstperson_lookat01_end_weapons/models/usp_silencer/weapon_pis",
+      "firstperson_lookat01_loop",
+      "firstperson_lookat01_loop_weapons/models/glock18/weapon_pist_gl",
+      "firstperson_lookat01_loop_weapons/models/usp_silencer/weapon_pi",
+      "firstperson_lookat01_start",
+      "firstperson_lookat01_start_weapons/models/glock18/weapon_pist_g",
+      "firstperson_lookat01_start_weapons/models/usp_silencer/weapon_p",
+      "firstperson_lookat01",
+      "firstperson_lookat01_weapons/models/glock18/weapon_pist_glock18",
+      "firstperson_lookat01_weapons/models/usp_silencer/weapon_pist_us",
+      "firstperson_lookat02_end",
+      "firstperson_lookat02_loop",
+      "firstperson_lookat02_start",
+      "firstperson_lookat02",
+      "firstperson_lookat03_end",
+      "firstperson_lookat03_loop",
+      "firstperson_lookat03_start",
+      "firstperson_lookat03",
+      "firstperson_plantend",
+      "firstperson_plantexit",
+      "firstperson_plantstart",
+      "firstperson_reload_weapons/models/glock18/weapon_pist_glock18.v",
+      "firstperson_reload_weapons/models/usp_silencer/weapon_pist_usp_",
+      "firstperson_shoot1_additive_weapons/models/glock18/weapon_pist_",
+      "firstperson_shoot1_weapons/models/glock18/weapon_pist_glock18.v",
+      "firstperson_shoot_empty_additive_weapons/models/glock18/weapon_",
+      "firstperson_shoot_empty_weapons/models/glock18/weapon_pist_gloc",
+      "firstperson_shoot_silenced_additive_weapons/models/usp_silencer",
+      "firstperson_shoot_unsilenced_additive_weapons/models/usp_silenc",
+      "holstered",
+      "holstered_weapons/models/glock18/weapon_pist_glock18.vmdl_c",
+      "holstered_weapons/models/usp_silencer/weapon_pist_usp_silencer.",
+      "inspect",
+      "inventory_icon",
+      "inventory_icon_weapons/models/glock18/weapon_pist_glock18.vmdl_",
+      "inventory_icon_weapons/models/usp_silencer/weapon_pist_usp_sile",
+      "inventory_inspect",
+      "inventory_inspect_weapons/models/glock18/weapon_pist_glock18.vm",
+      "inventory_inspect_weapons/models/usp_silencer/weapon_pist_usp_s",
+      "planted",
+      "sh_pstl_catch_weapons/models/glock18/weapon_pist_glock18.vmdl_c",
+      "sh_pstl_catch_weapons/models/usp_silencer/weapon_pist_usp_silen",
+      "sh_pstl_deploy_02_weapons/models/glock18/weapon_pist_glock18.vm",
+      "sh_pstl_deploy_02_weapons/models/usp_silencer/weapon_pist_usp_s",
+      "sh_pstl_deploy_03_weapons/models/glock18/weapon_pist_glock18.vm",
+      "sh_pstl_deploy_03_weapons/models/usp_silencer/weapon_pist_usp_s",
+      "sh_pstl_deploy_weapons/models/glock18/weapon_pist_glock18.vmdl_",
+      "sh_pstl_deploy_weapons/models/usp_silencer/weapon_pist_usp_sile",
+      "sh_pstl_fire_silenced_additive_weapons/models/usp_silencer/weap",
+      "sh_pstl_fire_unsilenced_additive_weapons/models/usp_silencer/we",
+      "sh_pstl_firing_weapons/models/glock18/weapon_pist_glock18.vmdl_",
+      "sh_pstl_stand_reload_weapons/models/glock18/weapon_pist_glock18",
+      "sh_pstl_stand_reload_weapons/models/usp_silencer/weapon_pist_us",
+      "sh_pstl_stand_silencer_off_weapons/models/usp_silencer/weapon_p",
+      "sh_pstl_stand_silencer_on_weapons/models/usp_silencer/weapon_pi",
+      "silencer_hidden_weapons/models/usp_silencer/weapon_pist_usp_sil",
+      "tools_preview",
+      "tools_preview_weapons/models/glock18/weapon_pist_glock18.vmdl_c",
+      "tools_preview_weapons/models/usp_silencer/weapon_pist_usp_silen"
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "kit": {
+    "url": "/models/imported/kit.glb",
+    "kind": "prop",
+    "source": "defuse-defuse-kit-model-cs2.zip",
+    "bytes": 121412,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "case": {
+    "url": "/models/imported/case.glb",
+    "kind": "prop",
+    "source": "csgo_case.zip",
+    "bytes": 1819104,
+    "clips": [],
+    "license": "/models/imported/case-license.txt",
+    "attribution": "Model Information:\n* title:\tCS:GO Case\n* source:\thttps://sketchfab.com/3d-models/csgo-case-1d0b7a108aa64a3394ae21c88b8ae23f\n* author:\tartfreex (https://sketchfab.com/artfreex)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"CS:GO Case\" (https://sketchfab.com/3d-models/csgo-case-1d0b7a108aa64a3394ae21c88b8ae23f) by artfreex (https://sketchfab.com/artfreex) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "dream-case": {
+    "url": "/models/imported/dream-case.glb",
+    "kind": "prop",
+    "source": "dreams__nightmares__csgo_box.zip",
+    "bytes": 412628,
+    "clips": [],
+    "license": "/models/imported/dream-case-license.txt",
+    "attribution": "Model Information:\n* title:\tDreams & Nightmares | CSGO Box\n* source:\thttps://sketchfab.com/3d-models/dreams-nightmares-csgo-box-d8310ca956954899822a2f044cc8eb5e\n* author:\tByapY (https://sketchfab.com/byapy)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Dreams & Nightmares | CSGO Box\" (https://sketchfab.com/3d-models/dreams-nightmares-csgo-box-d8310ca956954899822a2f044cc8eb5e) by ByapY (https://sketchfab.com/byapy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "flashbang": {
+    "url": "/models/imported/flashbang.glb",
+    "kind": "prop",
+    "source": "flashbang.zip",
+    "bytes": 575608,
+    "clips": [],
+    "license": "/models/imported/flashbang-license.txt",
+    "attribution": "Model Information:\n* title:\tFlashbang\n* source:\thttps://sketchfab.com/3d-models/flashbang-f4a48db9bd54420696ed282af9574dd9\n* author:\tChpndl (https://sketchfab.com/Chpndl)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Flashbang\" (https://sketchfab.com/3d-models/flashbang-f4a48db9bd54420696ed282af9574dd9) by Chpndl (https://sketchfab.com/Chpndl) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "grenade": {
+    "url": "/models/imported/grenade.glb",
+    "kind": "prop",
+    "source": "grenade.zip",
+    "bytes": 1013620,
+    "clips": [],
+    "license": "/models/imported/grenade-license.txt",
+    "attribution": "Model Information:\n* title:\tGrenade\n* source:\thttps://sketchfab.com/3d-models/grenade-8d6b63e11b464bb2a10cdbb0a082b5e7\n* author:\tChpndl (https://sketchfab.com/Chpndl)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Grenade\" (https://sketchfab.com/3d-models/grenade-8d6b63e11b464bb2a10cdbb0a082b5e7) by Chpndl (https://sketchfab.com/Chpndl) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "arena": {
+    "url": "/models/imported/arena.glb",
+    "kind": "map",
+    "source": "arena-standoff-2.zip",
+    "bytes": 4978912,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "breeze": {
+    "url": "/models/imported/breeze.glb",
+    "kind": "map",
+    "source": "breeze-standoff-2.zip",
+    "bytes": 10380688,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "dune": {
+    "url": "/models/imported/dune.glb",
+    "kind": "map",
+    "source": "dune.zip",
+    "bytes": 7691140,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "dust2": {
+    "url": "/models/imported/dust2.glb",
+    "kind": "map",
+    "source": "dust-2-cs-16.zip",
+    "bytes": 2839088,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "rust": {
+    "url": "/models/imported/rust.glb",
+    "kind": "map",
+    "source": "rust.zip",
+    "bytes": 8620740,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "sandstone": {
+    "url": "/models/imported/sandstone.glb",
+    "kind": "map",
+    "source": "sendstone-new.zip",
+    "bytes": 6586244,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "zona7": {
+    "url": "/models/imported/zona7.glb",
+    "kind": "map",
+    "source": "zona7.zip",
+    "bytes": 9238972,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "collection": {
+    "url": "/models/imported/collection.glb",
+    "kind": "map",
+    "source": "maps.zip",
+    "bytes": 3227580,
+    "clips": [],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "scar": {
+    "url": "/models/imported/scar.glb",
+    "kind": "weapon",
+    "source": "scar.zip",
+    "bytes": 4623720,
+    "clips": [
+      "Armature|Take",
+      "Armature|Idle",
+      "Armature|Shoot",
+      "Armature|Reload"
+    ],
+    "license": "/models/imported/scar-license.txt",
+    "attribution": "Model Information:\n* title:\tSCAR\n* source:\thttps://sketchfab.com/3d-models/scar-afd0c02ccc1847e2a787917dad5ba260\n* author:\tJUST (https://sketchfab.com/teenjust500)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"SCAR\" (https://sketchfab.com/3d-models/scar-afd0c02ccc1847e2a787917dad5ba260) by JUST (https://sketchfab.com/teenjust500) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "m16a2": {
+    "url": "/models/imported/m16a2.glb",
+    "kind": "weapon",
+    "source": "m16_a2_assault_rifle_-_animated.zip",
+    "bytes": 3044768,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/m16a2-license.txt",
+    "attribution": "Model Information:\n* title:\tM16 A2 Assault Rifle - Animated\n* source:\thttps://sketchfab.com/3d-models/m16-a2-assault-rifle-animated-bd4ff595b593447f9a7f1d95f501fb6c\n* author:\tuser77 (https://sketchfab.com/user77)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"M16 A2 Assault Rifle - Animated\" (https://sketchfab.com/3d-models/m16-a2-assault-rifle-animated-bd4ff595b593447f9a7f1d95f501fb6c) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "fennec": {
+    "url": "/models/imported/fennec.glb",
+    "kind": "weapon",
+    "source": "mw_2019_fennec_vipers_gmod_mw_base.zip",
+    "bytes": 9588440,
+    "clips": [
+      "draw_first",
+      "fire",
+      "inspect",
+      "reload",
+      "reload_empty",
+      "melee_hit_01",
+      "melee_hit_02",
+      "melee_hit_03"
+    ],
+    "license": "/models/imported/fennec-license.txt",
+    "attribution": "Model Information:\n* title:\t[MW: 2019] Fennec (Viper's GMod MW Base)\n* source:\thttps://sketchfab.com/3d-models/mw-2019-fennec-vipers-gmod-mw-base-d34cd93090b0409382790b3c63818bba\n* author:\tVuckyZ (https://sketchfab.com/VuckyZ123)\n\nModel License:\n* license type:\tCC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)\n* requirements:\tAuthor must be credited. No commercial use. Modified versions must have the same license.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"[MW: 2019] Fennec (Viper's GMod MW Base)\" (https://sketchfab.com/3d-models/mw-2019-fennec-vipers-gmod-mw-base-d34cd93090b0409382790b3c63818bba) by VuckyZ (https://sketchfab.com/VuckyZ123) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)"
+  },
+  "scorpion": {
+    "url": "/models/imported/scorpion.glb",
+    "kind": "viewmodel",
+    "source": "scorpion__first_person_animations_2026_remake.zip",
+    "bytes": 8429800,
+    "clips": [
+      "rig|Equip",
+      "rig|Idle",
+      "rig|Walk",
+      "rig|Run",
+      "rig|Fire",
+      "rig|Reload",
+      "rig|Reload_Empty",
+      "rig|Inspect",
+      "rig|Unequip"
+    ],
+    "license": "/models/imported/scorpion-license.txt",
+    "attribution": "Model Information:\n* title:\tScorpion | First Person Animations (2026 Remake)\n* source:\thttps://sketchfab.com/3d-models/scorpion-first-person-animations-2026-remake-f2bdfac775344004ad38d0318f0664a4\n* author:\t1Matzh (https://sketchfab.com/1Matzh)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Scorpion | First Person Animations (2026 Remake)\" (https://sketchfab.com/3d-models/scorpion-first-person-animations-2026-remake-f2bdfac775344004ad38d0318f0664a4) by 1Matzh (https://sketchfab.com/1Matzh) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "remington870": {
+    "url": "/models/imported/remington870.glb",
+    "kind": "weapon",
+    "source": "remington_870_shotgun_-_animated.zip",
+    "bytes": 1920228,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/remington870-license.txt",
+    "attribution": "Model Information:\n* title:\tRemington 870 Shotgun - Animated\n* source:\thttps://sketchfab.com/3d-models/remington-870-shotgun-animated-1b6c11ef58904fab992c6cdffaada309\n* author:\tuser77 (https://sketchfab.com/user77)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Remington 870 Shotgun - Animated\" (https://sketchfab.com/3d-models/remington-870-shotgun-animated-1b6c11ef58904fab992c6cdffaada309) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "cs5": {
+    "url": "/models/imported/cs5.glb",
+    "kind": "weapon",
+    "source": "weapon_mcmillan_cs5_sniper_rifle_free_downloads.zip",
+    "bytes": 7618208,
+    "clips": [
+      "MM_CS5_Equip",
+      "MM_CS5_Fire",
+      "MM_CS5_Inspect",
+      "MM_CS5_Reload",
+      "MM_CS5_Equip_Start",
+      "MM_CS5_Reload_Empty"
+    ],
+    "license": "/models/imported/cs5-license.txt",
+    "attribution": "Model Information:\n* title:\tWeapon McMillan CS5 Sniper rifle free downloads\n* source:\thttps://sketchfab.com/3d-models/weapon-mcmillan-cs5-sniper-rifle-free-downloads-cc7cad3f5537477d906facf37185db9a\n* author:\tcoffee owl 커피부엉이 (https://sketchfab.com/coffeeowl)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Weapon McMillan CS5 Sniper rifle free downloads\" (https://sketchfab.com/3d-models/weapon-mcmillan-cs5-sniper-rifle-free-downloads-cc7cad3f5537477d906facf37185db9a) by coffee owl 커피부엉이 (https://sketchfab.com/coffeeowl) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "precision-sniper": {
+    "url": "/models/imported/precision-sniper.glb",
+    "kind": "viewmodel",
+    "source": "sniper_fps_animation.zip",
+    "bytes": 2720916,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/precision-sniper-license.txt",
+    "attribution": "Model Information:\n* title:\tSNIPER FPS ANIMATION\n* source:\thttps://sketchfab.com/3d-models/sniper-fps-animation-f5174e499bff4d96b528c891b08c2015\n* author:\tBURNER (https://sketchfab.com/Alexander_Ovelar)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"SNIPER FPS ANIMATION\" (https://sketchfab.com/3d-models/sniper-fps-animation-f5174e499bff4d96b528c891b08c2015) by BURNER (https://sketchfab.com/Alexander_Ovelar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "deagle-view": {
+    "url": "/models/imported/deagle-view.glb",
+    "kind": "viewmodel",
+    "source": "desert_eagle__first_person_animations.zip",
+    "bytes": 8338488,
+    "clips": [
+      "rig|Equip",
+      "rig|Idle",
+      "rig|Walk",
+      "rig|Run",
+      "rig|Fire",
+      "rig|Reload",
+      "rig|Reload_Empty",
+      "rig|Inspect",
+      "rig|Unequip"
+    ],
+    "license": "/models/imported/deagle-view-license.txt",
+    "attribution": "Model Information:\n* title:\tDesert Eagle | First Person Animations\n* source:\thttps://sketchfab.com/3d-models/desert-eagle-first-person-animations-09a213d8510a42d1b747135e85712eff\n* author:\t1Matzh (https://sketchfab.com/1Matzh)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Desert Eagle | First Person Animations\" (https://sketchfab.com/3d-models/desert-eagle-first-person-animations-09a213d8510a42d1b747135e85712eff) by 1Matzh (https://sketchfab.com/1Matzh) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "tactical-knife": {
+    "url": "/models/imported/tactical-knife.glb",
+    "kind": "viewmodel",
+    "source": "animated_knife.zip",
+    "bytes": 896820,
+    "clips": [
+      "Armature|Take",
+      "Armature|Idle",
+      "Armature|Fire1",
+      "Armature|Fire2"
+    ],
+    "license": "/models/imported/tactical-knife-license.txt",
+    "attribution": "Model Information:\n* title:\tAnimated Knife\n* source:\thttps://sketchfab.com/3d-models/animated-knife-7bee900b43f24ed9b3d48304362d5599\n* author:\tJUST (https://sketchfab.com/teenjust500)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Animated Knife\" (https://sketchfab.com/3d-models/animated-knife-7bee900b43f24ed9b3d48304362d5599) by JUST (https://sketchfab.com/teenjust500) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "sas-red": {
+    "url": "/models/imported/sas-red.glb",
+    "kind": "character",
+    "source": "sas-cs2-agent-model-red.zip",
+    "bytes": 2276312,
+    "clips": [
+      "eye_test_characters/models/ctm_sas/ctm_sas_variantf.vmdl_c_sas "
+    ],
+    "license": null,
+    "attribution": "User-supplied archive. No license text was included; verify redistribution rights before public deployment."
+  },
+  "terrorist": {
+    "url": "/models/imported/terrorist.glb",
+    "kind": "character",
+    "source": "cs2_terrorist.zip",
+    "bytes": 1814952,
+    "clips": [
+      "mixamo.com"
+    ],
+    "license": "/models/imported/terrorist-license.txt",
+    "attribution": "Model Information:\n* title:\tCs2 Terrorist\n* source:\thttps://sketchfab.com/3d-models/cs2-terrorist-819cae24597f467aa975b05ee5528fd0\n* author:\tToast (https://sketchfab.com/T04st)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Cs2 Terrorist\" (https://sketchfab.com/3d-models/cs2-terrorist-819cae24597f467aa975b05ee5528fd0) by Toast (https://sketchfab.com/T04st) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "ak74u": {
+    "url": "/models/imported/ak74u.glb",
+    "kind": "weapon",
+    "source": "ak74u__free_animation..zip",
+    "bytes": 6643624,
+    "clips": [
+      "DRAW",
+      "IDLE",
+      "INSPEC",
+      "SHOOT",
+      "RELOAD1",
+      "RELOAD2"
+    ],
+    "license": "/models/imported/ak74u-license.txt",
+    "attribution": "Model Information:\n* title:\tAK74U | FREE ANIMATION.\n* source:\thttps://sketchfab.com/3d-models/ak74u-free-animation-2ab66220c48b465e9501067667965569\n* author:\tBURNER (https://sketchfab.com/Alexander_Ovelar)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"AK74U | FREE ANIMATION.\" (https://sketchfab.com/3d-models/ak74u-free-animation-2ab66220c48b465e9501067667965569) by BURNER (https://sketchfab.com/Alexander_Ovelar) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "akm": {
+    "url": "/models/imported/akm.glb",
+    "kind": "weapon",
+    "source": "akm_assault_rifle_-_animated.zip",
+    "bytes": 2516004,
+    "clips": [
+      "Scene"
+    ],
+    "license": "/models/imported/akm-license.txt",
+    "attribution": "Model Information:\n* title:\tAKM Assault Rifle - Animated\n* source:\thttps://sketchfab.com/3d-models/akm-assault-rifle-animated-6348dc53e3e249c6b297cb8f3f1e3e9b\n* author:\tuser77 (https://sketchfab.com/user77)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"AKM Assault Rifle - Animated\" (https://sketchfab.com/3d-models/akm-assault-rifle-animated-6348dc53e3e249c6b297cb8f3f1e3e9b) by user77 (https://sketchfab.com/user77) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "knife-animated": {
+    "url": "/models/imported/knife-animated.glb",
+    "kind": "weapon",
+    "source": "animated_knife.zip",
+    "bytes": 896796,
+    "clips": [
+      "Armature|Take",
+      "Armature|Idle",
+      "Armature|Fire1",
+      "Armature|Fire2"
+    ],
+    "license": "/models/imported/knife-animated-license.txt",
+    "attribution": "Model Information:\n* title:\tAnimated Knife\n* source:\thttps://sketchfab.com/3d-models/animated-knife-7bee900b43f24ed9b3d48304362d5599\n* author:\tJUST (https://sketchfab.com/teenjust500)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Animated Knife\" (https://sketchfab.com/3d-models/animated-knife-7bee900b43f24ed9b3d48304362d5599) by JUST (https://sketchfab.com/teenjust500) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "knife-flip": {
+    "url": "/models/imported/knife-flip.glb",
+    "kind": "weapon",
+    "source": "knife_animated.zip",
+    "bytes": 1357996,
+    "clips": [
+      "anims"
+    ],
+    "license": "/models/imported/knife-flip-license.txt",
+    "attribution": "Model Information:\n* title:\tknife Animated\n* source:\thttps://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8\n* author:\tDJMaesen (https://sketchfab.com/bumstrum)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"knife Animated\" (https://sketchfab.com/3d-models/knife-animated-f3140db917cc43389c14b5b2536c1dc8) by DJMaesen (https://sketchfab.com/bumstrum) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "ak-view": {
+    "url": "/models/imported/ak-view.glb",
+    "kind": "viewmodel",
+    "source": "ak-47_with_arms_and_shoot_animation.zip",
+    "bytes": 8245404,
+    "clips": [
+      "Object_0"
+    ],
+    "license": "/models/imported/ak-view-license.txt",
+    "attribution": "Model Information:\n* title:\tAk-47 with arms and shoot animation\n* source:\thttps://sketchfab.com/3d-models/ak-47-with-arms-and-shoot-animation-a2ed635335ed497f9a011f8d56017a8d\n* author:\t:+ (https://sketchfab.com/Pattoka47)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Ak-47 with arms and shoot animation\" (https://sketchfab.com/3d-models/ak-47-with-arms-and-shoot-animation-a2ed635335ed497f9a011f8d56017a8d) by :+ (https://sketchfab.com/Pattoka47) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "outpost": {
+    "url": "/models/imported/outpost.glb",
+    "kind": "map",
+    "source": "counter_strike_map.zip",
+    "bytes": 2644080,
+    "clips": [],
+    "license": "/models/imported/outpost-license.txt",
+    "attribution": "Model Information:\n* title:\tCounter Strike Map\n* source:\thttps://sketchfab.com/3d-models/counter-strike-map-b0b7e8e91275464491f5ba2ee3e2d776\n* author:\tCHANO (https://sketchfab.com/pedroribeiro.1104)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Counter Strike Map\" (https://sketchfab.com/3d-models/counter-strike-map-b0b7e8e91275464491f5ba2ee3e2d776) by CHANO (https://sketchfab.com/pedroribeiro.1104) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "handcannon-classic": {
+    "url": "/models/imported/handcannon-classic.glb",
+    "kind": "viewmodel",
+    "source": "desert_eagle_animated.zip",
+    "bytes": 1902000,
+    "clips": [
+      "Animation"
+    ],
+    "license": "/models/imported/handcannon-classic-license.txt",
+    "attribution": "Model Information:\n* title:\tDesert_Eagle animated\n* source:\thttps://sketchfab.com/3d-models/desert-eagle-animated-d53ce50912db4d078c771da0a78317bb\n* author:\t:+ (https://sketchfab.com/Pattoka47)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"Desert_Eagle animated\" (https://sketchfab.com/3d-models/desert-eagle-animated-d53ce50912db4d078c771da0a78317bb) by :+ (https://sketchfab.com/Pattoka47) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "benelli": {
+    "url": "/models/imported/benelli.glb",
+    "kind": "viewmodel",
+    "source": "fps_benelli_m4_animations.zip",
+    "bytes": 4927352,
+    "clips": [
+      "Rig|M4_Idle",
+      "Rig|M4_Walk",
+      "Rig|M4_Run",
+      "Rig|M4_Fire",
+      "Rig|M4_Fire_LastRoundCheck",
+      "Rig|M4_ReloadOne_type1",
+      "Rig|M4_ReloadFull_type1",
+      "Rig|M4_ReloadOne_type2"
+    ],
+    "license": "/models/imported/benelli-license.txt",
+    "attribution": "Model Information:\n* title:\tFPS Benelli M4 Animations\n* source:\thttps://sketchfab.com/3d-models/fps-benelli-m4-animations-225a62190f6043ca975eaa2798ab7e2c\n* author:\tCransh (https://sketchfab.com/ccransh)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"FPS Benelli M4 Animations\" (https://sketchfab.com/3d-models/fps-benelli-m4-animations-225a62190f6043ca975eaa2798ab7e2c) by Cransh (https://sketchfab.com/ccransh) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "pistol-fps": {
+    "url": "/models/imported/pistol-fps.glb",
+    "kind": "viewmodel",
+    "source": "fps_pistol_animations.zip",
+    "bytes": 3441680,
+    "clips": [
+      "Armature|FPS_Pistol_Idle",
+      "Armature|FPS_Pistol_Walk",
+      "Armature|FPS_Pistol_Fire",
+      "Armature|FPS_Pistol_Reload_easy",
+      "Armature|FPS_Pistol_Reload_full"
+    ],
+    "license": "/models/imported/pistol-fps-license.txt",
+    "attribution": "Model Information:\n* title:\tFPS pistol animations\n* source:\thttps://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d\n* author:\tCransh (https://sketchfab.com/ccransh)\n\nModel License:\n* license type:\tCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\n* requirements:\tAuthor must be credited. Commercial use is allowed.\n\nIf you use this 3D model in your project be sure to copy paste this credit wherever you share it:\nThis work is based on \"FPS pistol animations\" (https://sketchfab.com/3d-models/fps-pistol-animations-0d7a343dcb6f401197a73c91aee93f6d) by Cransh (https://sketchfab.com/ccransh) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)"
+  },
+  "resoforge": {
+    "url": "/models/imported/resoforge.glb",
+    "kind": "map",
+    "source": "lowpoly-map-asset-by-resoforge.zip",
+    "bytes": 2156388,
+    "clips": [],
+    "license": "/models/imported/resoforge-license.txt",
+    "attribution": "LOWPOLY | MAP | ASSET | by ResoForge\nCreator: ResoForge\nSource: https://sketchfab.com/3d-models/lowpoly-map-asset-by-resoforge-e766d489a6c349c8a8ec9a994b1f87b1\nLicense: Creative Commons Attribution 4.0 International\nhttps://creativecommons.org/licenses/by/4.0/\nLicense verified through the public Sketchfab model metadata on 2026-10-26.\nThis version is optimized and renamed Freight Yard, with generated collision,\nteam starts, navigation and objective locations for BROWSERSTRIKE."
+  },
+  "robot": {
+    "url": "/models/imported/robot.glb",
+    "kind": "character",
+    "source": "robot-expressive.glb",
+    "bytes": 428396,
+    "clips": [
+      "Death",
+      "Idle",
+      "Jump",
+      "Running",
+      "Walking",
+      "WalkJump"
+    ],
+    "license": "/models/imported/robot-license.txt",
+    "attribution": "RobotExpressive\nCreator: Tomas Laulhe (Quaternius); modifications by Don McCurdy.\nLicense: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/1.0/\nSource: https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf/RobotExpressive\nLicense attribution verified in the official example:\nhttps://threejs.org/examples/webgl_animation_skinning_morph.html\nDownloaded 2026-10-26. Native idle, walking, running and death clips are retained."
+  }
+}

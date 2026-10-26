@@ -1,0 +1,10 @@
+Revolver from the Animated Guns Pack by Quaternius.
+Source: https://quaternius.com/packs/animatedguns.html
+Author's download: https://drive.google.com/file/d/1OnpaIArmD3CNsakEAMahUdQMeYWHffzN/view
+Retrieved: 2026-10-22
+
+The author lists this pack under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+This model is used with its supplied fire and reload animations.
+The author preview is retained separately for development reference only.
