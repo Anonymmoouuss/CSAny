@@ -9,12 +9,22 @@ import { once } from 'node:events';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server/game.ts';
 import { CLASSIC_RANKS, initialRank, rankedCompatible } from '../shared/ranking.ts';
-import { readSocialCredentials } from '../client/social.ts';
+import { readSocialCredentials, SocialPanel } from '../client/social.ts';
 
 function friends(store: SocialStore) {
   const first = store.register('Alpha'); const second = store.register('Bravo');
   store.requestFriend(first.id, second.id); store.replyFriend(second.id, first.id, true); return { first, second };
 }
+
+test('opening a fresh profile avoids a redundant refresh that replaces its form', async () => {
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'document'); Object.defineProperty(globalThis, 'document', { configurable: true, value: { pointerLockElement: null } });
+  let requests = 0;
+  const panel = { socket: null, state: null, armory: { close() {} }, root: { classList: { remove() {} } }, render() {}, notice() {}, connect: async () => {}, send: () => { requests++; } } as unknown as SocialPanel;
+  try {
+    SocialPanel.prototype.open.call(panel); await Promise.resolve(); assert.equal(requests, 0);
+    Object.assign(panel, { socket: { readyState: WebSocket.OPEN }, state: {} }); SocialPanel.prototype.open.call(panel); await Promise.resolve(); assert.equal(requests, 1);
+  } finally { if (previous) Object.defineProperty(globalThis, 'document', previous); else delete (globalThis as { document?: unknown }).document; }
+});
 
 test('profile migration reuses credentials only for the verified replacement backend', () => {
   const store = new SocialStore(); const credentials = store.register('Migrated');

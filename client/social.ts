@@ -118,8 +118,9 @@ export class SocialPanel {
     });
   }
   open() {
+    const refresh = this.socket?.readyState === WebSocket.OPEN && !!this.state;
     this.armory.close(); if (document.pointerLockElement) document.exitPointerLock(); this.root.classList.remove('hidden'); this.render();
-    void this.connect().then(() => this.send({ type: 'refresh' })).catch(error => { this.notice(error.message); this.render(); });
+    void this.connect().then(() => { if (refresh) this.send({ type: 'refresh' }); }).catch(error => { this.notice(error.message); this.render(); });
   }
   close() { this.root.classList.add('hidden'); }
   private updateButton() {
