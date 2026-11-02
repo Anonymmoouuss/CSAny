@@ -10,7 +10,7 @@ import { encodeMapGeometry, registerMapGeometry, type SurfaceMaterial } from '..
 import { encodeInputs, decodeInputs, HitboxHistory } from '../shared/protocol.ts';
 import { advanceTraining, configureRange, createTraining, recordTrainingShot, TRAINING_MAP } from '../shared/training.ts';
 import { InputButtons } from '../client/input.ts';
-import { multiplayerAddress, Network } from '../client/network.ts';
+import { multiplayerAddress, Network, warmMultiplayerServer } from '../client/network.ts';
 
 const input = (seq: number, extra: Partial<Input> = {}): Input => ({
   seq, time: Date.now(), forward: 0, side: 0, yaw: 0, pitch: 0, jump: false, crouch: false,
@@ -34,6 +34,24 @@ test('multiplayer selects the configured shared backend without player address s
   assert.equal(multiplayerAddress('ws://stale.invalid/ws', 'https://counterstrikebrowser.vercel.app', 'https://games.example.test'), 'wss://games.example.test/ws');
   assert.equal(multiplayerAddress('ws://localhost:3001/ws', 'http://localhost:5173'), 'ws://localhost:3001/ws');
   assert.throws(() => multiplayerAddress('', 'https://counterstrikebrowser.vercel.app'), /temporarily unavailable/);
+});
+
+test('free Render hosts wake once before sockets while local and other hosts are untouched', async () => {
+  const original = globalThis.fetch; const requests: string[] = [];
+  globalThis.fetch = async (address, options) => { requests.push(String(address)); assert.equal(options?.credentials, 'omit'); assert.equal(options?.mode, 'no-cors'); return new Response('ready'); };
+  try {
+    await Promise.all([warmMultiplayerServer('wss://wake-test.onrender.com/ws'), warmMultiplayerServer('wss://wake-test.onrender.com/social')]);
+    assert.deepEqual(requests, ['https://wake-test.onrender.com/health']);
+    await warmMultiplayerServer('wss://wake-test.onrender.com/ws'); assert.equal(requests.length, 1);
+    await warmMultiplayerServer('ws://localhost:3001/ws'); await warmMultiplayerServer('wss://games.example.test/ws'); assert.equal(requests.length, 1);
+  } finally { globalThis.fetch = original; }
+});
+
+test('a failed free-host wake can be retried without a permanently rejected cache', async () => {
+  const original = globalThis.fetch; let requests = 0;
+  globalThis.fetch = async () => { requests++; return new Response('ready', { status: requests === 1 ? 503 : 200 }); };
+  try { await assert.rejects(warmMultiplayerServer('wss://retry-wake-test.onrender.com/ws'), /free game server/); await warmMultiplayerServer('wss://retry-wake-test.onrender.com/ws'); assert.equal(requests, 2); }
+  finally { globalThis.fetch = original; }
 });
 
 test('multiplayer join waits for the map and replays its latest queued player state', async () => {
@@ -457,7 +475,8 @@ test('Gun Game is authoritative free-for-all and purchases cannot skip its kill 
     const joined = await welcome; const room = game.rooms.get(joined.code)!; room.map = 'dustline'; room.phase = 'live';
     const shooter = room.clients.get(joined.id)!.player; Object.assign(shooter, { x: 0, y: 0, z: 5, yaw: 0, pitch: 0, lastShot: 0 });
     for (const bot of room.bots) Object.assign(bot, { hp: 0, respawnAt: 0 });
-    const target = room.bots[0]; Object.assign(target, { team: shooter.team, hp: 1, armor: 0, x: 0, y: 0, z: 0, reloading: Date.now() + 30000 }); room.history.clear();
+    const target = room.bots[0]; Object.assign(target, { team: shooter.team, hp: 1, armor: 0, x: 0, y: 0, z: 0, reloading: 0 });
+    const brain = room.brains.get(target.id)!; brain.nextShot = Infinity; brain.reactAt = Infinity; room.history.clear();
     const killed = reply('required-weapon kill', message => message.type === 'state' && message.events.some((event: any) => event.type === 'kill' && event.id === joined.id));
     socket.send(JSON.stringify({ type: 'inputs', inputs: [input(1, { weapon: 'servicePistol', fire: true })] })); await killed;
     assert.equal(shooter.kills, 1); assert.equal(target.deaths, 1); assert.equal(room.gunGame!.levels[shooter.id], 1); assert.equal(shooter.weapon, 'pistol');

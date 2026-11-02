@@ -181,7 +181,7 @@ The browser client is static and deploys to Vercel. The authoritative WebSocket 
 
 The included `.vercelignore` excludes raw model archives, reference videos, local credentials, profile data and generated caches from CLI uploads. Optimized runtime assets under `client/public/models/` remain included. Git ignore rules alone do not define Vercel CLI uploads.
 
-1. Run the server on a persistent Node host using `npm ci` and `npm start`, or keep the current Codespace server running with its public port `3001`.
+1. Run the server on a Node host using `npm ci` and `npm start`. The current shared backend uses Render's verified free web-service plan and does not depend on Codespaces.
 2. Set `ALLOWED_ORIGINS` on the game server to the exact Vercel origin, for example `https://counterstrikebrowser.vercel.app`. Set the server's `PORT` through the host environment (Render supplies this automatically).
 3. Configure `VITE_SERVER_URL=wss://YOUR-SERVER/ws` in the Vercel project's Production environment and deploy the client. The included `vercel.json` builds and serves `dist/`. This is a host setting, not a player input; old player-entered addresses are ignored.
 4. Use **Public** for automatic multiplayer or **Private** to share a room code. Profiles use the same host at `/social`.
@@ -190,22 +190,20 @@ The server exposes `GET /health` for host health checks. Local development autom
 
 All visitors use the same configured server automatically; only private matches require a shared code. Vercel alone can run solo/training, not authoritative rooms or social storage. If joining fails, the host should check `/health`, `/ws`, `/social` and `ALLOWED_ORIGINS`. Changing build-time `VITE_SERVER_URL` requires a redeploy. Joining waits for map loading and playable state; temporary input backlogs are bounded and reconciled without deliberately disconnecting the player.
 
-### Current Shared Backend
+### Free Shared Backend
 
-The Production environment points to the public port `3001` of the `curly-space-palm-tree-g4wpp747gj6gcwqvv` Codespace. This removes server-address setup for players, but **online matches, friends and 1v1s work only while that Codespace and its server are running**. They are not an always-on hosting service. Recheck port visibility after restarts:
+The shared backend is [counterstrikebrowser-server.onrender.com](https://counterstrikebrowser-server.onrender.com/health), configured as `wss://counterstrikebrowser-server.onrender.com/ws`. Render's service runs independently of this Codespace, so stopping the Codespace no longer stops online matches, profiles or 1v1s.
 
-```sh
-gh codespace ports visibility 3001:public -c "$CODESPACE_NAME"
-```
+The free service can sleep after inactivity. Entering online play or opening a profile makes one bounded health request before opening sockets; the client allows up to 90 seconds for that wake-up request and shares it between simultaneous connections. A failed wake-up can be retried. There is no background polling to keep the host awake. Free hosting has usage limits, cold starts and no always-on performance guarantee; it is not an unlimited or SLA-backed service.
 
-For always-available multiplayer, deploy the same server to a persistent host, change the host's Vercel environment setting and redeploy. No client-side player setup is needed in either configuration.
+**Durable profiles:** the backend uses the existing Neon database on its verified **Free** plan through the server-only `DATABASE_URL`. Profile snapshots preserve identities, inventories, credits, friends, messages, trades and ranks outside Render's temporary filesystem. Startup waits for database initialization; it fails rather than silently reverting to temporary files if the configured database is unavailable. Social actions flush their queued writes before acknowledgment. This snapshot store supports one authoritative server process, not independent concurrent replicas.
 
-**Durable profiles:** set the server's `SOCIAL_STORE_PATH` to a JSON file on persistent storage. The default local store is under the ignored server data directory. Free ephemeral hosts can lose profiles on restart/redeploy; mount durable storage before relying on friends or trades. This file store supports one server process, not multiple independent replicas. Treat browser profile credentials as secrets, back up the store and never commit it.
+Existing Codespace profiles were copied into the database without exposing credentials. The browser reuses old credentials only for the specific, verified Codespace-to-Render handover and stores the new endpoint association after authentication; unrelated server URLs never receive them. Local development still uses `SOCIAL_STORE_PATH` and a JSON file when `DATABASE_URL` is unset. Treat browser/database credentials as secrets, keep backups and never commit them. Both hosts remain subject to their free-tier quotas; no paid plan was provisioned.
 
 ### Vercel Checklist
 
 1. Ensure the intended changes and runtime assets are committed and pushed to the repository. A Git-linked Vercel deployment cannot see uncommitted Codespaces files. Do not include source ZIPs, reference videos, profile data or credentials. Verify model redistribution rights before making the deployment public.
-2. Start the persistent Node server on Render/Railway with `npm ci` and `npm start`; confirm `https://YOUR-SERVER/health` returns `ok: true`. Use persistent storage for profiles/trades.
+2. Start the Node server on Render with `npm ci` and `npm start`; confirm `https://YOUR-SERVER/health` returns `ok: true`. Set its server-only `DATABASE_URL` to durable PostgreSQL storage, not a path on the free service's temporary disk.
 3. In [Vercel New Project](https://vercel.com/new), import `Anonymmoouuss/CSAny`, keep the repository root, choose Vite, build with `npm run build`, and use `dist` as the output directory. The existing configuration supplies these defaults.
 4. Set Vercel's production environment variable `VITE_SERVER_URL=wss://YOUR-SERVER/ws` before building. This address is public client configuration, not an API secret. Deploy after setting it.
 5. Set the Node server's `ALLOWED_ORIGINS=https://YOUR-PROJECT.vercel.app` to the exact deployed client origin and restart the server. Add exact preview/custom origins separately when needed; do not substitute a broad wildcard.
@@ -254,4 +252,4 @@ Start `npm run dev` before the browser suite. Install Playwright Chromium and it
 
 Use `BROWSERSTRIKE_CHROMIUM_EXECUTABLE` to select a full Chromium executable when the default headless shell is unreliable.
 
-**Verification:** all 123 automated tests and the production build passed on 2026-11-02. Coverage includes case-lid motion, geometry-based scaled charm mounts, single-charge cloud rewards, map-loading join readiness, early disconnects, input timestamp corrections and bounded prediction queues, alongside the gameplay/model/social suite. Five focused Chromium checks passed for local/cloud case openings and charm reels on desktop/mobile, private multiplayer and cross-screen 1v1 acceptance without player-entered addresses. A separate public WebSocket check verified two clients joining the same private room through the shared backend. All enabled maps retain the 24-metre site-clearance and 36-metre A/B-separation checks. Broad software-GPU stress has historically crashed in this container; the entire browser suite is not claimed green. Always verify public backend health after a Codespace restart and test on real hardware before a production release.
+**Verification:** automated tests and the production build cover the gameplay/model/social suite plus free-host wake-up sharing/retries, durable snapshot reopen/failure handling, restored server identities and the restricted browser credential migration. The existing case-lid, scaled charm-mount, join-readiness and bounded-input checks remain in place. Focused Chromium checks cover case/charm openings, private multiplayer and cross-screen 1v1s; the broad software-GPU stress suite is not claimed green. Test real devices and check provider free-tier status when diagnosing production availability.

@@ -2,9 +2,17 @@ import { WEAPONS, type WeaponId } from '../shared/game.ts';
 import { CHARMS, CHARM_CASES, SKIN_BY_ID, SKIN_CATALOG, itemValue, type CharmId, type InventoryItem } from '../shared/economy.ts';
 import type { PublicProfile, SocialCredentials, SocialState } from '../shared/social.ts';
 import { Armory, escapeHtml, refreshIcons } from './armory.ts';
+import { warmMultiplayerServer } from './network.ts';
 
 const icon = (name: string) => `<i data-lucide="${name}" aria-hidden="true"></i>`;
 const avatar = (profile: PublicProfile) => profile.avatar ? `<img class="social-avatar" src="${escapeHtml(profile.avatar)}" width="40" height="40" alt="${escapeHtml(profile.name)}">` : `<span class="social-avatar social-initials">${escapeHtml(profile.name.slice(0, 2).toUpperCase())}</span>`;
+
+export function readSocialCredentials(storage: Pick<Storage, 'getItem'>, endpoint: string): SocialCredentials | undefined {
+  const read = (address: string) => {
+    try { const value = JSON.parse(storage.getItem(`bs-social-v1:${address}`) || 'null'); return value && typeof value.id === 'string' && /^[A-F0-9]{12}$/.test(value.id) && typeof value.token === 'string' && /^[a-f0-9]{64}$/.test(value.token) ? value as SocialCredentials : undefined; } catch { return undefined; }
+  };
+  return read(endpoint) || (endpoint === 'wss://counterstrikebrowser-server.onrender.com/social' ? read('wss://curly-space-palm-tree-g4wpp747gj6gcwqvv-3001.app.github.dev/social') : undefined);
+}
 
 export class SocialPanel {
   state: SocialState | null = null;
@@ -59,9 +67,9 @@ export class SocialPanel {
     if (this.socket?.readyState === WebSocket.OPEN && this.state && this.endpoint === url.toString()) return;
     if (this.connecting) return this.connecting;
     this.endpoint = url.toString(); this.socket?.close(); this.state = null;
-    try { this.credentials = JSON.parse(localStorage.getItem(this.storageKey()) || 'null') || undefined; } catch { this.credentials = undefined; }
+    this.credentials = readSocialCredentials(localStorage, this.endpoint);
     if (existingOnly && !this.credentials) return;
-    this.connecting = new Promise<void>((resolve, reject) => {
+    this.connecting = warmMultiplayerServer(this.endpoint).then(() => new Promise<void>((resolve, reject) => {
       const socket = new WebSocket(this.endpoint); this.socket = socket; let ready = false;
       const timeout = window.setTimeout(() => { socket.close(); reject(new Error('PROFILE SERVER TIMED OUT')); }, 10000);
       socket.onopen = () => socket.send(JSON.stringify({ type: 'auth', name: name || 'Operator', credentials: this.credentials }));
@@ -69,7 +77,7 @@ export class SocialPanel {
         if (this.socket !== socket) return;
         try {
           const message = JSON.parse(event.data);
-          if (message.type === 'social-ready' && message.credentials) { this.credentials = message.credentials; localStorage.setItem(this.storageKey(), JSON.stringify(this.credentials)); }
+          if (message.type === 'social-ready') { if (message.credentials) this.credentials = message.credentials; if (this.credentials) localStorage.setItem(this.storageKey(), JSON.stringify(this.credentials)); }
           if (message.type === 'social-state') {
             const next = message as SocialState; const before = this.state?.incoming.length || 0;
             const tradesBefore = this.state?.trades.filter(trade => trade.to === this.state!.self.id && trade.status === 'pending').length || 0;
@@ -90,7 +98,7 @@ export class SocialPanel {
       };
       socket.onerror = () => { if (!ready) { clearTimeout(timeout); reject(new Error('PROFILE SERVER UNAVAILABLE')); } };
       socket.onclose = () => { clearTimeout(timeout); if (this.socket !== socket) return; this.socket = null; this.rejectCharmRequest('PROFILE CONNECTION CLOSED'); this.notice('OFFLINE'); if (!ready) reject(new Error('PROFILE CONNECTION CLOSED')); };
-    }).finally(() => { this.connecting = null; });
+    })).finally(() => { this.connecting = null; });
     return this.connecting;
   }
 

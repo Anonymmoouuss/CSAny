@@ -8,7 +8,7 @@ import {
   type GameEvent, type Input, type MapId, type Mode, type Phase, type Player, type Snapshot, type Team, type Vec, type WeaponId, type ThrowableId,
 } from '../shared/game.ts';
 import { creditReward, validAppearance } from '../shared/economy.ts';
-import { createSocialService } from './social.ts';
+import { createSocialService, type SocialStore } from './social.ts';
 import { emptyBomb, beginRound as beginSharedRound, advanceRound, dropBomb, dropWeapon, pickupWeapon, interactBomb, purchaseEquipment, recordModeKill, finishRound } from '../shared/round.ts';
 import { equipGunGame } from '../shared/modes.ts';
 import { rankIndex, rankedBotDifficulty, rankedCompatible } from '../shared/ranking.ts';
@@ -36,10 +36,10 @@ export type Room = {
 const weaponIds = Object.keys(WEAPONS) as WeaponId[];
 const clean = (value: string, max: number) => value.replace(/[\x00-\x1f\x7f]/g, '').trim().slice(0, max);
 
-export function createGameServer(options: { port?: number; host?: string; origins?: string[]; socialPath?: string } = {}) {
+export function createGameServer(options: { port?: number; host?: string; origins?: string[]; socialPath?: string; socialStore?: SocialStore } = {}) {
   const rooms = new Map<string, Room>();
   let closing = false;
-  const social = createSocialService({ path: options.socialPath, origins: options.origins, onDuel: duel => createRoom('duel', 'private', [duel.from, duel.to]).code });
+  const social = createSocialService({ path: options.socialPath, store: options.socialStore, origins: options.origins, onDuel: duel => createRoom('duel', 'private', [duel.from, duel.to]).code });
   const http = createServer((request, response) => {
     response.writeHead(request.url === '/health' ? 200 : 404, { 'Content-Type': 'application/json' });
     response.end(JSON.stringify(request.url === '/health' ? { ok: true, rooms: rooms.size, tickRate: SERVER_TICK_RATE, snapshotRate: SNAPSHOT_RATE } : { error: 'Not found' }));

@@ -19,6 +19,20 @@ export function multiplayerAddress(address: string, origin: string, configured =
   if (url.pathname === '/' || !url.pathname) url.pathname = '/ws'; return url.toString();
 }
 
+const wakingServers = new Map<string, { ready: Promise<void>; expiresAt: number }>();
+export function warmMultiplayerServer(address: string): Promise<void> {
+  const url = new URL(address);
+  if (!url.hostname.endsWith('.onrender.com')) return Promise.resolve();
+  url.protocol = url.protocol === 'wss:' ? 'https:' : 'http:'; url.pathname = '/health'; url.search = ''; url.hash = '';
+  const key = url.toString(); const previous = wakingServers.get(key);
+  if (previous && previous.expiresAt > Date.now()) return previous.ready;
+  const ready = Promise.resolve().then(() => fetch(key, { mode: 'no-cors', credentials: 'omit', cache: 'no-store', signal: AbortSignal.timeout(90000) })).then(response => {
+    if (response.type !== 'opaque' && !response.ok) throw new Error('The free game server could not start. Please try again shortly.');
+    const current = wakingServers.get(key); if (current) current.expiresAt = Date.now() + 60000;
+  }).catch(() => { wakingServers.delete(key); throw new Error('The free game server is waking up or unavailable. Please try again shortly.'); });
+  wakingServers.set(key, { ready, expiresAt: Infinity }); return ready;
+}
+
 export class Network {
   socket: WebSocket | null = null;
   id = '';

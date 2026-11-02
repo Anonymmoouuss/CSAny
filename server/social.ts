@@ -2,6 +2,7 @@ import { createHash, randomBytes, randomUUID, timingSafeEqual } from 'node:crypt
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import sharp from 'sharp';
+import { Pool } from 'pg';
 import { WebSocket, WebSocketServer } from 'ws';
 import type { IncomingMessage } from 'node:http';
 import type { Duplex } from 'node:stream';
@@ -11,6 +12,7 @@ import { applyRankedResult, initialRank, rankSummary, type RankedProfile } from 
 
 type Account = { id: string; tokenHash: string; name: string; avatar: string; profile: Profile; friends: string[]; requests: string[]; ranked?: RankedProfile };
 type StoredSocial = { version: 1; accounts: Account[]; trades: TradeOffer[]; messages?: DirectMessage[]; duels?: DuelInvite[] };
+export type SocialPersistence = { load: () => Promise<StoredSocial | null>; save: (snapshot: StoredSocial) => Promise<void>; close?: () => Promise<void> };
 const tokenHash = (token: string) => createHash('sha256').update(token).digest('hex');
 const cleanName = (name: unknown) => typeof name === 'string' ? name.replace(/[\x00-\x1f\x7f]/g, '').trim().slice(0, 24) || 'Operator' : 'Operator';
 
@@ -19,11 +21,12 @@ export class SocialStore {
   private trades = new Map<string, TradeOffer>();
   private messages: DirectMessage[] = [];
   private duels = new Map<string, DuelInvite>();
+  private pendingSave: Promise<void> = Promise.resolve();
   readonly online = new Set<string>();
 
-  constructor(private path?: string) {
-    if (!path || !existsSync(path)) return;
-    const data = JSON.parse(readFileSync(path, 'utf8')) as StoredSocial;
+  constructor(private path?: string, snapshot?: StoredSocial, private persistence?: SocialPersistence) {
+    const data = snapshot || (path && existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) as StoredSocial : null);
+    if (!data) return;
     if (data.version !== 1 || !Array.isArray(data.accounts) || !Array.isArray(data.trades)) throw new Error('Invalid social store');
     for (const account of data.accounts) {
       if (!/^[A-F0-9]{12}$/.test(account.id) || !/^[a-f0-9]{64}$/.test(account.tokenHash) || !Array.isArray(account.profile?.items) || !account.profile.items.every(item => validAppearance(item))) throw new Error('Invalid stored account');
@@ -36,10 +39,23 @@ export class SocialStore {
     for (const duel of data.duels || []) this.duels.set(duel.id, duel);
   }
 
+  static async open(persistence: SocialPersistence, path?: string) {
+    const snapshot = await persistence.load(); const store = new SocialStore(path, snapshot || undefined, persistence);
+    if (!snapshot && store.accounts.size) { store.save(); await store.flush(); }
+    return store;
+  }
+  async flush() { await this.pendingSave; }
+  async close() { await this.flush(); await this.persistence?.close?.(); }
+
   private save() {
+    const data: StoredSocial = { version: 1, accounts: [...this.accounts.values()], trades: [...this.trades.values()], messages: this.messages, duels: [...this.duels.values()] };
+    if (this.persistence) {
+      const snapshot = structuredClone(data);
+      this.pendingSave = this.pendingSave.catch(() => {}).then(() => this.persistence!.save(snapshot));
+      void this.pendingSave.catch(() => {}); return;
+    }
     if (!this.path) return;
     mkdirSync(dirname(this.path), { recursive: true, mode: 0o700 });
-    const data: StoredSocial = { version: 1, accounts: [...this.accounts.values()], trades: [...this.trades.values()], messages: this.messages, duels: [...this.duels.values()] };
     writeFileSync(`${this.path}.next`, JSON.stringify(data), { mode: 0o600 }); renameSync(`${this.path}.next`, this.path);
   }
 
@@ -212,8 +228,20 @@ export class SocialStore {
   }
 }
 
-export function createSocialService(options: { path?: string; origins?: string[]; onDuel?: (duel: DuelInvite) => string } = {}) {
-  const store = new SocialStore(options.path); const sockets = new WebSocketServer({ noServer: true, maxPayload: 200000 });
+export async function openPostgresSocialStore(connectionString: string, path?: string) {
+  const pool = new Pool({ connectionString, max: 2, connectionTimeoutMillis: 15000, idleTimeoutMillis: 30000 });
+  try {
+    await pool.query('CREATE TABLE IF NOT EXISTS browserstrike_social (id text PRIMARY KEY, snapshot jsonb NOT NULL, updated_at timestamptz NOT NULL DEFAULT now())');
+    return await SocialStore.open({
+      load: async () => { const result = await pool.query<{ snapshot: StoredSocial }>('SELECT snapshot FROM browserstrike_social WHERE id = $1', ['primary']); return result.rows[0]?.snapshot || null; },
+      save: async snapshot => { await pool.query('INSERT INTO browserstrike_social (id, snapshot) VALUES ($1, $2::jsonb) ON CONFLICT (id) DO UPDATE SET snapshot = EXCLUDED.snapshot, updated_at = now()', ['primary', JSON.stringify(snapshot)]); },
+      close: () => pool.end(),
+    }, path);
+  } catch { await pool.end(); throw new Error('Persistent profile database unavailable; server startup aborted'); }
+}
+
+export function createSocialService(options: { path?: string; origins?: string[]; onDuel?: (duel: DuelInvite) => string; store?: SocialStore } = {}) {
+  const store = options.store || new SocialStore(options.path); const sockets = new WebSocketServer({ noServer: true, maxPayload: 200000 });
   const sessions = new Map<WebSocket, { id: string; since: number; count: number; pongAt: number }>();
   const registrations = new Map<string, { since: number; count: number }>();
   const send = (socket: WebSocket, value: unknown) => { if (socket.readyState === WebSocket.OPEN && socket.bufferedAmount < 2000000) socket.send(JSON.stringify(value)); };
@@ -236,6 +264,7 @@ export function createSocialService(options: { path?: string; origins?: string[]
             registrations.set(address, !bucket || now - bucket.since >= 60000 ? { since: now, count: 1 } : { ...bucket, count: bucket.count + 1 });
             credentials = store.register(message.name); id = credentials.id;
           }
+          await store.flush();
           session = { id, since: now, count: 0, pongAt: now }; sessions.set(socket, session); store.online.add(id); clearTimeout(deadline);
           send(socket, { type: 'social-ready', id, credentials }); broadcast(); return;
         }
@@ -249,7 +278,7 @@ export function createSocialService(options: { path?: string; origins?: string[]
         else if (message.type === 'duel-invite' && typeof message.target === 'string') store.inviteDuel(session.id, message.target);
         else if (message.type === 'duel-reply' && typeof message.duel === 'string' && typeof message.accept === 'boolean') {
           const duel = store.replyDuel(session.id, message.duel, message.accept);
-          if (duel.status === 'accepted' && options.onDuel) { const code = options.onDuel(duel); for (const [peer, identity] of sessions) if (identity.id === duel.from || identity.id === duel.to) send(peer, { type: 'duel-ready', code, duel: duel.id }); }
+          if (duel.status === 'accepted' && options.onDuel) { await store.flush(); const code = options.onDuel(duel); for (const [peer, identity] of sessions) if (identity.id === duel.from || identity.id === duel.to) send(peer, { type: 'duel-ready', code, duel: duel.id }); }
         }
         else if (message.type === 'trade-offer' && typeof message.target === 'string') store.offerTrade(session.id, message.target, message.give, message.receive);
         else if (message.type === 'trade-reply' && typeof message.trade === 'string' && ['accept', 'decline', 'cancel'].includes(String(message.action))) store.replyTrade(session.id, message.trade, message.action as 'accept' | 'decline' | 'cancel');
@@ -257,7 +286,7 @@ export function createSocialService(options: { path?: string; origins?: string[]
         else if (message.type === 'charm' && typeof message.uid === 'string') store.setCharm(session.id, message.uid, message.charm);
         else if (message.type === 'charm-case' && typeof message.case === 'string') store.openCharmCase(session.id, message.case);
         else if (message.type !== 'refresh') throw new Error('UNKNOWN SOCIAL REQUEST');
-        send(socket, { type: 'social-ok', action: message.type }); broadcast();
+        await store.flush(); send(socket, { type: 'social-ok', action: message.type }); broadcast();
       }).catch(error => { send(socket, { type: 'social-error', text: error instanceof Error ? error.message : 'SOCIAL REQUEST FAILED' }); });
     });
     socket.on('error', () => {});
@@ -278,6 +307,6 @@ export function createSocialService(options: { path?: string; origins?: string[]
       if (options.origins?.length && (!origin || !options.origins.includes(origin))) { socket.write('HTTP/1.1 403 Forbidden\r\n\r\n'); socket.destroy(); return; }
       sockets.handleUpgrade(request, socket, head, connection => sockets.emit('connection', connection, request));
     },
-    async close() { clearInterval(heartbeat); for (const socket of sockets.clients) socket.terminate(); await new Promise<void>(resolve => sockets.close(() => resolve())); },
+    async close() { clearInterval(heartbeat); for (const socket of sockets.clients) socket.terminate(); await new Promise<void>(resolve => sockets.close(() => resolve())); await store.close(); },
   };
 }

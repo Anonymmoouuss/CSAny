@@ -10,7 +10,7 @@ For **Solo**, select an arena, bot difficulty and 5v5 Elimination or Bomb Defusa
 
 **Aim Trainer** uses the dedicated Practice Facility. Choose a 60-second target drill or an untimed Recoil Range, then choose difficulty and weapon. The in-session weapon selector and normal weapon keys work throughout training. Ammunition is unlimited and targets never shoot back. Range target settings control distance, movement, armor and health; Reset Target also clears bullet marks. The restart icon resets the full session.
 
-No server address or Wisp setup is required. Public matches, private room codes, profiles and accepted 1v1s use the site's shared backend automatically. The current backend is this Codespace, so online features are unavailable while it is stopped. Solo and training still work without it.
+No server address or Wisp setup is required. Public matches, private room codes, profiles and accepted 1v1s use the shared free Render backend, independently of Codespaces. The first connection after inactivity may need time to wake the free server; wait for it to start or retry after a clear error. Profiles are stored in the separate free Neon database rather than Render's temporary disk. Free-tier usage limits still apply. Solo and training do not need the online server.
 
 ## Controls
 

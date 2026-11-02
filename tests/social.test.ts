@@ -4,16 +4,45 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import sharp from 'sharp';
-import { SocialStore } from '../server/social.ts';
+import { SocialStore, type SocialPersistence } from '../server/social.ts';
 import { once } from 'node:events';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server/game.ts';
 import { CLASSIC_RANKS, initialRank, rankedCompatible } from '../shared/ranking.ts';
+import { readSocialCredentials } from '../client/social.ts';
 
 function friends(store: SocialStore) {
   const first = store.register('Alpha'); const second = store.register('Bravo');
   store.requestFriend(first.id, second.id); store.replyFriend(second.id, first.id, true); return { first, second };
 }
+
+test('profile migration reuses credentials only for the verified replacement backend', () => {
+  const store = new SocialStore(); const credentials = store.register('Migrated');
+  const old = 'wss://curly-space-palm-tree-g4wpp747gj6gcwqvv-3001.app.github.dev/social'; const replacement = 'wss://counterstrikebrowser-server.onrender.com/social';
+  const values = new Map([[`bs-social-v1:${old}`, JSON.stringify(credentials)]]); const storage = { getItem: (key: string) => values.get(key) || null };
+  assert.deepEqual(readSocialCredentials(storage, replacement), credentials);
+  assert.equal(readSocialCredentials(storage, 'wss://another-server.example/social'), undefined);
+  const newer = store.register('Newer'); values.set(`bs-social-v1:${replacement}`, JSON.stringify(newer)); assert.deepEqual(readSocialCredentials(storage, replacement), newer);
+  values.set(`bs-social-v1:${replacement}`, '{broken'); assert.deepEqual(readSocialCredentials(storage, replacement), credentials);
+});
+
+test('durable social snapshots preserve identity, friends, inventory and credits across restarts', async () => {
+  let saved: Parameters<SocialPersistence['save']>[0] | null = null; let writes = 0;
+  const persistence: SocialPersistence = { load: async () => saved ? structuredClone(saved) : null, save: async snapshot => { writes++; saved = structuredClone(snapshot); } };
+  const first = await SocialStore.open(persistence); const pair = friends(first); first.award(pair.first.id, 125); await first.flush();
+  const state = first.state(pair.first.id); assert.ok(writes >= 4);
+  const restarted = await SocialStore.open(persistence); assert.equal(restarted.authenticate(pair.first), pair.first.id); assert.equal(restarted.state(pair.first.id).self.credits, state.self.credits);
+  assert.deepEqual(restarted.state(pair.first.id).self.items, state.self.items); assert.equal(restarted.state(pair.first.id).friends[0].id, pair.second.id);
+  const server = createGameServer({ port: 0, host: '127.0.0.1', socialStore: restarted }); await once(server.http, 'listening');
+  assert.equal(server.social.authenticate(pair.first), pair.first.id); assert.deepEqual(server.social.state(pair.first.id).self.items, state.self.items);
+  await first.close(); await server.close();
+});
+
+test('durable social writes surface failures and can save the next complete snapshot', async () => {
+  let fail = true; let saved: Parameters<SocialPersistence['save']>[0] | null = null;
+  const store = await SocialStore.open({ load: async () => null, save: async snapshot => { if (fail) throw new Error('Storage unavailable'); saved = structuredClone(snapshot); } });
+  const profile = store.register('Retry'); await assert.rejects(store.flush(), /Storage unavailable/); fail = false; store.award(profile.id, 1); await store.flush(); assert.ok(saved); await store.close();
+});
 
 test('social identities authenticate without exposing credentials and friends require consent', () => {
   const store = new SocialStore(); const first = store.register('Alpha'); const second = store.register('Bravo');

@@ -6,7 +6,7 @@ import './style.css';
 import './interface.css';
 import { GameAudio } from './audio.ts';
 import { flashPresentation } from '../shared/equipment.ts';
-import { multiplayerAddress, Network } from './network.ts';
+import { multiplayerAddress, Network, warmMultiplayerServer } from './network.ts';
 import { InputButtons } from './input.ts';
 import { GameWorld } from './world.ts';
 import { Armory, escapeHtml, refreshIcons } from './armory.ts';
@@ -186,6 +186,7 @@ $('join-form').addEventListener('submit', async event => {
   const button = $<HTMLButtonElement>('deploy-button'); button.disabled = true; $('deploy-label').textContent = 'CONNECTING'; initializedAim = false;
   try {
     await audio.unlock();
+    await warmMultiplayerServer(serverUrl());
     try { await social.connect(name); } catch {}
     await network.connect(serverUrl(), { name, code, mode: modeSelect.value, create: !code, matchmaking, account: social.state ? social.credentials : undefined, skin: Number(characterSelect.value), map: selectedMap, cosmetics: armory.cosmetics(), weapon: armory.selectedWeapon });
     enterMatch();
