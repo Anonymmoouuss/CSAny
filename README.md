@@ -20,6 +20,8 @@ npm run dev
 
 Use Node.js 24. Open `http://localhost:5173` or the next Vite port shown in the terminal. Vite proxies `/ws` and the exact `/social` endpoint to the server on port `3001`. Solo and training run locally; online play, friends and trades need the server. Use a separate browser profile or incognito window to test a second social identity.
 
+Players do not enter a WebSocket address or install Wisp. The published client uses the shared backend configured by the host; local development connects through Vite automatically. Private rooms need only a room code, and accepted 1v1 invitations connect both participants to their reserved room.
+
 ## Deployment
 
 Choose **Online Multiplayer**, **Solo Gamemode** or **Aim Trainer** first. Each choice shows its own options, and the main deployment button starts the selected mode.
@@ -111,7 +113,11 @@ In the locker inspector, drag to rotate, scroll or use the zoom icons, and use t
 
 The **Charms** inventory contains 325 collectibles in twenty forms. Select an owned charm, choose an owned weapon in the popup, review its rendered attachment preview, then Apply. The inspector's charm selector remains available. Charm cases are separate from weapon cases, use their respective local/cloud credits, never consume weapon-case keys and stop charging when their collection is complete.
 
-Weapon and local charm cases have rotatable **3D case previews** before confirmation. Classified/Covert/Rare Special rewards first appear as a gold **? / Rare Vault**, then reveal the already-awarded item in a second reel. Both stages can be skipped. There is one charge and one outcome, not an extra paid roll; published odds and charm duplicate protection are unchanged. Skins, credits and charms have no cash value. Wear/seed produce reproducible scratches; pristine items do not receive wear marks. World/preview/dropped models omit first-person arms/backgrounds.
+Weapon and local/cloud charm cases use the uploaded **CS:GO 3D box**. Confirmation plays its lock/lid opening before the reward reel. The source box has separate lid and lock meshes, not an embedded opening clip, so the game animates those parts directly. Double-clicking cannot charge twice. Cloud charm rewards remain server-owned and never charge the local wallet.
+
+Classified/Covert/Rare Special rewards first appear as a gold **? / Rare Vault**, then reveal the already-awarded item in a second reel. Both stages can be skipped. There is one charge and one outcome, not an extra paid roll; published odds and charm duplicate protection are unchanged. Skins, credits and charms have no cash value. Wear/seed produce reproducible scratches; pristine items do not receive wear marks. World/preview/dropped models omit first-person arms/backgrounds.
+
+Charms mount to a ray-tested point on visible weapon geometry rather than a fixed world offset. The chain follows the weapon's animated hierarchy, excluding arms and backdrops. Mount transforms compensate for imported model scale and rotation so the charm retains its intended size and orientation.
 
 The DMR uses a corrected forward-axis calibration. First-person HC-45 uses the original textured handcannon model, native arms and its complete 2.75-second authored equip spin; firing can interrupt the draw. Third-person/dropped models remain arm-free. Knives use a relaxed knife-specific grip rather than rifle support hands, with alternating attacks and a thrust. The karambit's inspect rotates about its finger-ring pivot, catches, reverses and returns to the original grip.
 
@@ -173,14 +179,24 @@ The [reference inbox](reference-videos/README.md) contains the supplied clips pl
 
 The browser client is static and deploys to Vercel. The authoritative WebSocket server needs a persistent Node host such as Render or Railway; Vercel serverless functions do not support persistent WebSocket connections.
 
-1. Deploy this repository to Render using the included `render.yaml` blueprint, or create a Node web service with build command `npm ci` and start command `npm start`.
+1. Run the server on a persistent Node host using `npm ci` and `npm start`, or keep the current Codespace server running with its public port `3001`.
 2. Set `ALLOWED_ORIGINS` on the game server to the exact Vercel origin, for example `https://counterstrikebrowser.vercel.app`. Set the server's `PORT` through the host environment (Render supplies this automatically).
-3. Import the same repository into Vercel. The included `vercel.json` builds and serves `dist/`. Optionally set `VITE_SERVER_URL` in Vercel's project environment variables to your `wss://.../ws` endpoint and redeploy; otherwise enter the endpoint under **Server address** in the lobby.
+3. Configure `VITE_SERVER_URL=wss://YOUR-SERVER/ws` in the Vercel project's Production environment and deploy the client. The included `vercel.json` builds and serves `dist/`. This is a host setting, not a player input; old player-entered addresses are ignored.
 4. Use **Public** for automatic multiplayer or **Private** to share a room code. Profiles use the same host at `/social`.
 
-The server exposes `GET /health` for host health checks. For local play, leave the server address blank. `npm run preview` serves the built client only; set **Server address** to the local or hosted WebSocket endpoint when testing multiplayer through preview.
+The server exposes `GET /health` for host health checks. Local development automatically uses the current host and Vite's WebSocket proxy. `npm run preview` serves only the built client; build with the intended `VITE_SERVER_URL` to test online play through preview.
 
-For Vercel multiplayer, players must use the same persistent WebSocket server; only private matches require a shared code. Vercel alone can run solo/training, not authoritative rooms or social storage. If joining fails, check `/health`, `wss://.../ws` and `ALLOWED_ORIGINS`. Changing build-time `VITE_SERVER_URL` requires a redeploy.
+All visitors use the same configured server automatically; only private matches require a shared code. Vercel alone can run solo/training, not authoritative rooms or social storage. If joining fails, the host should check `/health`, `/ws`, `/social` and `ALLOWED_ORIGINS`. Changing build-time `VITE_SERVER_URL` requires a redeploy. Joining waits for map loading and playable state; temporary input backlogs are bounded and reconciled without deliberately disconnecting the player.
+
+### Current Shared Backend
+
+The Production environment points to the public port `3001` of the `curly-space-palm-tree-g4wpp747gj6gcwqvv` Codespace. This removes server-address setup for players, but **online matches, friends and 1v1s work only while that Codespace and its server are running**. They are not an always-on hosting service. Recheck port visibility after restarts:
+
+```sh
+gh codespace ports visibility 3001:public -c "$CODESPACE_NAME"
+```
+
+For always-available multiplayer, deploy the same server to a persistent host, change the host's Vercel environment setting and redeploy. No client-side player setup is needed in either configuration.
 
 **Durable profiles:** set the server's `SOCIAL_STORE_PATH` to a JSON file on persistent storage. The default local store is under the ignored server data directory. Free ephemeral hosts can lose profiles on restart/redeploy; mount durable storage before relying on friends or trades. This file store supports one server process, not multiple independent replicas. Treat browser profile credentials as secrets, back up the store and never commit it.
 
@@ -193,7 +209,13 @@ For Vercel multiplayer, players must use the same persistent WebSocket server; o
 5. Set the Node server's `ALLOWED_ORIGINS=https://YOUR-PROJECT.vercel.app` to the exact deployed client origin and restart the server. Add exact preview/custom origins separately when needed; do not substitute a broad wildcard.
 6. Test Public matchmaking in two independent browsers, a Private room code, the `/social` profile connection and a local solo/range session from the deployed URL. Changing `VITE_SERVER_URL` requires a Vercel redeploy.
 
-The linked Vercel project was renamed **counterstrikebrowser**, and [counterstrikebrowser.vercel.app](https://counterstrikebrowser.vercel.app) was assigned to its existing production deployment on 2026-10-26. This alias change did not publish the new local build. Deploy the committed revision to publish these features and configure the persistent WebSocket host and exact allowed origin. Never paste login tokens into chat.
+The linked Vercel project is **counterstrikebrowser**, available at [counterstrikebrowser.vercel.app](https://counterstrikebrowser.vercel.app) without a Vercel login. Deploy the intended revision after changing its shared backend configuration. Never paste login tokens into chat.
+
+## Codespace Storage
+
+Model extraction and optimization now use the system temporary directory's `browserstrike-imports` folder, or `MODEL_IMPORT_CACHE` when set. In this Codespace, `/tmp` is on a separate, larger disk, so rebuildable model intermediates no longer consume the smaller workspace disk. Moving the old extraction cache off the workspace reclaimed about 3.9 GB; the 2026-11-02 check showed about 8.9 GB free in the workspace.
+
+Original uploads, imported runtime models and source code remain intact. Temporary caches can disappear when the container restarts and are recreated from the original archives. This is storage relief, **not an external backup**. Keep irreplaceable uploads and profile data on durable storage or a separate backup; never move the only copy into `/tmp`. Do not commit credentials, private social data, source archives or generated caches.
 
 ## Networking And Combat
 
@@ -230,4 +252,4 @@ Start `npm run dev` before the browser suite. Install Playwright Chromium and it
 
 Use `BROWSERSTRIKE_CHROMIUM_EXECUTABLE` to select a full Chromium executable when the default headless shell is unreliable.
 
-**Verification status:** 114 automated simulation/asset/economy/social/real-socket tests and the production build passed. New focused Chromium checks passed for all 23 native knives on desktop/mobile, inspection/equipping, downloaded firearm/sniper rendering and Cargo District deployment. Existing focused checks cover 3D loot, charm previews, optics and objective HUDs. All enabled maps pass the stronger 24-metre site clearance and 36-metre A/B separation checks. Heavy HC-45 inventory and two-browser map-transition stress previously crashed this container's software GPU; the complete browser suite is not claimed green. Hardware/browser testing remains necessary before a production release.
+**Verification:** all 123 automated tests and the production build passed on 2026-11-02. Coverage includes case-lid motion, geometry-based scaled charm mounts, single-charge cloud rewards, map-loading join readiness, early disconnects, input timestamp corrections and bounded prediction queues, alongside the gameplay/model/social suite. Five focused Chromium checks passed for local/cloud case openings and charm reels on desktop/mobile, private multiplayer and cross-screen 1v1 acceptance without player-entered addresses. A separate public WebSocket check verified two clients joining the same private room through the shared backend. All enabled maps retain the 24-metre site-clearance and 36-metre A/B-separation checks. Broad software-GPU stress has historically crashed in this container; the entire browser suite is not claimed green. Always verify public backend health after a Codespace restart and test on real hardware before a production release.

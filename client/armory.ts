@@ -9,6 +9,7 @@ const icon = (name: string) => `<i data-lucide="${name}" aria-hidden="true"></i>
 const credits = (value: number) => `${value.toLocaleString()} CR`;
 const integer = (value: unknown, max = 10000000) => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 && value <= max;
 type LootVisual = { name: string; category: string; rarity: number; image?: string; gold?: boolean };
+type CloudCharmOpening = { credits: number; charms: CharmId[]; request: () => Promise<CharmId> };
 
 export function loadProfile(storage: Pick<Storage, 'getItem'>): Profile {
   const fallback = createProfile();
@@ -59,7 +60,7 @@ export class Armory {
   private reelAnimation: Animation | null = null;
   private casePreview: HTMLElement;
   private charmPicker: HTMLElement;
-  private pendingCase: { id: string; charm: boolean } | null = null;
+  private pendingCase: { id: string; charm: boolean; cloud?: CloudCharmOpening } | null = null;
   private selectedCharm: CharmId | null = null;
   private thumbnailObserver: IntersectionObserver;
   private thumbnailQueue: HTMLImageElement[] = [];
@@ -88,7 +89,7 @@ export class Armory {
     document.querySelector('main')!.insertAdjacentHTML('beforeend', `<section id="case-preview-screen" class="case-preview-screen hidden" role="dialog" aria-modal="true" aria-label="3D case preview"><header><span class="eyebrow">SEALED SUPPLY</span><h2 id="case-preview-name"></h2><button class="icon-button" id="case-preview-close" title="Close case preview" aria-label="Close case preview">${icon('x')}</button></header><div id="case-preview-stage" role="img" aria-label="Rotatable 3D loot case" tabindex="0"></div><footer><span id="case-preview-cost"></span><button class="primary-action" id="case-open-confirm">${icon('key-round')}OPEN CASE</button></footer></section><section id="charm-picker" class="charm-picker hidden" role="dialog" aria-modal="true" aria-label="Apply charm"><div><header><h2 id="charm-picker-title"></h2><button class="icon-button" id="charm-picker-close" title="Close charm picker" aria-label="Close charm picker">${icon('x')}</button></header><label class="field-label">WEAPON<select id="charm-weapon"></select></label><img id="charm-weapon-preview" width="512" height="256" alt="Charm preview on selected weapon"><button class="primary-action" id="charm-apply">${icon('check')}APPLY CHARM</button></div></section>`);
     this.casePreview = document.getElementById('case-preview-screen')!; this.charmPicker = document.getElementById('charm-picker')!;
     document.getElementById('case-preview-close')!.onclick = () => this.closeCasePreview();
-    document.getElementById('case-open-confirm')!.onclick = () => { const crate = this.pendingCase; if (!crate) return; this.closeCasePreview(); if (crate.charm) void this.unsealCharm(crate.id); else void this.unseal(crate.id); };
+    document.getElementById('case-open-confirm')!.onclick = () => { const crate = this.pendingCase; if (!crate || this.opening) return; if (crate.charm) void this.unsealCharm(crate.id, crate.cloud); else void this.unseal(crate.id); };
     document.getElementById('charm-picker-close')!.onclick = () => this.charmPicker.classList.add('hidden');
     document.getElementById('charm-weapon')!.onchange = () => this.updateCharmPreview();
     document.getElementById('charm-apply')!.onclick = () => {
@@ -138,7 +139,7 @@ export class Armory {
     this.save();
   }
 
-  get isOpen() { return !this.root.classList.contains('hidden') || !this.inspector.classList.contains('hidden') || !this.reel.classList.contains('hidden'); }
+  get isOpen() { return !this.root.classList.contains('hidden') || !this.inspector.classList.contains('hidden') || !this.reel.classList.contains('hidden') || !this.casePreview.classList.contains('hidden') || !this.charmPicker.classList.contains('hidden'); }
   get needsScene() { return !this.inspector.classList.contains('hidden') || !this.casePreview.classList.contains('hidden'); }
   appearance(weapon: WeaponId): SkinAppearance | undefined { return equippedAppearance(this.profile, weapon); }
   preview(item: SkinAppearance) { return this.world.thumbnail(SKIN_BY_ID.get(item.skinId)!.weapon, item); }
@@ -238,15 +239,23 @@ export class Armory {
     if (button.dataset.openCharmCase) this.previewCase(button.dataset.openCharmCase, true);
   }
 
-  private previewCase(id: string, charm: boolean) {
+  previewCloudCharmCase(id: string, credits: number, charms: CharmId[], request: () => Promise<CharmId>) {
+    if (this.opening) return; this.close(); this.previewCase(id, true, { credits, charms: [...charms], request });
+  }
+  private previewCase(id: string, charm: boolean, cloud?: CloudCharmOpening) {
     const crate = charm ? CHARM_CASES.find(crate => crate.id === id) : CASES.find(crate => crate.id === id); if (!crate) return;
-    this.pendingCase = { id, charm }; this.casePreview.classList.remove('hidden'); document.querySelector('main')!.classList.add('supply-active');
+    this.pendingCase = { id, charm, cloud }; this.casePreview.classList.remove('hidden'); document.querySelector('main')!.classList.add('supply-active');
     document.getElementById('case-preview-name')!.textContent = crate.name;
     const cost = charm ? crate.price : caseOpeningCost(this.profile, id)!; document.getElementById('case-preview-cost')!.textContent = `${credits(cost)} / NO CASH VALUE`;
-    (document.getElementById('case-open-confirm') as HTMLButtonElement).disabled = cost > this.profile.credits;
+    (document.getElementById('case-open-confirm') as HTMLButtonElement).disabled = cost > (cloud?.credits ?? this.profile.credits);
     this.world.showSupplyCase(crate.color, charm);
   }
   private closeCasePreview() { this.casePreview.classList.add('hidden'); document.querySelector('main')!.classList.remove('supply-active'); this.world.hideSupplyCase(); this.pendingCase = null; }
+  private async playCaseOpening() {
+    this.opening = true; const button = document.getElementById('case-open-confirm') as HTMLButtonElement; button.disabled = true;
+    try { const completed = await this.world.playSupplyOpening(matchMedia('(prefers-reduced-motion: reduce)').matches); const visible = !this.casePreview.classList.contains('hidden'); this.closeCasePreview(); return completed && visible; }
+    finally { this.opening = false; button.disabled = false; }
+  }
   private chooseCharm(id: CharmId) {
     if (!this.profile.unlockedCharms?.includes(id)) return; this.selectedCharm = id;
     const select = document.getElementById('charm-weapon') as HTMLSelectElement;
@@ -364,11 +373,16 @@ export class Armory {
     document.getElementById('reel-inspect')!.onclick = () => { this.reel.classList.add('hidden'); callback(); this.render(); };
     document.getElementById('reel-done')!.onclick = () => { this.reel.classList.add('hidden'); this.render(); }; this.onSound(true); refreshIcons();
   }
-  private async unsealCharm(caseId: string) {
-    if (this.opening) return; const crate = CHARM_CASES.find(crate => crate.id === caseId)!; const available = crate.charms.filter(id => !this.profile.unlockedCharms?.includes(id));
-    const id = openCharmCase(this.profile, caseId); if (!id) { this.notice('CHARM CASE UNAVAILABLE'); return; } this.save();
-    const pool = Array.from({ length: Math.min(12, available.length) }, (_, index) => this.charmVisual(available[index])); const winner = this.charmVisual(id);
-    await this.revealLoot(crate.name, pool, winner, () => this.finishLoot(winner, 'CHARM UNLOCKED', 'CHOOSE WEAPON', () => this.chooseCharm(id)));
+  private async unsealCharm(caseId: string, cloud?: CloudCharmOpening) {
+    if (this.opening) return; this.opening = true; (document.getElementById('case-open-confirm') as HTMLButtonElement).disabled = true;
+    const crate = CHARM_CASES.find(crate => crate.id === caseId)!; const owned = cloud?.charms || this.profile.unlockedCharms || []; const available = crate.charms.filter(id => !owned.includes(id));
+    try {
+      const id = cloud ? await cloud.request() : openCharmCase(this.profile, caseId); if (!id) throw new Error('CHARM CASE UNAVAILABLE'); if (!cloud) this.save();
+      if (this.casePreview.classList.contains('hidden')) { this.opening = false; return; }
+      if (!await this.playCaseOpening()) return;
+      const pool = Array.from({ length: Math.min(12, available.length) }, (_, index) => this.charmVisual(available[index])); const winner = this.charmVisual(id);
+      await this.revealLoot(crate.name, pool, winner, () => this.finishLoot(winner, 'CHARM UNLOCKED', 'CHOOSE WEAPON', () => this.chooseCharm(id)));
+    } catch (error) { this.opening = false; this.closeCasePreview(); this.show('charms'); this.notice(error instanceof Error ? error.message : 'CHARM CASE UNAVAILABLE'); }
   }
   private async unseal(caseId: string) {
     if (this.opening) return;
@@ -376,6 +390,7 @@ export class Armory {
     if (!item) { this.notice('INSUFFICIENT SUPPLY CREDITS'); return; }
     this.save();
     const crate = CASES.find(crate => crate.id === caseId)!;
+    if (!await this.playCaseOpening()) return;
     const winner = this.skinVisual(item); const pool = Array.from({ length: 12 }, () => this.skinVisual(rollCase(caseId)));
     await this.revealLoot(crate.name, pool, winner, () => this.finishLoot(winner, `${wearName(item.float)} / ${credits(itemValue(item))}`, 'INSPECT DROP', () => this.inspect(item)));
   }

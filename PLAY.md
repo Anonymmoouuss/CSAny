@@ -10,7 +10,7 @@ For **Solo**, select an arena, bot difficulty and 5v5 Elimination or Bomb Defusa
 
 **Aim Trainer** uses the dedicated Practice Facility. Choose a 60-second target drill or an untimed Recoil Range, then choose difficulty and weapon. The in-session weapon selector and normal weapon keys work throughout training. Ammunition is unlimited and targets never shoot back. Range target settings control distance, movement, armor and health; Reset Target also clears bullet marks. The restart icon resets the full session.
 
-Expand **Server address** for a hosted `wss://.../ws` endpoint. Local development uses the current host automatically. Solo and training do not require a server connection.
+No server address or Wisp setup is required. Public matches, private room codes, profiles and accepted 1v1s use the site's shared backend automatically. The current backend is this Codespace, so online features are unavailable while it is stopped. Solo and training still work without it.
 
 ## Controls
 
@@ -80,9 +80,11 @@ HC-45 uses the original first-person model and complete authored equip spin. Kni
 
 **Knife Models** in the armory offers 23 individually downloaded, textured knives. Inspect an original finish, acquire/equip it, then use it in a match. Folding/inspect animations use the author's clips where available; static knives use the game's procedural actions. The downloaded sniper, SMG and pistol rigs and uploaded HK416 use native gameplay clips. Sniper directions are calibrated individually, with incompatible heavy-sniper source arms replaced by the stable rifle grip.
 
-Cases have a rotatable 3D preview before confirmation. High-tier rewards land on a gold question mark, then reveal the already-awarded item in a rare-vault reel. Skip only shortens animation: it never rerolls or charges again. Odds remain visible and all rewards have no cash value.
+Cases use the uploaded CS:GO 3D box. Confirmation plays the lock/lid opening before the spin reel, for weapon and local/cloud charm cases. High-tier rewards land on a gold question mark, then reveal the already-awarded item in a rare-vault reel. Skip only shortens animation: it never rerolls or charges again. Odds remain visible and all rewards have no cash value.
 
 Unlock charms from their separate cases. In **Charms**, select one of your owned collectibles, choose an owned weapon in the popup, review the attachment preview and Apply. The inspector selector also works. Charm cases never drop guns or consume weapon-case keys, and completed collections cannot be charged again. Local/cloud cases use their respective balances. Wear adds reproducible scratches; knives have alternating slashes, a thrust and reversible inspection spins. Smoke blocks bot sight, fire follows floors, and shotguns fire twelve pellets per shell.
+
+Charm chains attach to the weapon geometry and follow its animated parts, with imported scale/rotation compensation. Cloud charm openings award one server-owned charm and do not subtract local credits.
 
 ## Profiles And Trades
 

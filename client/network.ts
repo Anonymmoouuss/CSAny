@@ -10,6 +10,15 @@ import { botInput, createBrain, type BotBrain } from '../shared/bots.ts';
 import { advanceEquipment, throwEquipment } from '../shared/equipment.ts';
 import { advanceTraining, configureRange, createTraining, recordTrainingShot, TRAINING_MAP } from '../shared/training.ts';
 
+export function multiplayerAddress(address: string, origin: string, configured = '') {
+  const value = configured.trim() || address.trim(); const page = new URL(origin);
+  if (!value && page.hostname.endsWith('.vercel.app')) throw new Error('Online play is temporarily unavailable. Solo and training are still available.');
+  const url = value ? new URL(value.startsWith('/') ? value : value.includes('://') ? value : `https://${value}`, page) : new URL('/ws', page);
+  if (url.protocol === 'https:') url.protocol = 'wss:'; if (url.protocol === 'http:') url.protocol = 'ws:';
+  if (!['ws:', 'wss:'].includes(url.protocol) || url.username || url.password) throw new Error('The game connection is unavailable.');
+  if (url.pathname === '/' || !url.pathname) url.pathname = '/ws'; return url.toString();
+}
+
 export class Network {
   socket: WebSocket | null = null;
   id = '';
@@ -131,22 +140,25 @@ export class Network {
     return new Promise<void>((resolve, reject) => {
       const socket = new WebSocket(url); this.socket = socket;
       let welcomed = false;
+      let connected = false;
+      let queuedState: Snapshot | null = null;
       const timeout = setTimeout(() => { reject(new Error('Server timed out. Free hosts may need a minute to wake up. Try again.')); socket.close(); }, 20000);
       socket.addEventListener('open', () => socket.send(JSON.stringify({ type: 'join', ...data })));
-      socket.addEventListener('message', async event => {
+      const receive = async (event: MessageEvent) => {
+        if (this.socket !== socket) return;
         const message = JSON.parse(event.data);
         if (message.type === 'welcome') {
           try { await this.prepareMap(message.map); }
           catch (error) { clearTimeout(timeout); reject(error); socket.close(); return; }
           if (this.socket !== socket) return;
-          this.id = message.id; this.code = message.code; welcomed = true; clearTimeout(timeout);
+          this.id = message.id; this.code = message.code; welcomed = true;
           this.timer = setInterval(() => this.flush(), 50);
           this.pingTimer = setInterval(() => this.send({ type: 'ping', sent: Date.now() }), 2000);
-          resolve();
+          if (queuedState) { const state = queuedState; queuedState = null; await receive({ data: JSON.stringify(state) } as MessageEvent); }
         }
         if (message.type === 'error') {
           this.purchaseWeapon = null;
-          if (!welcomed) { clearTimeout(timeout); reject(new Error(message.text)); socket.close(); }
+          if (!connected) { clearTimeout(timeout); reject(new Error(message.text)); socket.close(); }
           else this.onError(message.text);
         }
         if (message.type === 'pong') {
@@ -154,7 +166,7 @@ export class Network {
           this.offset = message.time - (message.sent + Date.now()) / 2;
         }
         if (message.type === 'state') {
-          if (!welcomed) return;
+          if (!welcomed) { queuedState = message as Snapshot; return; }
           const snapshot = message as Snapshot;
           if (!this.state) this.offset = snapshot.time - Date.now();
           this.lastReceived = performance.now();
@@ -175,16 +187,18 @@ export class Network {
           this.state = snapshot; this.history.push(snapshot);
           if (this.history.length > 12) this.history.shift();
           this.onState(snapshot);
+          if (authoritative && !connected) { connected = true; clearTimeout(timeout); resolve(); }
         }
-      });
+      };
+      socket.addEventListener('message', event => { void receive(event).catch(() => { clearTimeout(timeout); reject(new Error('The game connection could not be initialized.')); socket.close(); }); });
       socket.addEventListener('error', () => {
-        if (!welcomed) { clearTimeout(timeout); reject(new Error('Cannot reach the game server. Check the server address in settings.')); }
+        if (!connected) { clearTimeout(timeout); reject(new Error('Online play is temporarily unavailable. Please try again shortly.')); }
       });
       socket.addEventListener('close', () => {
         if (this.socket !== socket) return;
         clearTimeout(timeout); this.stopTimers();
-        if (welcomed) this.onClose();
-        else reject(new Error('Connection closed before joining the room.'));
+        if (connected) this.onClose();
+        else reject(new Error('Connection closed before a playable room state arrived.'));
       });
     });
   }
@@ -230,9 +244,19 @@ export class Network {
       return;
     }
     this.pending.push(input); this.outgoing.push(input);
-    if (this.pending.length > 240) this.disconnect();
+    if (this.pending.length > 240) this.pending.splice(0, this.pending.length - 240);
+    if (this.outgoing.length > 240) this.outgoing.splice(0, this.outgoing.length - 240);
   }
-  flush() { if (this.outgoing.length && this.socket?.readyState === WebSocket.OPEN) this.socket.send(encodeInputs(this.outgoing.splice(0, 6))); }
+  flush() {
+    if (!this.outgoing.length || this.socket?.readyState !== WebSocket.OPEN) return;
+    const batch: Input[] = []; let firstTime = Infinity; let lastTime = -Infinity;
+    while (this.outgoing.length && batch.length < 6) {
+      const input = this.outgoing[0]; const first = Math.min(firstTime, input.time); const last = Math.max(lastTime, input.time);
+      if (batch.length && last - Math.floor(first) > 1000) break;
+      batch.push(this.outgoing.shift()!); firstTime = first; lastTime = last;
+    }
+    this.socket.send(encodeInputs(batch));
+  }
   interpolated() {
     if (!this.state) return [];
     const time = Date.now() + this.offset - 100;

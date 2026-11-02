@@ -1,5 +1,5 @@
 import { WEAPONS, type WeaponId } from '../shared/game.ts';
-import { CHARMS, CHARM_CASES, SKIN_BY_ID, SKIN_CATALOG, itemValue, type InventoryItem } from '../shared/economy.ts';
+import { CHARMS, CHARM_CASES, SKIN_BY_ID, SKIN_CATALOG, itemValue, type CharmId, type InventoryItem } from '../shared/economy.ts';
 import type { PublicProfile, SocialCredentials, SocialState } from '../shared/social.ts';
 import { Armory, escapeHtml, refreshIcons } from './armory.ts';
 
@@ -27,6 +27,7 @@ export class SocialPanel {
   private messageDraft = '';
   private profilePage = 0;
   private profilePreviews: IntersectionObserver;
+  private charmRequest: { caseId: string; before: Set<CharmId>; resolve: (id: CharmId) => void; reject: (error: Error) => void; timer: number } | null = null;
 
   constructor(private armory: Armory, private server: () => string, private callsign: () => string) {
     document.querySelector('main')!.insertAdjacentHTML('beforeend', '<section class="social-screen hidden" id="social-screen" role="dialog" aria-modal="true" aria-label="Profile and friends"></section>');
@@ -73,17 +74,22 @@ export class SocialPanel {
             const next = message as SocialState; const before = this.state?.incoming.length || 0;
             const tradesBefore = this.state?.trades.filter(trade => trade.to === this.state!.self.id && trade.status === 'pending').length || 0;
             this.state = next; this.armory.mergeCloudItems(next.self.items, next.self.id, next.self.charms); this.notice('CONNECTED');
+            const request = this.charmRequest;
+            if (request) {
+              const crate = CHARM_CASES.find(crate => crate.id === request.caseId)!; const charm = next.self.charms.find(id => !request.before.has(id) && crate.charms.includes(id));
+              if (charm) { clearTimeout(request.timer); this.charmRequest = null; request.resolve(charm); }
+            }
             if (next.incoming.length > before) this.onNotice('NEW FRIEND REQUEST');
             if (next.trades.filter(trade => trade.to === next.self.id && trade.status === 'pending').length > tradesBefore) this.onNotice('NEW TRADE REQUEST');
             this.updateButton(); this.renderNotifications(); if (this.isOpen) this.render();
             if (!ready) { ready = true; clearTimeout(timeout); resolve(); }
           }
           if (message.type === 'duel-ready' && typeof message.code === 'string' && /^[A-F0-9]{6}$/.test(message.code)) this.onDuelReady(message.code);
-          if (message.type === 'social-error') { this.notice(String(message.text)); if (!ready) { clearTimeout(timeout); reject(new Error(String(message.text))); } }
+          if (message.type === 'social-error') { this.notice(String(message.text)); this.rejectCharmRequest(String(message.text)); if (!ready) { clearTimeout(timeout); reject(new Error(String(message.text))); } }
         } catch { this.notice('INVALID PROFILE RESPONSE'); }
       };
       socket.onerror = () => { if (!ready) { clearTimeout(timeout); reject(new Error('PROFILE SERVER UNAVAILABLE')); } };
-      socket.onclose = () => { clearTimeout(timeout); if (this.socket !== socket) return; this.socket = null; this.notice('OFFLINE'); if (!ready) reject(new Error('PROFILE CONNECTION CLOSED')); };
+      socket.onclose = () => { clearTimeout(timeout); if (this.socket !== socket) return; this.socket = null; this.rejectCharmRequest('PROFILE CONNECTION CLOSED'); this.notice('OFFLINE'); if (!ready) reject(new Error('PROFILE CONNECTION CLOSED')); };
     }).finally(() => { this.connecting = null; });
     return this.connecting;
   }
@@ -91,6 +97,17 @@ export class SocialPanel {
   send(message: object) {
     if (this.socket?.readyState !== WebSocket.OPEN) { this.notice('PROFILE SERVER OFFLINE'); return false; }
     this.socket.send(JSON.stringify(message)); this.notice('REQUEST SENT'); return true;
+  }
+  private rejectCharmRequest(message: string) {
+    const request = this.charmRequest; if (!request) return; clearTimeout(request.timer); this.charmRequest = null; request.reject(new Error(message));
+  }
+  private requestCharmCase(caseId: string) {
+    return new Promise<CharmId>((resolve, reject) => {
+      if (!this.state || this.charmRequest) { reject(new Error('CHARM CASE REQUEST UNAVAILABLE')); return; }
+      const timer = window.setTimeout(() => this.rejectCharmRequest('CHARM CASE REQUEST TIMED OUT'), 15000);
+      this.charmRequest = { caseId, before: new Set(this.state.self.charms), resolve, reject, timer };
+      if (!this.send({ type: 'charm-case', case: caseId })) this.rejectCharmRequest('PROFILE SERVER OFFLINE');
+    });
   }
   open() {
     this.armory.close(); if (document.pointerLockElement) document.exitPointerLock(); this.root.classList.remove('hidden'); this.render();
@@ -184,7 +201,7 @@ export class SocialPanel {
     if (button.dataset.tradeFriend) { this.target = button.dataset.tradeFriend; this.tab = 'trades'; this.offered.clear(); this.requested.clear(); this.render(); }
     if (button.dataset.tradeAction) this.send({ type: 'trade-reply', trade: button.dataset.tradeId, action: button.dataset.tradeAction });
     if (button.dataset.cloudEquip) { this.armory.equipOwned(button.dataset.cloudEquip); this.notice('EQUIPPED IN LOCKER'); }
-    if (button.dataset.cloudCharmCase) this.send({ type: 'charm-case', case: button.dataset.cloudCharmCase });
+    if (button.dataset.cloudCharmCase && this.state) { const id = button.dataset.cloudCharmCase; this.close(); this.armory.previewCloudCharmCase(id, this.state.self.credits, this.state.self.charms, () => this.requestCharmCase(id)); }
   }
   private submit(event: SubmitEvent) {
     event.preventDefault(); const form = event.target as HTMLFormElement;

@@ -394,6 +394,23 @@ export function supplyCaseModel(color: string) {
   box(root, [0.49, 0.055, 0.08], [0, 0.43, 0], '#708176');
   box(root, [0.3, 0.2, 0.025], [0, 0, 0.415], '#d6d6a8'); return root;
 }
+export function animateSupplyCase(model: THREE.Group, progress: number) {
+  let motion = model.userData.caseOpening as { hinge: THREE.Group; axis: THREE.Vector3; sign: number; lock?: THREE.Object3D } | undefined;
+  if (!motion) {
+    const lid = model.getObjectByName('Case_Top'); if (!lid?.parent) return false;
+    model.updateMatrixWorld(true); const parent = lid.parent; const inverse = parent.matrixWorld.clone().invert();
+    const bounds = modelBounds(lid).applyMatrix4(inverse); const dimensions = bounds.getSize(new THREE.Vector3()); const axes: ('x' | 'y' | 'z')[] = ['x', 'y', 'z'];
+    axes.sort((first, second) => dimensions[second] - dimensions[first]);
+    const hinge = new THREE.Group(); const center = bounds.getCenter(new THREE.Vector3()); hinge.position.copy(center); hinge.position[axes[1]] = bounds.max[axes[1]];
+    const axis = new THREE.Vector3(); axis[axes[0]] = 1; const up = new THREE.Vector3(0, 1, 0).transformDirection(inverse);
+    const sign = Math.sign(new THREE.Vector3().crossVectors(axis, center.clone().sub(hinge.position)).dot(up)) || 1;
+    parent.add(hinge); hinge.attach(lid); motion = { hinge, axis, sign, lock: model.getObjectByName('Lock') }; model.userData.caseOpening = motion;
+  }
+  const amount = THREE.MathUtils.clamp(Number.isFinite(progress) ? progress : 0, 0, 1); const opening = THREE.MathUtils.clamp((amount - 0.22) / 0.78, 0, 1);
+  motion.hinge.quaternion.setFromAxisAngle(motion.axis, motion.sign * opening * opening * (3 - 2 * opening) * 1.95);
+  if (motion.lock) motion.lock.visible = amount < 0.22;
+  model.updateMatrixWorld(true); return true;
+}
 export function createMuzzleFlash(weapon: WeaponId) {
   const surface = new THREE.MeshBasicMaterial({ map: muzzleTexture, color: '#fff4dc', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
   const flash = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), surface);
@@ -437,6 +454,11 @@ export class GameWorld {
   private supplyCamera = new THREE.PerspectiveCamera(40, 1, 0.01, 20);
   private supplyModel: THREE.Group | null = null;
   private supplyRadius = 1;
+  private supplyColor = '#d1ac63';
+  private supplyCharm = false;
+  private supplyOpeningAt = -1;
+  private supplyOpeningDuration = 1.4;
+  private supplyOpeningDone: ((completed: boolean) => void) | null = null;
   private supplyYaw = 0.45;
   private supplyPitch = 0.12;
   private lobbyTime = 0;
@@ -717,15 +739,26 @@ export class GameWorld {
 
   showSupplyCase(color: string, charm = false) {
     this.hideSupplyCase(); this.supplyYaw = 0.45; this.supplyPitch = 0.12;
-    const asset = charm ? 'dream-case' : 'case';
+    this.supplyColor = color; this.supplyCharm = charm;
+    const asset = 'case';
     this.supplyModel = assets.instantiate(asset, 'prop', 1.3) || supplyCaseModel(color);
     this.supplyModel.rotation.set(0, 0, 0); const bounds = modelBounds(this.supplyModel); this.supplyModel.position.sub(bounds.getCenter(new THREE.Vector3()));
     this.supplyRadius = bounds.getSize(new THREE.Vector3()).length() / 2;
     this.supplyScene.add(this.supplyModel); this.renderer.domElement.dataset.supplyModel = this.supplyModel.userData.assetId || 'original-case';
+    this.renderer.domElement.dataset.supplyKind = charm ? 'charm' : 'weapon';
     const model = this.supplyModel;
     void assets.load(asset).then(loaded => { if (loaded && this.supplyModel === model && model.userData.assetId !== asset) this.showSupplyCase(color, charm); });
   }
-  hideSupplyCase() { if (this.supplyModel) { this.supplyModel.removeFromParent(); disposeWeapon(this.supplyModel); this.supplyModel = null; } delete this.renderer.domElement.dataset.supplyModel; }
+  hideSupplyCase() { const done = this.supplyOpeningDone; this.supplyOpeningDone = null; this.supplyOpeningAt = -1; done?.(false); if (this.supplyModel) { this.supplyModel.removeFromParent(); disposeWeapon(this.supplyModel); this.supplyModel = null; } delete this.renderer.domElement.dataset.supplyModel; delete this.renderer.domElement.dataset.caseOpening; }
+  async playSupplyOpening(reduced = false) {
+    await assets.load('case'); if (!this.supplyModel) return false;
+    if (this.supplyModel.userData.assetId !== 'case') this.showSupplyCase(this.supplyColor, this.supplyCharm);
+    if (!this.supplyModel || !animateSupplyCase(this.supplyModel, 1)) return false;
+    this.supplyRadius = Math.max(this.supplyRadius, modelBounds(this.supplyModel).getSize(new THREE.Vector3()).length() / 2);
+    animateSupplyCase(this.supplyModel, 0); this.supplyOpeningAt = performance.now() / 1000; this.supplyOpeningDuration = reduced ? 0.35 : 1.4;
+    this.renderer.domElement.dataset.caseOpening = 'opening';
+    return new Promise<boolean>(resolve => { this.supplyOpeningDone = resolve; });
+  }
   rotateSupplyCase(horizontal: number, vertical: number) { this.supplyYaw += horizontal * 0.01; this.supplyPitch = THREE.MathUtils.clamp(this.supplyPitch + vertical * 0.008, -0.6, 0.6); }
   charmThumbnail(charm: CharmId) { return this.modelThumbnail(`charm:${charm}`, () => charmPendant(CHARM_BY_ID.get(charm)!)); }
   caseThumbnail(color: string) { return this.modelThumbnail(`case:${color}`, () => supplyCaseModel(color)); }
@@ -869,7 +902,11 @@ export class GameWorld {
   }) {
     if (this.supplyModel) {
       const stage = document.getElementById('case-preview-stage')!.getBoundingClientRect();
-      this.supplyYaw += dt * 0.2; this.supplyModel.rotation.set(this.supplyPitch, this.supplyYaw, 0);
+      if (this.supplyOpeningAt < 0) this.supplyYaw += dt * 0.2; this.supplyModel.rotation.set(this.supplyPitch, this.supplyYaw, 0);
+      if (this.supplyOpeningAt >= 0) {
+        const progress = Math.min(1, (time - this.supplyOpeningAt) / this.supplyOpeningDuration); animateSupplyCase(this.supplyModel, progress);
+        if (progress >= 1) { this.supplyOpeningAt = -1; const done = this.supplyOpeningDone; this.supplyOpeningDone = null; this.renderer.domElement.dataset.caseOpening = 'complete'; done?.(true); }
+      }
       this.supplyCamera.aspect = stage.width / Math.max(1, stage.height);
       const vertical = this.supplyCamera.fov * Math.PI / 360; const horizontal = Math.atan(Math.tan(vertical) * this.supplyCamera.aspect);
       const distance = this.supplyRadius * 1.15 / Math.sin(Math.min(vertical, horizontal));

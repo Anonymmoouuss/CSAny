@@ -2,9 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { CASES, KEY_PRICE, SKIN_CATALOG, SKIN_BY_ID, DEFAULT_KNIFE_ID, KNIFE_KINDS, IMPORTED_KNIFE_MODELS, creditReward, createProfile, seededRandom, wearName, itemValue, rollCase, openCase, caseOdds, caseOpeningCost, validAppearance } from '../shared/economy.ts';
 import { WEAPONS } from '../shared/game.ts';
-import { buildWeapon, charmPendant, animateWeapon, applyFieldFinish, disposeWeapon, inspectPose, knifeHoldPose, meleePose, wearMarks } from '../client/weapons.ts';
+import { buildWeapon, charmMount, charmPendant, animateWeapon, applyFieldFinish, disposeWeapon, inspectPose, knifeHoldPose, meleePose, wearMarks } from '../client/weapons.ts';
 import { attachCharm, CHARMS, CHARM_BY_ID, CHARM_CASES, openCharmCase, charmCaseOdds, rareReveal, rollCharmCase } from '../shared/economy.ts';
 import { Armory, loadProfile } from '../client/armory.ts';
+import { assets } from '../client/assets.ts';
 import { parseCrosshair } from '../client/settings.ts';
 import { Box3, BoxGeometry, Group, Mesh, MeshStandardMaterial, Vector3 } from 'three';
 
@@ -175,6 +176,29 @@ test('weapon wear scratches are reproducible, increase with wear and vanish on p
   assert.deepEqual(wearMarks(5, 0.8), wearMarks(5, 0.8));
   assert.ok(wearMarks(5, 0.8).length > wearMarks(5, 0.1).length * 20);
   assert.notDeepEqual(wearMarks(5, 0.8), wearMarks(6, 0.8));
+});
+
+test('charm mounts touch the actual weapon surface and ignore hands', () => {
+  for (const width of [0.025, 0.08, 0.16]) {
+    const root = new Group(); const weapon = new Mesh(new BoxGeometry(width, 0.2, 0.5), new MeshStandardMaterial()); root.add(weapon);
+    const hand = new Mesh(new BoxGeometry(2, 2, 2), new MeshStandardMaterial()); hand.userData.hands = true; root.add(hand);
+    const point = charmMount(root); assert.ok(Math.abs(point.x - width / 2) < 0.003); assert.ok(point.y >= -0.1 && point.y <= 0.1); assert.ok(point.z >= -0.25 && point.z <= 0.25);
+    root.rotation.y = Math.PI / 3; root.position.set(3, 1, -2); const transformed = charmMount(root); assert.ok(Math.abs(transformed.x - width / 2) < 0.003);
+    disposeWeapon(root);
+  }
+});
+
+test('imported charm mounts preserve world size across source unit conversions', () => {
+  const previousWindow = Object.getOwnPropertyDescriptor(globalThis, 'window'); const previousWeapon = assets.weapon;
+  const root = new Group(); const motion = new Group(); motion.scale.setScalar(0.01); motion.rotation.x = Math.PI / 2; root.add(motion); root.userData.motion = motion;
+  const mesh = new Mesh(new BoxGeometry(8, 20, 50), new MeshStandardMaterial()); motion.add(mesh);
+  try {
+    Object.defineProperty(globalThis, 'window', { configurable: true, value: {} }); assets.weapon = () => root;
+    const item = createProfile().items.find(item => SKIN_BY_ID.get(item.skinId)?.weapon === 'rifle')!;
+    buildWeapon('rifle', { ...item, charm: 'field-tag' }); const charm = root.getObjectByName('weapon-charm')!; assert.equal(charm.parent, motion);
+    root.updateMatrixWorld(true); const scale = charm.getWorldScale(new Vector3()); assert.ok(Math.abs(scale.x - 1) < 1e-8 && Math.abs(scale.y - 1) < 1e-8 && Math.abs(scale.z - 1) < 1e-8);
+    animateWeapon(root, { time: 1, reload: 0, inspect: -1, shotAge: 10 }); assert.ok([...charm.getWorldPosition(new Vector3())].every(Number.isFinite));
+  } finally { assets.weapon = previousWeapon; if (previousWindow) Object.defineProperty(globalThis, 'window', previousWindow); else delete (globalThis as { window?: unknown }).window; disposeWeapon(root); }
 });
 
 test('owned charms attach, animate and detach without changing weapon ownership', () => {

@@ -3,7 +3,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { KNIFE_CATALOG, WEAPONS, type WeaponId } from '../shared/game.ts';
 import { CHARMS, CHARM_BY_ID, SKIN_BY_ID, DEFAULT_KNIFE_ID, seededRandom, type CharmDefinition, type SkinAppearance, type SkinDefinition, type KnifeKind } from '../shared/economy.ts';
-import { assets, type ModelAnimation } from './assets.ts';
+import { assets, modelBounds, type ModelAnimation } from './assets.ts';
 
 export function wearMarks(seed: number, wear: number, size = 256) {
   const amount = THREE.MathUtils.clamp(wear, 0, 1); const random = seededRandom(seed ^ 0x7f4a7c15);
@@ -401,12 +401,35 @@ export function charmPendant(definition: CharmDefinition) {
   root.rotation.y = (definition.seed % 5 - 2) * 0.06; return root;
 }
 
+export function charmMount(root: THREE.Object3D) {
+  root.updateMatrixWorld(true); const bounds = modelBounds(root, true).applyMatrix4(root.matrixWorld.clone().invert());
+  if (bounds.isEmpty()) return new THREE.Vector3();
+  const size = bounds.getSize(new THREE.Vector3()); const span = Math.max(size.x, size.y, size.z, 0.1); const targets: THREE.Mesh[] = [];
+  root.traverse(object => {
+    if (!(object instanceof THREE.Mesh) || object.userData.hands || !object.visible) return;
+    for (let parent = object.parent; parent && parent !== root; parent = parent.parent) if (!parent.visible || parent.name === 'weapon-charm') return;
+    targets.push(object);
+  });
+  for (const height of [0.7, 0.5, 0.3]) for (const depth of [0.7, 0.55, 0.85]) {
+    const origin = root.localToWorld(new THREE.Vector3(bounds.max.x + span, bounds.min.y + size.y * height, bounds.min.z + size.z * depth));
+    const direction = new THREE.Vector3(-1, 0, 0).transformDirection(root.matrixWorld);
+    const hit = new THREE.Raycaster(origin, direction).intersectObjects(targets, false)[0];
+    if (hit) { const point = root.worldToLocal(hit.point.clone()); point.x += 0.0015; return point; }
+  }
+  return new THREE.Vector3(bounds.max.x + 0.0015, bounds.min.y + size.y * 0.7, bounds.min.z + size.z * 0.7);
+}
+
 function weaponCharm(root: THREE.Group, appearance?: SkinAppearance) {
   const definition = appearance?.charm && CHARM_BY_ID.get(appearance.charm); if (!definition) return;
-  const group = new THREE.Group(); group.name = 'weapon-charm'; group.position.set(0.06, -0.02, 0.06); group.userData.seed = appearance!.seed;
+  const mount = root.userData.motion as THREE.Group | undefined || root;
+  const point = root.localToWorld(charmMount(root)); mount.updateWorldMatrix(true, false); mount.worldToLocal(point);
+  const group = new THREE.Group(); group.name = 'weapon-charm'; group.position.copy(point); group.userData.seed = appearance!.seed;
+  group.scale.copy(root.getWorldScale(new THREE.Vector3())).divide(mount.getWorldScale(new THREE.Vector3()));
+  group.quaternion.copy(mount.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(root.getWorldQuaternion(new THREE.Quaternion())));
+  group.userData.mountRotation = group.rotation.clone();
   const metal = new THREE.MeshStandardMaterial({ color: '#8c9b94', metalness: 0.35, roughness: 0.56 });
   for (let index = 0; index < 3; index++) { const link = new THREE.Mesh(new THREE.TorusGeometry(0.006, 0.0018, 5, 10), metal); link.position.y = -index * 0.009; link.rotation.y = index % 2 * Math.PI / 2; group.add(link); }
-  const pendant = charmPendant(definition); pendant.position.y = -0.052; group.add(pendant); root.add(group);
+  const pendant = charmPendant(definition); pendant.position.y = -0.052; group.add(pendant); mount.add(group);
 }
 
 export function buildWeapon(id: WeaponId, appearance?: SkinAppearance, knifeStyle = 0, colors?: string[], context: 'view' | 'world' | 'preview' = 'preview') {
@@ -540,7 +563,7 @@ export function animateWeapon(root: THREE.Group, state: { time: number; reload: 
   const hands = root.userData.handRig as THREE.Group | undefined;
   if (hands) (hands.userData.animation as ModelAnimation).update(state.time, state);
   const charm = root.getObjectByName('weapon-charm');
-  if (charm) { charm.rotation.z = Math.sin(state.time * 4 + (charm.userData.seed || 0)) * 0.1 + Math.max(0, 1 - state.shotAge / 0.3) * Math.sin(state.shotAge * 26) * 0.28; charm.rotation.x = Math.sin(state.time * 3.1) * 0.07; }
+  if (charm) { if (charm.userData.mountRotation) charm.rotation.copy(charm.userData.mountRotation); charm.rotateZ(Math.sin(state.time * 4 + (charm.userData.seed || 0)) * 0.1 + Math.max(0, 1 - state.shotAge / 0.3) * Math.sin(state.shotAge * 26) * 0.28); charm.rotateX(Math.sin(state.time * 3.1) * 0.07); }
   const animation = root.userData.animation as ModelAnimation | undefined;
   const pose = inspectPose(root.userData.weapon || 'rifle', state.inspect, root.userData.knifeKind);
   if (animation) {

@@ -12,7 +12,7 @@ export const SNAPSHOT_RATE = 20;
 export function encodeInputs(inputs: Input[]) {
   if (!inputs.length || inputs.length > 6) throw new Error('Input batches must contain one to six commands');
   const bytes = new Uint8Array(headerBytes + inputBytes * inputs.length); const view = new DataView(bytes.buffer);
-  const baseTime = Math.floor(inputs[0].time);
+  const baseTime = Math.floor(Math.min(...inputs.map(input => input.time)));
   view.setUint16(0, signature, true); view.setUint8(2, 1); view.setUint8(3, inputs.length); view.setFloat64(4, baseTime, true);
   for (const [index, input] of inputs.entries()) {
     const offset = headerBytes + index * inputBytes; const weapon = weaponIds.indexOf(input.weapon);

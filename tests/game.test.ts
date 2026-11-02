@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
-import { WebSocket } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import { BoxGeometry, PerspectiveCamera, Ray, Vector3 } from 'three';
 import { createGameServer } from '../server/game.ts';
 import { createPlayer, damageAtRange, direction, scopedFov, shotDirection, hitPlayer, hitMelee, simulateMovement, takeDamage, wallHit, SUPPLIED_MAP_IDS, MAX_HOP_SPEED, WEAPONS, type Input, type Snapshot } from '../shared/game.ts';
@@ -10,7 +10,7 @@ import { encodeMapGeometry, registerMapGeometry, type SurfaceMaterial } from '..
 import { encodeInputs, decodeInputs, HitboxHistory } from '../shared/protocol.ts';
 import { advanceTraining, configureRange, createTraining, recordTrainingShot, TRAINING_MAP } from '../shared/training.ts';
 import { InputButtons } from '../client/input.ts';
-import { Network } from '../client/network.ts';
+import { multiplayerAddress, Network } from '../client/network.ts';
 
 const input = (seq: number, extra: Partial<Input> = {}): Input => ({
   seq, time: Date.now(), forward: 0, side: 0, yaw: 0, pitch: 0, jump: false, crouch: false,
@@ -27,6 +27,27 @@ function waitFor(socket: WebSocket, predicate: (message: any) => boolean, timeou
     socket.on('message', listener);
   });
 }
+
+test('multiplayer selects the configured shared backend without player address setup', () => {
+  assert.equal(multiplayerAddress('', 'http://localhost:5173'), 'ws://localhost:5173/ws');
+  assert.equal(multiplayerAddress('', 'https://counterstrikebrowser.vercel.app', 'https://games.example.test'), 'wss://games.example.test/ws');
+  assert.equal(multiplayerAddress('ws://stale.invalid/ws', 'https://counterstrikebrowser.vercel.app', 'https://games.example.test'), 'wss://games.example.test/ws');
+  assert.equal(multiplayerAddress('ws://localhost:3001/ws', 'http://localhost:5173'), 'ws://localhost:3001/ws');
+  assert.throws(() => multiplayerAddress('', 'https://counterstrikebrowser.vercel.app'), /temporarily unavailable/);
+});
+
+test('multiplayer join waits for the map and replays its latest queued player state', async () => {
+  const game = createGameServer({ port: 0, host: '127.0.0.1' }); await once(game.http, 'listening'); const address = game.http.address(); assert.ok(address && typeof address !== 'string');
+  const previous = globalThis.WebSocket; globalThis.WebSocket = WebSocket as unknown as typeof globalThis.WebSocket;
+  const network = new Network(); let release!: () => void; let prepared!: () => void; const preparing = new Promise<void>(resolve => { prepared = resolve; });
+  network.prepareMap = () => { prepared(); return new Promise<void>(resolve => { release = resolve; }); };
+  try {
+    const connected = network.connect(`ws://127.0.0.1:${address.port}/ws`, { name: 'Ready', code: '', mode: 'deathmatch', create: true, skin: 0 });
+    await preparing; await waitFor(network.socket as unknown as WebSocket, message => message.type === 'state');
+    assert.equal(network.predicted, null); release(); await connected;
+    assert.ok(network.predicted); assert.ok(network.state?.players.some(player => player.id === network.id)); assert.match(network.code, /^[A-F0-9]{6}$/);
+  } finally { network.disconnect(); globalThis.WebSocket = previous; await game.close(); }
+});
 
 test('quick fire presses survive release before a simulation tick and clear on focus loss', () => {
   const buttons = new InputButtons();
@@ -62,6 +83,27 @@ test('binary commands preserve microsecond timing and actions and reject malform
   assert.throws(() => decodeInputs(packet.subarray(0, packet.length - 1)));
   const badWeapon = packet.slice(); badWeapon[28] = 255; assert.throws(() => decodeInputs(badWeapon));
   assert.throws(() => encodeInputs([input(0, { time: Infinity })]));
+});
+
+test('input packets survive clock corrections and split across long loading stalls', () => {
+  const commands = [input(1, { time: 10000.5 }), input(2, { time: 9980.25 }), input(3, { time: 12500.75 })];
+  const corrected = decodeInputs(encodeInputs(commands.slice(0, 2))); assert.equal(corrected[0].time, commands[0].time); assert.equal(corrected[1].time, commands[1].time);
+  const network = new Network(); const batches: Input[][] = [];
+  network.socket = { readyState: WebSocket.OPEN, send: (bytes: Uint8Array) => batches.push(decodeInputs(bytes)) } as unknown as NonNullable<Network['socket']>;
+  network.outgoing = [...commands]; network.flush(); network.flush();
+  assert.deepEqual(batches.map(batch => batch.map(command => command.seq)), [[1, 2], [3]]); assert.equal(network.outgoing.length, 0);
+  assert.equal(batches[1][0].time, commands[2].time);
+});
+
+test('a stalled prediction queue remains bounded without disconnecting the player', () => {
+  const network = new Network(); let closed = false;
+  network.socket = { readyState: WebSocket.OPEN, close: () => { closed = true; } } as unknown as NonNullable<Network['socket']>;
+  network.predicted = createPlayer('slow-client', 'Slow client', 'CT', 'training', 0);
+  network.state = { phase: 'live', map: 'training' } as Snapshot;
+  for (let sequence = 0; sequence < 1000; sequence++) network.input(input(sequence, { weapon: 'pistol', time: 10000 + sequence * 15.625 }));
+  assert.equal(closed, false); assert.ok(network.predicted); assert.ok(network.state);
+  assert.equal(network.pending.length, 240); assert.equal(network.outgoing.length, 240);
+  assert.equal(network.pending[0].seq, 760); assert.equal(network.outgoing.at(-1)?.seq, 999);
 });
 
 test('circular hitbox history interpolates sub-tick poses and avoids interpolation across respawns', () => {
@@ -257,6 +299,30 @@ test('local practice chat emits sanitized messages for the visible chat popup', 
       network.send({ type: 'chat', text: '  hello\u0000 range  ' });
     });
   } finally { network.disconnect(); }
+});
+
+test('online connection retains snapshots during map loading and resolves with playable state', async () => {
+  const game = createGameServer({ port: 0, host: '127.0.0.1' }); await once(game.http, 'listening'); const address = game.http.address(); assert.ok(address && typeof address !== 'string');
+  const network = new Network(); let releaseMap!: () => void; let mapStarted!: () => void;
+  const started = new Promise<void>(resolve => { mapStarted = resolve; }); const loading = new Promise<void>(resolve => { releaseMap = resolve; });
+  network.prepareMap = async () => { mapStarted(); await loading; }; let ready = false;
+  try {
+    const connection = network.connect(`ws://127.0.0.1:${address.port}/ws`, { name: 'Loading', code: '', mode: 'deathmatch', create: true, skin: 0 }).then(() => { ready = true; });
+    const buffered = new Promise<void>(resolve => network.socket!.addEventListener('message', event => { if (JSON.parse(event.data).type === 'state') resolve(); }));
+    await Promise.all([started, buffered]); assert.equal(ready, false); assert.ok([network.state, network.predicted].every(value => value === null));
+    releaseMap(); await connection;
+    assert.ok(network.state); assert.equal(network.predicted?.id, network.id); assert.ok(network.state.players.some(player => player.id === network.id)); assert.equal(ready, true);
+  } finally { releaseMap?.(); network.disconnect(); await game.close(); }
+});
+
+test('online connection rejects a close after welcome but before playable state', { timeout: 3000 }, async () => {
+  const server = new WebSocketServer({ port: 0, host: '127.0.0.1' }); await once(server, 'listening'); const address = server.address(); assert.ok(address && typeof address !== 'string');
+  const network = new Network(); let closed = false; network.onClose = () => { closed = true; };
+  server.on('connection', socket => { socket.send(JSON.stringify({ type: 'welcome', id: 'pending', code: 'ABCDEF', map: 'dustline' })); socket.close(); });
+  try {
+    await assert.rejects(network.connect(`ws://127.0.0.1:${address.port}/ws`, { name: 'Pending', code: '', mode: 'deathmatch', create: true, skin: 0 }), /playable room state/);
+    assert.equal(closed, false); assert.equal(network.state, null);
+  } finally { network.disconnect(); await new Promise<void>(resolve => server.close(() => resolve())); }
 });
 
 test('authoritative knife attacks emit melee events, retain ammo and respect reach', async () => {

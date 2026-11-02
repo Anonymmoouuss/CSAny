@@ -15,12 +15,21 @@ import { botInput, createBrain, navigate, planBotRoute, visible } from '../share
 import { emptyBomb, type RoundState } from '../shared/round.ts';
 import { animateWeapon } from '../client/weapons.ts';
 import { IMPORTED_KNIFE_MODELS } from '../shared/economy.ts';
-import { createMuzzleFlash, supplyCaseModel } from '../client/world.ts';
+import { animateSupplyCase, createMuzzleFlash, supplyCaseModel } from '../client/world.ts';
 
 test('3D supply cases have finite body, lid, handle and latch geometry', () => {
   const model = supplyCaseModel('#61a59b'); const bounds = new THREE.Box3().setFromObject(model); const size = bounds.getSize(new THREE.Vector3());
   assert.ok(model.children.length >= 8); assert.ok(size.x > 1 && size.x < 1.5); assert.ok(size.y > 0.6 && size.z > 0.8);
   model.traverse(object => { if (object instanceof THREE.Mesh) { assert.ok([...object.geometry.getAttribute('position').array].every(Number.isFinite)); object.geometry.dispose(); for (const surface of [object.material].flat()) surface.dispose(); } });
+});
+
+test('CSGO case opening unlocks and rotates its actual lid before the reel', () => {
+  const model = new THREE.Group(); const lid = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.1, 0.8), new THREE.MeshStandardMaterial()); lid.name = 'Case_Top'; lid.position.y = 0.3;
+  const lock = new THREE.Group(); lock.name = 'Lock'; model.add(lid, lock);
+  const closed = modelBounds(lid).getCenter(new THREE.Vector3()); assert.equal(animateSupplyCase(model, 0), true); assert.equal(lock.visible, true);
+  animateSupplyCase(model, 1); assert.equal(lock.visible, false); const opened = modelBounds(lid).getCenter(new THREE.Vector3()); assert.ok(opened.y > closed.y + 0.2);
+  animateSupplyCase(model, 0); assert.ok(modelBounds(lid).getCenter(new THREE.Vector3()).distanceTo(closed) < 1e-8); assert.equal(lock.visible, true);
+  assert.equal(animateSupplyCase(new THREE.Group(), 1), false); lid.geometry.dispose(); lid.material.dispose();
 });
 
 test('original muzzle flashes use finite crossed planes and a transparent textured hot core', () => {
@@ -377,7 +386,7 @@ test('bots physically follow supplied-map routes until an opposing start becomes
     registerMapGeometry(map, await readFile(new URL(`../client/public/models/imported/${map}.collision.bin`, import.meta.url)));
     const bot = createPlayer(`walker-${map}`, 'Walker', 'CT', 'elimination', 0); const enemy = createPlayer(`opponent-${map}`, 'Opponent', 'T', 'elimination', 1);
     spawn(bot, 0, map); spawn(enemy, 0, map);
-    const brain = createBrain(0); const players = [bot, enemy];
+    const brain = createBrain(0, () => 0.5); const players = [bot, enemy];
     const state: RoundState = { mode: 'elimination', map, phase: 'live', endsAt: 200000, score: { CT: 0, T: 0 }, bomb: emptyBomb(), round: 1, events: [] };
     let acquired = visible(bot, enemy, map);
     for (let tick = 0; tick < 64 * 75 && !acquired; tick++) {

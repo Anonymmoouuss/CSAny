@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import { resolve, dirname, extname, relative, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tmpdir } from 'node:os';
 import { unzipSync } from 'fflate';
 import { createExtractorFromData } from 'node-unrar-js';
 import { NodeIO } from '@gltf-transform/core';
@@ -12,7 +13,7 @@ import sharp from 'sharp';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const input = resolve(root, 'model-imports');
 const output = resolve(root, 'client/public/models/imported');
-const scratch = resolve(root, 'node_modules/.cache/browserstrike-imports');
+const scratch = resolve(process.env.MODEL_IMPORT_CACHE || resolve(tmpdir(), 'browserstrike-imports'));
 const inspect = process.argv.includes('--inspect');
 const selected = process.argv.find(argument => argument.startsWith('--only='))?.slice(7).split(',');
 const sources = [

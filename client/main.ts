@@ -6,7 +6,7 @@ import './style.css';
 import './interface.css';
 import { GameAudio } from './audio.ts';
 import { flashPresentation } from '../shared/equipment.ts';
-import { Network } from './network.ts';
+import { multiplayerAddress, Network } from './network.ts';
 import { InputButtons } from './input.ts';
 import { GameWorld } from './world.ts';
 import { Armory, escapeHtml, refreshIcons } from './armory.ts';
@@ -27,7 +27,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <section class="lobby" id="lobby"><div class="lobby-copy"><span class="eyebrow"><i></i>FIELD OPERATIONS / 02</span><h1>BROWSER<br><em>STRIKE</em></h1><p id="map-subtitle">SUPPLIED ARENAS</p><div class="lobby-facts"><span><b>${SUPPLIED_MAP_IDS.length.toString().padStart(2, '0')}</b>ARENAS</span><span><b>500+</b>PER WEAPON</span><span><b>20</b>FIREARMS</span></div><button class="locker-shortcut" id="locker-open">${icon('package')} YOUR LOCKER ${icon('arrow-right')}</button></div>
       <div class="join-panel"><div class="panel-heading"><div><span class="eyebrow">DEPLOYMENT</span><h2>Enter the match</h2></div><span class="live-tag"><i></i>READY</span></div>
         <form id="join-form"><div class="deployment-tabs" role="group" aria-label="Deployment type"><button id="online-button" type="button" data-deployment="online" aria-pressed="true">${icon('users')}<span>ONLINE MULTIPLAYER</span></button><button id="training-button" type="button" data-deployment="training" aria-pressed="false">${icon('crosshair')}<span>AIM TRAINER</span></button><button id="practice-button" type="button" data-deployment="solo" aria-pressed="false">${icon('shield')}<span>SOLO</span></button></div><label class="field-label" for="player-name">CALLSIGN</label><input id="player-name" maxlength="18" autocomplete="nickname" placeholder="Operator" required>
-          <div id="online-options"><label class="field-label deployment-field">GAME MODE<select id="mode-select" class="map-select"><option value="deathmatch">DEATHMATCH</option><option value="defusal">BOMB DEFUSAL</option></select></label><label class="field-label room-label" for="room-code">ROOM CODE <span>optional</span></label><input id="room-code" maxlength="6" autocomplete="off" placeholder="Create a room or enter code" autocapitalize="characters"><details class="server-details"><summary>SERVER ADDRESS <span id="server-summary">Current host</span></summary><input id="server-address" autocomplete="url" placeholder="wss://your-server.onrender.com/ws"></details></div>
+          <div id="online-options"><label class="field-label deployment-field">GAME MODE<select id="mode-select" class="map-select"><option value="deathmatch">DEATHMATCH</option><option value="defusal">BOMB DEFUSAL</option></select></label><label class="field-label room-label" for="room-code">ROOM CODE <span>optional</span></label><input id="room-code" maxlength="6" autocomplete="off" placeholder="Create a room or enter code" autocapitalize="characters"><input id="server-address" type="hidden"></div>
           <div id="local-options" class="hidden"><div class="deployment-selects"><label class="field-label">ARENA<select id="map-select" class="map-select">${SUPPLIED_MAP_IDS.map(id => `<option value="${id}">${MAPS[id].name.toUpperCase()}</option>`).join('')}</select></label><label class="field-label">BOT DIFFICULTY<select id="difficulty-select" class="map-select"><option value="easy">EASY</option><option value="normal" selected>NORMAL</option><option value="hard">HARD</option></select></label></div></div>
           <label id="solo-options" class="field-label deployment-field hidden">GAME MODE<select id="solo-mode" class="map-select"><option value="elimination">5V5 ELIMINATION</option><option value="defusal">BOMB DEFUSAL</option></select></label>
           <label id="training-options" class="field-label deployment-field hidden">STARTING WEAPON<select id="training-weapon" class="map-select">${(Object.keys(WEAPONS) as WeaponId[]).filter(id => id !== 'knife').map(id => `<option value="${id}">${WEAPONS[id].name}</option>`).join('')}</select></label>
@@ -64,7 +64,7 @@ let selectedMap: MapId = 'dune';
 try {
   const map = localStorage.getItem('bs-map'); if (map && SUPPLIED_MAP_IDS.includes(map as MapId)) selectedMap = map as MapId;
   nameInput.value = localStorage.getItem('bs-name') || '';
-  serverInput.value = localStorage.getItem('bs-server') || import.meta.env.VITE_SERVER_URL || '';
+  serverInput.value = import.meta.env.VITE_SERVER_URL || '';
 } catch {}
 const network = new Network(); const audio = new GameAudio(); const world = new GameWorld($('world'), selectedMap);
 const armory = new Armory(world); const settings = new SettingsController(world, $('crosshair'));
@@ -165,17 +165,9 @@ document.querySelectorAll<HTMLButtonElement>('[data-deployment]').forEach(button
   button.onclick = () => { deployment = button.dataset.deployment as typeof deployment; errorBox.textContent = ''; updateDeployment(); };
 });
 roomInput.addEventListener('input', updateDeployment);
-serverInput.addEventListener('input', () => { $('server-summary').textContent = serverInput.value ? 'CUSTOM SERVER' : 'CURRENT HOST'; });
 
 function serverUrl() {
-  const address = serverInput.value.trim();
-  if (!address) return `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws`;
-  const url = new URL(address.includes('://') ? address : `https://${address}`);
-  if (url.protocol === 'https:') url.protocol = 'wss:';
-  if (url.protocol === 'http:') url.protocol = 'ws:';
-  if (!['ws:', 'wss:'].includes(url.protocol)) throw new Error('Use an HTTP(S) or WS(S) server address.');
-  if (url.pathname === '/' || !url.pathname) url.pathname = '/ws';
-  return url.toString();
+  return multiplayerAddress(serverInput.value, location.origin, import.meta.env.VITE_SERVER_URL || '');
 }
 function enterMatch() {
   lobby.classList.add('hidden'); gameUi.classList.remove('hidden'); armory.close(); settings.hide();

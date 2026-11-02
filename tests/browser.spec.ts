@@ -47,7 +47,7 @@ async function canvasSample(page: Page) {
 async function inventory(page: Page) { return page.evaluate(() => JSON.parse(localStorage.getItem('bs-profile-v2')!)); }
 async function noHorizontalOverflow(page: Page) { expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true); }
 async function finishReel(page: Page) {
-  await expect(page.locator('#reel-skip')).toBeVisible(); await page.locator('#reel-skip').click();
+  await expect(page.locator('#reel-skip')).toBeVisible({ timeout: 20000 }); await page.locator('#reel-skip').click();
   await expect(page.locator('#reel-overlay')).toHaveClass(/complete/);
   if (await page.locator('#rare-vault-open').isVisible()) { await page.locator('#rare-vault-open').click(); await expect(page.locator('#reel-skip')).toBeVisible(); await page.locator('#reel-skip').click(); }
   await expect(page.locator('#reel-inspect')).toBeVisible();
@@ -287,6 +287,18 @@ test('desktop locker, turntable, case transaction and crosshair persistence', as
   await noHorizontalOverflow(page); expect(errors).toEqual([]);
 });
 
+test('cloud charm cases animate the uploaded box and spin without charging local credits', async ({ page }, info) => {
+  await page.setViewportSize({ width: 900, height: 700 }); const errors = await boot(page); const local = await inventory(page);
+  await page.locator('#player-name').fill('Cloud cases'); await page.locator('#profile-open').click(); await expect(page.locator('#social-profile-name')).toHaveValue('Cloud cases', { timeout: 20000 });
+  await page.locator('[data-social-tab="charms"]').click(); const balance = Number((await page.locator('.social-cloud-heading > b').innerText()).replace(/\D/g, ''));
+  await page.locator('[data-cloud-charm-case="signal-charms"]').click(); await expect(page.locator('#case-preview-screen')).toBeVisible(); await expect(page.locator('#game-canvas')).toHaveAttribute('data-supply-model', 'case');
+  await page.locator('#case-open-confirm').click(); await expect(page.locator('#game-canvas')).toHaveAttribute('data-case-opening', 'opening'); await expect(page.locator('#reel-overlay')).toBeHidden();
+  await finishReel(page); await expect(page.locator('#reel-title')).toHaveText('SIGNAL CHARMS CASE'); await capture(page, info.outputPath('cloud-charm-reel.png'));
+  const after = await inventory(page); expect(after.credits).toBe(local.credits); expect(after.keys).toBe(local.keys); expect(after.unlockedCharms.length).toBe(local.unlockedCharms.length + 1);
+  await page.locator('#reel-done').click(); await page.locator('#profile-open').click(); await page.locator('[data-social-tab="charms"]').click();
+  expect(Number((await page.locator('.social-cloud-heading > b').innerText()).replace(/\D/g, ''))).toBe(balance - 700); expect(errors).toEqual([]);
+});
+
 for (const width of [900, 390]) test(`3D cases, gold vaults and charm weapon previews at ${width}`, async ({ page }, info) => {
   await page.setViewportSize({ width, height: 844 }); const errors = await boot(page); await page.locator('#shop-open').click();
   await page.locator('[data-open-case="dust"]').click(); await expect(page.locator('#case-preview-screen')).toBeVisible();
@@ -295,7 +307,8 @@ for (const width of [900, 390]) test(`3D cases, gold vaults and charm weapon pre
   await page.locator('#case-preview-stage').focus(); await page.keyboard.press('ArrowRight'); const turned = await canvasSample(page); expect(turned.hash).not.toBe(first.hash);
   await capture(page, info.outputPath('3d-case.png')); const before = await inventory(page);
   await page.locator('#case-open-confirm').evaluate(button => { const original = Math.random; Math.random = () => 0.9999; try { (button as HTMLButtonElement).click(); } finally { Math.random = original; } });
-  await expect(page.locator('#reel-skip')).toBeVisible(); await page.locator('#reel-skip').click(); await expect(page.locator('#rare-vault-open')).toBeVisible();
+  await expect(page.locator('#game-canvas')).toHaveAttribute('data-case-opening', 'opening'); await expect(page.locator('#reel-overlay')).toBeHidden();
+  await expect(page.locator('#reel-skip')).toBeVisible({ timeout: 20000 }); await page.locator('#reel-skip').click(); await expect(page.locator('#rare-vault-open')).toBeVisible();
   await expect(page.locator('[data-reel-winner] .rare-question')).toHaveText('?'); const paid = await inventory(page); expect(paid.items.length).toBe(before.items.length + 1);
   await page.locator('#rare-vault-open').click(); await page.locator('#reel-skip').click(); await expect(page.locator('#reel-inspect')).toBeVisible(); expect(await inventory(page)).toEqual(paid);
   await capture(page, info.outputPath('rare-vault-reveal.png')); await page.locator('#reel-done').click();
@@ -388,10 +401,11 @@ test('two browser clients join a bot-filled online room', async ({ page, context
   await second.locator('#match-private').click(); await second.locator('#player-name').fill('Bravo'); await second.locator('#room-code').fill(code);
   await second.locator('#join-form').evaluate(form => (form as HTMLFormElement).requestSubmit());
   await expect(second.locator('#game-ui')).toBeVisible({ timeout: 15000 });
-  await expect(page.locator('#score-rows')).toContainText('Bravo'); await expect(second.locator('#score-rows')).toContainText('Alpha');
+  await expect(second.locator('#room-display')).toHaveText(code);
+  await expect(page.locator('#score-rows')).toContainText('Bravo', { timeout: 15000 }); await expect(second.locator('#score-rows')).toContainText('Alpha', { timeout: 15000 });
   await expect(page.locator('#mini-count')).toHaveText('10 / 10');
   await expect(page.locator('#score-map')).toContainText('DEFUSAL');
   await capture(page, info.outputPath('online-room.png'));
-  await second.locator('#leave-button').click(); await page.locator('#leave-button').click();
+  await second.locator('#leave-button:visible, #result-lobby:visible').click(); await page.locator('#leave-button:visible, #result-lobby:visible').click();
   expect(errors.concat(secondErrors)).toEqual([]);
 });
