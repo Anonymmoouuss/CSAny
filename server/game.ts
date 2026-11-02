@@ -42,7 +42,7 @@ export function createGameServer(options: { port?: number; host?: string; origin
   const social = createSocialService({ path: options.socialPath, store: options.socialStore, origins: options.origins, onDuel: duel => createRoom('duel', 'private', [duel.from, duel.to]).code });
   const http = createServer((request, response) => {
     response.writeHead(request.url === '/health' ? 200 : 404, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(request.url === '/health' ? { ok: true, rooms: rooms.size, tickRate: SERVER_TICK_RATE, snapshotRate: SNAPSHOT_RATE } : { error: 'Not found' }));
+    response.end(JSON.stringify(request.url === '/health' ? { ok: true, rooms: rooms.size, tickRate: SERVER_TICK_RATE, snapshotRate: SNAPSHOT_RATE, profileStorage: options.socialStore ? 'durable' : options.socialPath ? 'file' : 'memory', revision: process.env.RENDER_GIT_COMMIT?.slice(0, 7) || 'local' } : { error: 'Not found' }));
   });
   const sockets = new WebSocketServer({ noServer: true, maxPayload: 16384, perMessageDeflate: { threshold: 1024, concurrencyLimit: 4, zlibDeflateOptions: { level: 1 } } });
   http.on('upgrade', (request, socket, head) => {
