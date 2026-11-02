@@ -5,7 +5,7 @@ import { isBombRound, type RoundState } from './round.ts';
 import { mapCell, mapGeometry, walkLink } from './map-geometry.ts';
 import { smokeBlocks } from './equipment.ts';
 
-const grids = new Map<MapId, { grid: PathFinding.Grid; cell: number; radius: number }>();
+const grids = new Map<MapId, { grid: PathFinding.Grid; cell: number; minColumn: number; minRow: number; width: number }>();
 const links = new Map<MapId, Map<string, boolean>>();
 const CELL = 2;
 const GRID_RADIUS = Math.ceil(MAP_SIZE / CELL);
@@ -61,16 +61,22 @@ function gridFor(map: MapId) {
   const cached = grids.get(map); if (cached) return cached;
   const imported = mapGeometry(map);
   const cell = imported?.metadata.cell || CELL; const radius = Math.ceil(MAP_SIZE / cell);
-  const grid = new PathFinding.Grid(radius * 2 + 1, radius * 2 + 1);
-  for (let row = 0; row <= radius * 2; row++) for (let column = 0; column <= radius * 2; column++) {
-    const x = (column - radius) * cell; const z = (row - radius) * cell;
+  const navigation = imported?.metadata.navigation;
+  const minColumn = navigation?.length ? Math.floor(Math.min(...navigation.map(point => point.x)) / cell) - 1 : -radius;
+  const maxColumn = navigation?.length ? Math.ceil(Math.max(...navigation.map(point => point.x)) / cell) + 1 : radius;
+  const minRow = navigation?.length ? Math.floor(Math.min(...navigation.map(point => point.z)) / cell) - 1 : -radius;
+  const maxRow = navigation?.length ? Math.ceil(Math.max(...navigation.map(point => point.z)) / cell) + 1 : radius;
+  const width = maxColumn - minColumn + 1; const height = maxRow - minRow + 1;
+  const grid = new PathFinding.Grid(width, height);
+  for (let row = 0; row < height; row++) for (let column = 0; column < width; column++) {
+    const x = (column + minColumn) * cell; const z = (row + minRow) * cell;
     grid.setWalkableAt(column, row, imported ? !!mapCell(map, x, z) : walkable(x, z, map, 1.1));
   }
-  const result = { grid, cell, radius }; if (!MAPS[map].imported || imported) grids.set(map, result); return result;
+  const result = { grid, cell, minColumn, minRow, width }; if (!MAPS[map].imported || imported) grids.set(map, result); return result;
 }
 
-function nearestCell(grid: PathFinding.Grid, position: Vec, cell: number, gridRadius: number) {
-  const column = Math.round(position.x / cell + gridRadius); const row = Math.round(position.z / cell + gridRadius);
+function nearestCell(grid: PathFinding.Grid, position: Vec, cell: number, minColumn: number, minRow: number) {
+  const column = Math.round(position.x / cell) - minColumn; const row = Math.round(position.z / cell) - minRow;
   for (let radius = 0; radius < 10; radius++) for (let offsetRow = -radius; offsetRow <= radius; offsetRow++) for (let offsetColumn = -radius; offsetColumn <= radius; offsetColumn++) {
     if (grid.isInside(column + offsetColumn, row + offsetRow) && grid.isWalkableAt(column + offsetColumn, row + offsetRow)) return [column + offsetColumn, row + offsetRow];
   }
@@ -79,30 +85,30 @@ function nearestCell(grid: PathFinding.Grid, position: Vec, cell: number, gridRa
 
 export function navigate(map: MapId, from: Vec, to: Vec, routeId = 0, hazards?: Pick<RoundState, 'fires' | 'smokes'>, reservations?: ReadonlySet<string>): Vec[] {
   if (MAPS[map].imported && !mapGeometry(map)) return [];
-  const { grid, cell, radius } = gridFor(map); const start = nearestCell(grid, from, cell, radius); const end = nearestCell(grid, to, cell, radius);
+  const { grid, cell, minColumn, minRow, width } = gridFor(map); const start = nearestCell(grid, from, cell, minColumn, minRow); const end = nearestCell(grid, to, cell, minColumn, minRow);
   if (!start || !end) return [];
   const geometry = mapGeometry(map);
   function findRoute(fromCell: number[], toCell: number[], avoidReserved = false) {
     const route = grid.clone();
     if (avoidReserved) for (const key of reservations || []) {
-      const [column, row] = key.split(',').map(Number).map(value => value + radius);
+      const coordinates = key.split(',').map(Number); const column = coordinates[0] - minColumn; const row = coordinates[1] - minRow;
       for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) {
         const x = column + dx; const z = row + dz;
         if (route.isInside(x, z) && Math.hypot(x - fromCell[0], z - fromCell[1]) * cell > 3 && Math.hypot(x - toCell[0], z - toCell[1]) * cell > 3) route.setWalkableAt(x, z, false);
       }
     }
     for (const fire of hazards?.fires || []) for (const point of fire.cells) {
-      const column = Math.round(point.x / cell + radius); const row = Math.round(point.z / cell + radius);
+      const column = Math.round(point.x / cell) - minColumn; const row = Math.round(point.z / cell) - minRow;
       for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) if (route.isInside(column + dx, row + dz) && (column + dx !== fromCell[0] || row + dz !== fromCell[1])) route.setWalkableAt(column + dx, row + dz, false);
     }
     if (geometry) {
     let cached = links.get(map); if (!cached) { cached = new Map(); links.set(map, cached); }
     const neighbors = route.getNeighbors.bind(route);
     route.getNeighbors = (node, diagonal) => neighbors(node, diagonal).filter(next => {
-      const start = node.y * (radius * 2 + 1) + node.x; const end = next.y * (radius * 2 + 1) + next.x;
+      const start = node.y * width + node.x; const end = next.y * width + next.x;
       const key = start < end ? `${start}:${end}` : `${end}:${start}`;
       if (cached!.has(key)) return cached!.get(key)!;
-      const from = mapCell(map, (node.x - radius) * cell, (node.y - radius) * cell); const to = mapCell(map, (next.x - radius) * cell, (next.y - radius) * cell);
+      const from = mapCell(map, (node.x + minColumn) * cell, (node.y + minRow) * cell); const to = mapCell(map, (next.x + minColumn) * cell, (next.y + minRow) * cell);
       const clear = !!from && !!to && walkLink(geometry.bvh, from, to); cached!.set(key, clear); return clear;
     });
     }
@@ -118,14 +124,14 @@ export function navigate(map: MapId, from: Vec, to: Vec, routeId = 0, hazards?: 
   if (!coordinated && routeId && path.length > 12 && distance > 12) {
     const progress = 0.3 + routeId % 5 * 0.1;
     const lane = (routeId % 9 - 4) * 3;
-    const via = nearestCell(grid, { x: from.x + (to.x - from.x) * progress - (to.z - from.z) / distance * lane, y: from.y, z: from.z + (to.z - from.z) * progress + (to.x - from.x) / distance * lane }, cell, radius);
+    const via = nearestCell(grid, { x: from.x + (to.x - from.x) * progress - (to.z - from.z) / distance * lane, y: from.y, z: from.z + (to.z - from.z) * progress + (to.x - from.x) / distance * lane }, cell, minColumn, minRow);
     if (via) {
       const first = findRoute(start, via); const second = findRoute(via, end);
       if (first.length && second.length && first.length + second.length < path.length * 1.8 + 8) path = first.concat(second.slice(1));
     }
   }
   return path.slice(1).map(([column, row]) => {
-    const x = (column - radius) * cell; const z = (row - radius) * cell;
+    const x = (column + minColumn) * cell; const z = (row + minRow) * cell;
     return { x, y: mapCell(map, x, z)?.y || 0, z };
   });
 }

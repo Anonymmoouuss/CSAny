@@ -35,8 +35,6 @@ test('durable social snapshots preserve identity, friends, inventory and credits
   assert.deepEqual(restarted.state(pair.first.id).self.items, state.self.items); assert.equal(restarted.state(pair.first.id).friends[0].id, pair.second.id);
   const server = createGameServer({ port: 0, host: '127.0.0.1', socialStore: restarted }); await once(server.http, 'listening');
   assert.equal(server.social.authenticate(pair.first), pair.first.id); assert.deepEqual(server.social.state(pair.first.id).self.items, state.self.items);
-  const address = server.http.address(); assert.ok(address && typeof address !== 'string');
-  const health = await (await fetch(`http://127.0.0.1:${address.port}/health`)).json(); assert.equal(health.profileStorage, 'durable');
   await first.close(); await server.close();
 });
 

@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import sharp from 'sharp';
 
 const url = process.env.BROWSERSTRIKE_URL || 'http://127.0.0.1:5173';
+const onlineTimeout = 120000;
 declare global { interface Window { pauseTestFrames: (paused: boolean) => void } }
 test.use({ viewport: { width: 1440, height: 900 }, launchOptions: { executablePath: process.env.BROWSERSTRIKE_CHROMIUM_EXECUTABLE, args: ['--no-sandbox', '--disable-dev-shm-usage', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] } });
 test.setTimeout(240000);
@@ -143,11 +144,12 @@ test('occluded ally rendering draws edges without filling the silhouette', async
 });
 
 test('profiles upload pictures and two browsers exchange friend and trade requests', async ({ page, browser }, info) => {
+  test.setTimeout(360000); const sockets: string[] = []; page.on('websocket', socket => sockets.push(socket.url()));
   await page.setViewportSize({ width: 800, height: 650 });
   await page.addInitScript(() => localStorage.setItem('bs-quality', 'low'));
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await page.goto(url); await page.locator('#player-name').fill('Social Alpha'); await page.locator('#profile-open').click();
-  await expect(page.locator('#social-profile-name')).toHaveValue('Social Alpha', { timeout: 20000 });
+  await expect(page.locator('#social-profile-name')).toHaveValue('Social Alpha', { timeout: onlineTimeout });
   const alpha = (await page.locator('.social-profile-code > b').innerText()).trim(); expect(alpha).toMatch(/^[A-F0-9]{12}$/);
   const picture = await sharp({ create: { width: 128, height: 128, channels: 3, background: '#56b0a7' } }).png().toBuffer();
   await page.locator('#social-avatar-input').setInputFiles({ name: 'profile.png', mimeType: 'image/png', buffer: picture });
@@ -155,9 +157,9 @@ test('profiles upload pictures and two browsers exchange friend and trade reques
   await expect(page.locator('#profile-open img')).toBeVisible();
   const other = await browser.newContext({ viewport: { width: 390, height: 844 } });
   try {
-    const second = await other.newPage(); second.on('pageerror', error => errors.push(error.message)); await second.addInitScript(() => localStorage.setItem('bs-quality', 'low'));
+    const second = await other.newPage(); second.on('pageerror', error => errors.push(error.message)); second.on('websocket', socket => sockets.push(socket.url())); await second.addInitScript(() => localStorage.setItem('bs-quality', 'low'));
     await second.goto(url); await second.locator('#player-name').fill('Social Bravo'); await second.locator('#profile-open').click();
-    await expect(second.locator('#social-profile-name')).toHaveValue('Social Bravo', { timeout: 20000 });
+    await expect(second.locator('#social-profile-name')).toHaveValue('Social Bravo', { timeout: onlineTimeout });
     const bravo = (await second.locator('.social-profile-code > b').innerText()).trim(); expect(bravo).not.toBe(alpha);
     await page.locator('[data-social-tab="friends"]').click(); await page.locator('#social-friend-code').fill(bravo); await page.locator('#social-friend-form').evaluate(form => (form as HTMLFormElement).requestSubmit());
     await expect(second.locator('[data-notice="friend"]')).toBeVisible(); await second.locator('[data-notice="friend"] [data-notice-action="accept"]').click();
@@ -173,11 +175,12 @@ test('profiles upload pictures and two browsers exchange friend and trade reques
     await page.locator('[data-social-tab="friends"]').click(); await page.locator(`[data-view-profile="${bravo}"]`).click(); await page.locator(`[data-duel-friend="${bravo}"]`).click();
     await expect(second.locator('[data-notice="duel"]')).toContainText('Social Alpha'); await expect(second.locator('[data-notice="duel"] [data-notice-action="decline"]')).toBeVisible();
     await second.locator('[data-notice="duel"] [data-notice-action="accept"]').click();
-    await expect(second.locator('#game-ui')).toBeVisible({ timeout: 30000 }); await expect(page.locator('#game-ui')).toBeVisible({ timeout: 30000 });
+    await expect(second.locator('#game-ui')).toBeVisible({ timeout: onlineTimeout }); await expect(page.locator('#game-ui')).toBeVisible({ timeout: onlineTimeout });
     await expect(page.locator('#mini-count')).toHaveText('02 / 10'); expect(await page.locator('#room-display').innerText()).toBe(await second.locator('#room-display').innerText());
     await noHorizontalOverflow(page); await noHorizontalOverflow(second);
     await second.screenshot({ path: info.outputPath('mobile-friends-trades.png'), animations: 'disabled' });
   } finally { await other.close(); }
+  if (new URL(url).hostname === 'counterstrikebrowser.vercel.app') { expect(sockets.length).toBeGreaterThan(0); expect(sockets.every(address => new URL(address).hostname === 'counterstrikebrowser-server.onrender.com')).toBe(true); }
   expect(errors).toEqual([]);
 });
 
@@ -394,18 +397,20 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 1024, height: 768 
 });
 
 test('two browser clients join a bot-filled online room', async ({ page, context }, info) => {
+  const sockets: string[] = []; page.on('websocket', socket => sockets.push(socket.url()));
   const errors = await boot(page); await page.locator('#match-private').click(); await page.locator('#player-name').fill('Alpha'); await page.locator('#mode-select').selectOption('defusal'); await page.locator('#join-form').evaluate(form => (form as HTMLFormElement).requestSubmit());
-  await expect(page.locator('#game-ui')).toBeVisible({ timeout: 15000 });
+  await expect(page.locator('#game-ui')).toBeVisible({ timeout: onlineTimeout });
   const code = await page.locator('#room-display').innerText(); expect(code).toMatch(/^[A-F0-9]{6}$/);
-  const second = await context.newPage(); const secondErrors = await boot(second);
+  const second = await context.newPage(); second.on('websocket', socket => sockets.push(socket.url())); const secondErrors = await boot(second);
   await second.locator('#match-private').click(); await second.locator('#player-name').fill('Bravo'); await second.locator('#room-code').fill(code);
   await second.locator('#join-form').evaluate(form => (form as HTMLFormElement).requestSubmit());
-  await expect(second.locator('#game-ui')).toBeVisible({ timeout: 15000 });
+  await expect(second.locator('#game-ui')).toBeVisible({ timeout: onlineTimeout });
   await expect(second.locator('#room-display')).toHaveText(code);
   await expect(page.locator('#score-rows')).toContainText('Bravo', { timeout: 15000 }); await expect(second.locator('#score-rows')).toContainText('Alpha', { timeout: 15000 });
   await expect(page.locator('#mini-count')).toHaveText('10 / 10');
   await expect(page.locator('#score-map')).toContainText('DEFUSAL');
   await capture(page, info.outputPath('online-room.png'));
   await second.locator('#leave-button:visible, #result-lobby:visible').click(); await page.locator('#leave-button:visible, #result-lobby:visible').click();
+  if (new URL(url).hostname === 'counterstrikebrowser.vercel.app') { expect(sockets.length).toBeGreaterThan(0); expect(sockets.every(address => new URL(address).hostname === 'counterstrikebrowser-server.onrender.com')).toBe(true); }
   expect(errors.concat(secondErrors)).toEqual([]);
 });

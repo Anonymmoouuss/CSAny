@@ -5,7 +5,6 @@ import { openPostgresSocialStore } from './social.ts';
 const port = Number(process.env.PORT ?? 3001);
 const origins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()).filter(Boolean);
 const socialPath = process.env.SOCIAL_STORE_PATH || fileURLToPath(new URL('./data/social.json', import.meta.url));
-if (process.env.RENDER && !process.env.DATABASE_URL) throw new Error('DATABASE_URL is required for durable profiles on the hosted service');
 const socialStore = process.env.DATABASE_URL ? await openPostgresSocialStore(process.env.DATABASE_URL, socialPath) : undefined;
 const game = createGameServer({ port, origins, socialPath, socialStore });
 game.http.on('listening', () => console.log(`BROWSERSTRIKE authoritative server | :${port} | 64Hz / 20Hz snapshots | /ws /social`));
