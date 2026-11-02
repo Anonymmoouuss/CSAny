@@ -38,6 +38,7 @@ const clean = (value: string, max: number) => value.replace(/[\x00-\x1f\x7f]/g, 
 
 export function createGameServer(options: { port?: number; host?: string; origins?: string[]; socialPath?: string; socialStore?: SocialStore } = {}) {
   const rooms = new Map<string, Room>();
+  const botDecisions = new WeakMap<Player, { input: Input; phase: Phase; until: number }>();
   let closing = false;
   const social = createSocialService({ path: options.socialPath, store: options.socialStore, origins: options.origins, onDuel: duel => createRoom('duel', 'private', [duel.from, duel.to]).code });
   const http = createServer((request, response) => {
@@ -264,7 +265,10 @@ export function createGameServer(options: { port?: number; host?: string; origin
         }
         for (let step = 0; step < 1; step++) {
           const tickTime = now;
-          const input = botInput(bot, allPlayers(room), room, room.brains.get(bot.id)!, tickTime);
+          let decision = botDecisions.get(bot);
+          const thinking = !decision || now >= decision.until || decision.phase !== room.phase || decision.input.weapon !== bot.weapon;
+          if (thinking) { decision = { input: botInput(bot, allPlayers(room), room, room.brains.get(bot.id)!, tickTime), phase: room.phase, until: now + 1000 / 16 }; botDecisions.set(bot, decision); }
+          const input: Input = { ...decision!.input, time: tickTime, fire: thinking && decision!.input.fire, utility: thinking ? decision!.input.utility : undefined };
           simulateMovement(bot, input, room.phase !== 'live', room.map);
           if (bot.hp <= 0 || room.phase !== 'live') continue;
           if (input.reload && !bot.reloading && bot.reserve[bot.weapon] > 0) { bot.reloading = now + WEAPONS[bot.weapon].reload; room.events.push({ type: 'reload', id: bot.id }); }
