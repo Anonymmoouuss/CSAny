@@ -1,0 +1,11 @@
+.git/
+.vercel/
+node_modules/
+dist/
+model-imports/
+reference-videos/
+server/data/
+test-results/
+playwright-report/
+.env
+.env.*

@@ -179,6 +179,8 @@ The [reference inbox](reference-videos/README.md) contains the supplied clips pl
 
 The browser client is static and deploys to Vercel. The authoritative WebSocket server needs a persistent Node host such as Render or Railway; Vercel serverless functions do not support persistent WebSocket connections.
 
+The included `.vercelignore` excludes raw model archives, reference videos, local credentials, profile data and generated caches from CLI uploads. Optimized runtime assets under `client/public/models/` remain included. Git ignore rules alone do not define Vercel CLI uploads.
+
 1. Run the server on a persistent Node host using `npm ci` and `npm start`, or keep the current Codespace server running with its public port `3001`.
 2. Set `ALLOWED_ORIGINS` on the game server to the exact Vercel origin, for example `https://counterstrikebrowser.vercel.app`. Set the server's `PORT` through the host environment (Render supplies this automatically).
 3. Configure `VITE_SERVER_URL=wss://YOUR-SERVER/ws` in the Vercel project's Production environment and deploy the client. The included `vercel.json` builds and serves `dist/`. This is a host setting, not a player input; old player-entered addresses are ignored.
@@ -209,7 +211,7 @@ For always-available multiplayer, deploy the same server to a persistent host, c
 5. Set the Node server's `ALLOWED_ORIGINS=https://YOUR-PROJECT.vercel.app` to the exact deployed client origin and restart the server. Add exact preview/custom origins separately when needed; do not substitute a broad wildcard.
 6. Test Public matchmaking in two independent browsers, a Private room code, the `/social` profile connection and a local solo/range session from the deployed URL. Changing `VITE_SERVER_URL` requires a Vercel redeploy.
 
-The linked Vercel project is **counterstrikebrowser**, available at [counterstrikebrowser.vercel.app](https://counterstrikebrowser.vercel.app) without a Vercel login. Deploy the intended revision after changing its shared backend configuration. Never paste login tokens into chat.
+The linked Vercel project is **counterstrikebrowser**, available at [counterstrikebrowser.vercel.app](https://counterstrikebrowser.vercel.app) without a Vercel login. The domain is attached to the project and automatically follows Production deployments. The 2026-11-02 release was verified on the public site with two-player private rooms, cross-screen 1v1 acceptance and cloud charm openings using the configured shared backend. Deploy again after changing that backend configuration. Never paste login tokens into chat.
 
 ## Codespace Storage
 
